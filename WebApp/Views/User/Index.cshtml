@@ -1,0 +1,54 @@
+﻿@using NetBanking.Core.Application.ViewModels.Users;
+@model LoginViewModel;
+
+@{
+    ViewData["Title"] = "LogIn";
+}
+
+<div class="container-fluid">
+    <div class="col-4 offset-4">
+        <div class="card border-1 border-dark">
+            <div class="card-header">
+                <h4 class="text-center fw-bold">Log in</h4>
+            </div>
+            <div class="card-body">
+                @if (Model.HasError)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>@Model.Error</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                <form asp-controller="User" asp-action="Index">
+                    <div>
+                        <div>
+                            <label asp-for="Email" class="form-label">Type in your email:</label>
+                            <input asp-for="Email" class="form-control mb-2 " placeholder="Email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="mt-2">
+                            <label asp-for="Password" class="form-label">Type in your password:</label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-info  mt-2 col-4 offset-4 ">Log in</button>
+                    </div>
+                    <hr />
+                    <a asp-controller="User" asp-action="ForgotPassword" class="mt-4">You forgot your password?</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-4 offset-4 mt-3">
+        <div class="card border-1 border-dark">
+            <div class="card-body">
+                <p>You dont have an account yet?</p>
+                <a asp-controller="User" asp-action="Register" class="mt-4">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+</div>

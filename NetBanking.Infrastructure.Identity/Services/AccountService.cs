@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Identity.Client;
 using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.Dtos.Error;
 using NetBanking.Core.Application.Interfaces.IServices;
@@ -13,12 +12,15 @@ namespace NetBanking.Infrastructure.Identity.Services
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IEmailService _emailService;
 
         public AccountService(UserManager<AppUser> userManager,
-                             SignInManager<AppUser> signInManager)
+                             SignInManager<AppUser> signInManager,
+                             IEmailService emailService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _emailService = emailService;
         }
 
         //USER AUTHENTICATION
@@ -56,7 +58,7 @@ namespace NetBanking.Infrastructure.Identity.Services
             response.IsVerified = user.EmailConfirmed;
             response.FirstName = user.FirstName;
             response.LastName = user.LastName;
-            response.Identification = user.Identification;
+            response.IdCard = user.IdCard;
             response.UserStatus = true;
 
             return response;
@@ -100,7 +102,12 @@ namespace NetBanking.Infrastructure.Identity.Services
             {
                 await _userManager.AddToRoleAsync(user, UserRoles);
                 var verificationURI = await SendVerificationUri(user, origin);
-
+                await _emailService.SendAsync(new Core.Application.Dtos.Email.EmailRequest()
+                {
+                    To = user.Email,
+                    Body = $"Please confirm your account visiting this URL {verificationURI}",
+                    Subject = "Confirm registration"
+                });
             }
             else
             {
@@ -154,6 +161,13 @@ namespace NetBanking.Infrastructure.Identity.Services
 
             var verificationURI = await SendForgotPasswordUri(user, origin);
 
+            await _emailService.SendAsync(new Core.Application.Dtos.Email.EmailRequest()
+            {
+                To = user.Email,
+                Body = $"Please reset your account visiting this URL {verificationURI}",
+                Subject = "reset password"
+            });
+
             return response;
 
         }
@@ -189,14 +203,12 @@ namespace NetBanking.Infrastructure.Identity.Services
 
         }
 
-
         //SINGOUT
 
         public async Task SingOutAsync()
         {
             await _signInManager.SignOutAsync();
         }
-
 
         #region PrivateMethods
 
