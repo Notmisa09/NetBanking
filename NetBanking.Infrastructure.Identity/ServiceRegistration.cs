@@ -1,13 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using NetBanking.Core.Application.Interfaces.IServices;
+using NetBanking.Infrastructure.Identity.Entities;
+using NetBanking.Infrastructure.Identity.Services;
+using NetBanking.Infrastructure.Persistence.Contexts;
 
 namespace NetBanking.Infrastructure.Identity
 {
-    public class ServiceRegistration
+    public static class ServiceRegistration
     {
+        public static void IdentityLayerRegistration(this IServiceCollection service, IConfiguration configuration)
+        {
+            #region Context
+            if (configuration.GetValue<bool>("UserInMemoryDatabase"))
+            {
+                service.AddDbContext<IdentityContext>(options => options.UseInMemoryDatabase("InMemoryIdentity"));
+            }
+            else
+            {
+                service.AddDbContext<IdentityContext>(options =>
+                {
+                    options.UseSqlServer(configuration.GetConnectionString("IdentityConnection"),
+                    m => m.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName));
+                });
+            }
+            #endregion
 
+            #region Context
+            service.AddIdentity<AppUser, IdentityRole>()
+              .AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
+
+            service.AddAuthentication();
+            #endregion
+
+            service.AddTransient<IAccountService, AccountService>();
+        }
     }
 }

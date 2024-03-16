@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using NetBanking.Core.Application.Interfaces.IServices;
+using NetBanking.Core.Application.Services;
+using System.Reflection;
 
 namespace NetBanking.Core.Application
 {
-    public class ServiceRegistration
+    public static class ServiceRegistration
     {
+        public static void ApplicationLayerRegistration(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddTransient<IUserService, UserService>();
+        }
     }
 }
