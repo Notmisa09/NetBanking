@@ -11,9 +11,9 @@ namespace NetBanking.Infrastructure.Persistence.Repositories
 {
     public class LoanRepository : GenericRepository<Loan>
     {
-        private readonly NetBankingContext _context;
+        private readonly ApplicationContext _context;
         private readonly DbSet<Loan> _entities;
-        public LoanRepository(NetBankingContext context) : base(context)
+        public LoanRepository(ApplicationContext context) : base(context)
         {
             _context = context;
             _entities = _context.Set<Loan>();

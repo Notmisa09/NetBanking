@@ -11,9 +11,9 @@ namespace NetBanking.Infrastructure.Persistence.Repositories
 {
     public class CreditCardRepository : GenericRepository<CreditCard>
     {
-        private readonly NetBankingContext _context;
+        private readonly ApplicationContext _context;
         private readonly DbSet<CreditCard> _entities;
-        public CreditCardRepository(NetBankingContext context) : base(context)
+        public CreditCardRepository(ApplicationContext context) : base(context)
         {
             _context = context;
             _entities = _context.Set<CreditCard>();

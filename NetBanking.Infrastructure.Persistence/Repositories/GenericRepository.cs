@@ -12,9 +12,9 @@ namespace NetBanking.Infrastructure.Persistence.Repositories
 {
     public class GenericRepository<Entity> : IGenericRepository<Entity> where Entity : class
     {
-        private readonly NetBankingContext _context;
+        private readonly ApplicationContext _context;
         private readonly DbSet<Entity> _entities;
-        public GenericRepository(NetBankingContext context)
+        public GenericRepository(ApplicationContext context)
         {
             _context = context;
             _entities = context.Set<Entity>();

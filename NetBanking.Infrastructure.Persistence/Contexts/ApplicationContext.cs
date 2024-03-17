@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace NetBanking.Infrastructure.Persistence.Contexts
 {
-    public class NetBankingContext : DbContext
+    public class ApplicationContext : DbContext
     {
-        public NetBankingContext(DbContextOptions<NetBankingContext> options) : base(options) { }
+        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
         public DbSet<SavingsAccount> SavingsAccounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Loan> Loans { get; set; }

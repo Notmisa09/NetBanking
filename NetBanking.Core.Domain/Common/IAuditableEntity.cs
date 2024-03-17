@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NetBanking.Core.Domain.Common
 {
-    public class AuditableEntity
+    public interface IAuditableEntity
     {
         public string Id { get; set; }
         public DateTime CreatedDate { get; set; }

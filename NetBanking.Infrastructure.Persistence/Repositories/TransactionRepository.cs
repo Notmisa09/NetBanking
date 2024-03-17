@@ -11,9 +11,9 @@ namespace NetBanking.Infrastructure.Persistence.Repositories
 {
     public class TransactionRepository : GenericRepository<Transaction>
     {
-        private readonly NetBankingContext _context;
+        private readonly ApplicationContext _context;
         private readonly DbSet<Transaction> _entities;
-        public TransactionRepository(NetBankingContext context) : base(context)
+        public TransactionRepository(ApplicationContext context) : base(context)
         {
             _context = context;
             _entities = _context.Set<Transaction>();
