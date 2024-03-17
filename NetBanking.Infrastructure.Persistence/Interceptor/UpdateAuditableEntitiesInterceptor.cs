@@ -29,7 +29,7 @@ namespace NetBanking.Infrastructure.Persistence.Interceptor
             foreach (var entry in entries)
             {
                 if (entry.State == EntityState.Added)
-                {
+                { 
                     entry.Property(a => a.CreatedDate).CurrentValue = DateTime.UtcNow;
                     if (userViewModel == null)
                         entry.Property(a => a.CreatedById).CurrentValue = "Default";
