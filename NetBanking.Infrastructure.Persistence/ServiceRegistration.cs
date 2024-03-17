@@ -37,7 +37,7 @@ namespace NetBanking.Infrastructure.Persistence
             }
             #endregion
 
-            #region Repositories
+            #region Repositories 
             service.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             service.AddTransient<IBeneficiaryRepository, BeneficiaryRepository>();
             service.AddTransient<ICreditCardRepository, CreditCardRepository>();
