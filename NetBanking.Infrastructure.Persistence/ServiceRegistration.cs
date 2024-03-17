@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetBanking.Core.Application.Interfaces.IServices;
 using NetBanking.Infrastructure.Persistence.Contexts;
+using NetBanking.Infrastructure.Persistence.Interceptor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
