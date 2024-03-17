@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NetBanking.Core.Application.Interfaces.IRepositories;
 using NetBanking.Core.Domain.Entities;
 using NetBanking.Infrastructure.Persistence.Contexts;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NetBanking.Infrastructure.Persistence.Repositories
 {
-    public class TransactionRepository : GenericRepository<Transaction>
+    public class TransactionRepository : GenericRepository<Transaction>, ITransactionRepository
     {
         private readonly ApplicationContext _context;
         private readonly DbSet<Transaction> _entities;
