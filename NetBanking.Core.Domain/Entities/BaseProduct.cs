@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace NetBanking.Core.Domain.Entities
 {
-    public class Loan : BaseProduct
+    public class BaseProduct : AuditableEntity
     {
-        public decimal Debt { get; set; }
+        public string UserId { get; set; }
+        public decimal Amount { get; set; }
     }
 }

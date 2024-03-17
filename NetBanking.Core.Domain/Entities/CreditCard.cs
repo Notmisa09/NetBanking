@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace NetBanking.Core.Domain.Entities
 {
-    public class CreditCard : AuditableEntity
+    public class CreditCard : BaseProduct
     {
-        public string UserId { get; set; }
-        public decimal CreditLimit { get; set; }
         public decimal Debt { get; set; }
     }
 }

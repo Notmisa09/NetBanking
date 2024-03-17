@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace NetBanking.Core.Domain.Entities
 {
-    public class SavingsAccount : AuditableEntity
+    public class SavingsAccount : BaseProduct
     {
-        public string UserId { get; set; }
-        public decimal Amount { get; set; }
         public bool IsMain { get; set; }
     }
 }
