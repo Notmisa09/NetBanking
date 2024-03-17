@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace NetBanking.Core.Application.ViewModels.Users
 {
     public class SaveUserViewModel
     {
+        public  string IdCard { get; set; }
+
         [Required(ErrorMessage = "Debe colocar el nombre del usuario")]
         [DataType(DataType.Text)]
         public string FirstName { get; set; }
@@ -19,7 +16,7 @@ namespace NetBanking.Core.Application.ViewModels.Users
 
         [Required(ErrorMessage = "Debe colocar un nombre de usuario")]
         [DataType(DataType.Text)]
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         [Required(ErrorMessage = "Debe colocar una contraseña")]
         [DataType(DataType.Password)]
@@ -36,7 +33,7 @@ namespace NetBanking.Core.Application.ViewModels.Users
 
         [Required(ErrorMessage = "Debe colocar un telefono")]
         [DataType(DataType.Text)]
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
         public bool HasError { get; set; }
         public string? Error { get; set; }
     }
