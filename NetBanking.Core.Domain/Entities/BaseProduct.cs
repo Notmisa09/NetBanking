@@ -2,7 +2,7 @@
 
 namespace NetBanking.Core.Domain.Entities
 {
-    public class BaseProduct : IAuditableEntity
+    public abstract class BaseProduct : IAuditableEntity
     {
         public string UserId { get; set; }
         public decimal Amount { get; set; }
