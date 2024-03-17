@@ -2,7 +2,7 @@
 using NetBanking.Core.Application.Dtos.Error;
 using NetBanking.Core.Application.ViewModels.Users;
 
-namespace NetBanking.Core.Application.Interfaces.IServices
+namespace NetBanking.Core.Application.Interfaces.Services
 {
     public interface IUserService
     {

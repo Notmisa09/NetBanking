@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NetBanking.Core.Application.Interfaces.IServices;
+using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Domain.Settings;
 using NetBanking.Infrastructure.Shared.Services;
 

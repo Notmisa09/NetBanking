@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetBanking.Core.Application.Interfaces.IRepositories
+namespace NetBanking.Core.Application.Interfaces.Repositories
 {
-    public interface ICreditCardRepository : IGenericRepository<CreditCard>
+    public interface ISavingsAccountRepository : IGenericRepository<SavingsAccount>
     {
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NetBanking.Core.Application.Interfaces.IRepositories;
+using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Domain.Entities;
 using NetBanking.Infrastructure.Persistence.Contexts;
 using System;

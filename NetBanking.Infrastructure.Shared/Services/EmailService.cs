@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 using MimeKit;
 using NetBanking.Core.Application.Dtos.Email;
-using NetBanking.Core.Application.Interfaces.IServices;
+using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Domain.Settings;
 
 namespace NetBanking.Infrastructure.Shared.Services
