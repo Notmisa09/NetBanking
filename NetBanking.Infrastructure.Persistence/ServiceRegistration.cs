@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetBanking.Core.Application.Interfaces.IRepositories;
 using NetBanking.Core.Application.Interfaces.IServices;
 using NetBanking.Infrastructure.Persistence.Contexts;
 using NetBanking.Infrastructure.Persistence.Interceptor;
+using NetBanking.Infrastructure.Persistence.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,10 +37,14 @@ namespace NetBanking.Infrastructure.Persistence
             }
             #endregion
 
-            #region Context
+            #region Repositories
+            service.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            service.AddTransient<IBeneficiaryRepository, BeneficiaryRepository>();
+            service.AddTransient<ICreditCardRepository, CreditCardRepository>();
+            service.AddTransient<ILoanRepository, LoanRepository>();
+            service.AddTransient<ISavingsAccountRepository, SavingsAccountRepository>();
+            service.AddTransient<ITransactionRepository, TransactionRepository>();
             #endregion
-
-            service.AddTransient<ApplicationContext, ApplicationContext>();
         }
     }
 }
