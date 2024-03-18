@@ -31,7 +31,7 @@ namespace NetBanking.Core.Application.Services
             var transactions = await _trasactionRepository.GetAllAsync();
 
             vm.AllTransaction = transactions.Count();
-
+            return vm;
         }
     }
 }

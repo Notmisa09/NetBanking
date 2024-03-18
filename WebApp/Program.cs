@@ -9,15 +9,18 @@ using NetBanking.Infrastructure.Identity.Seeds;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddSession();
+builder.Services.AddTransient<ValidateUserSession, ValidateUserSession>();
+builder.Services.AddScoped<LoginAuthorize>();
+
 
 builder.Services.ApplicationLayerRegistration(builder.Configuration);
 builder.Services.IdentityLayerRegistration(builder.Configuration);
-builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddTransient<ValidateUserSession, ValidateUserSession>();
-builder.Services.AddScoped<LoginAuthorize>();
-builder.Services.AddSession();
 builder.Services.AddSharedInfrastructure(builder.Configuration);
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 
 var app = builder.Build();
 
