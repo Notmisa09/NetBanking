@@ -5,6 +5,8 @@ using NetBanking.Core.Application.ViewModels.Users;
 using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Enums;
 using NetBanking.Core.Application.Dtos.Error;
+using System.Diagnostics;
+using WebApp.Models;
 
 namespace WebApp.Controllers
 {
@@ -72,6 +74,12 @@ namespace WebApp.Controllers
                 return View(vm);
             }
             return RedirectToAction("Index");
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
     }
