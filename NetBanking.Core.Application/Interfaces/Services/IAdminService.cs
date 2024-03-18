@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetBanking.Core.Application.ViewModels.Dashboard
+namespace NetBanking.Core.Application.Interfaces.Services
 {
-    public class ListUserRegisterAndStateViewModel
+    public interface IAdminService
     {
-        List<UserViewModel> userRegister {  get; set; }
+        Task<List<UserViewModel>> GetAllAsync();
     }
 }

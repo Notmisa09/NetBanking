@@ -25,6 +25,10 @@ namespace NetBanking.Core.Application.Mappings
                 .ForMember(a => a.Error , opt => opt.Ignore())
                 .ForMember(a => a.HasError , opt => opt.Ignore())   
                 .ReverseMap();
+
+
+            CreateMap<DtoAccounts, UserViewModel>()
+                .ReverseMap();
         }
     }
 }

@@ -24,13 +24,6 @@ namespace NetBanking.Core.Application.Services
             return userResponse;
         }
 
-        public async Task<List<UserViewModel>> GetAllAsync()
-        {
-           var user = await _accountService.GetAllUsers();
-           var userlist = _mapper.Map<List<UserViewModel>>(user);
-           return userlist;
-        }
-
         public async Task SingOutAsync()
         {
             await _accountService.SingOutAsync();
