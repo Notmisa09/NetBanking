@@ -3,6 +3,7 @@ using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.ViewModels.Dashboard;
 using NetBanking.Core.Application.ViewModels.Users;
+using NetBanking.Core.Domain.Enums;
 
 namespace NetBanking.Core.Application.Services
 {
@@ -27,11 +28,15 @@ namespace NetBanking.Core.Application.Services
 
         public async Task<DashboardViewModel> GetDashboard()
         {
-            DashboardViewModel vm = new();
+            DashboardViewModel vm = new DashboardViewModel();
             var transactions = await _trasactionRepository.GetAllAsync();
 
+            vm.AllPaymentsNumber = transactions.GroupBy(x => x.Type).Count();
             vm.AllTransaction = transactions.Count();
+            vm.AllPayments = transactions.GroupBy(x => x.Cantity).Sum(group => group.Count());
 
+            //Me falta completar el dashboard - Yahinniel. 
+            return vm;
         }
     }
 }

@@ -5,6 +5,7 @@ using WebApp.Middlewares;
 using Microsoft.AspNetCore.Identity;
 using NetBanking.Infrastructure.Identity.Entities;
 using NetBanking.Infrastructure.Identity.Seeds;
+using NetBanking.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.ApplicationLayerRegistration(builder.Configuration);
 builder.Services.IdentityLayerRegistration(builder.Configuration);
 builder.Services.AddControllersWithViews();
+builder.Services.PersistenceLayerRegistration(builder.Configuration);
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<ValidateUserSession, ValidateUserSession>();
 builder.Services.AddScoped<LoginAuthorize>();
