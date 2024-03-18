@@ -17,21 +17,24 @@ namespace WebApp.Controllers
             _userService = userService;
         }
 
+
+        //INDEX
+
         public IActionResult Index()
         {
             return View(new LoginViewModel());
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Index(LoginViewModel vm)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(vm);
             }
 
             AuthenticationResponse userVm = await _userService.LoginAsync(vm);
-            if(userVm != null && userVm.HasError != true)
+            if (userVm != null && userVm.HasError != true)
             {
                 HttpContext.Session.Set<AuthenticationResponse>("user", userVm);
                 return RedirectToRoute(new { controller = "Home", action = "Index" });
@@ -44,12 +47,24 @@ namespace WebApp.Controllers
             }
         }
 
+        //CONFIRM EMAIL
+        public async Task<IActionResult> ConfirmEmailAsync(string UserId, string token)
+        {
+            string response = await _userService.ConfirmEmailAsync(UserId, token);
+            return View("ConfirmEmail", response);
+        }
+
+        //LOGOUT
+
         public async Task<IActionResult> LogOut()
         {
             await _userService.SingOutAsync();
             HttpContext.Session.Remove("user");
             return RedirectToRoute(new { controller = "User", action = "Index" });
         }
+
+
+        //REGISTER
 
         public IActionResult Register()
         {
@@ -73,6 +88,5 @@ namespace WebApp.Controllers
             }
             return RedirectToAction("Index");
         }
-
     }
 }

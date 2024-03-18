@@ -20,6 +20,11 @@ namespace NetBanking.Core.Application.Mappings
                 .ForMember(r => r.HasError, opt => opt.Ignore())
                 .ReverseMap()
                 .ForMember(r => r.UserStatus, opt => opt.Ignore());
+
+            CreateMap<AuthenticationRequest, LoginViewModel>()
+                .ForMember(a => a.Error , opt => opt.Ignore())
+                .ForMember(a => a.HasError , opt => opt.Ignore())   
+                .ReverseMap();
         }
     }
 }

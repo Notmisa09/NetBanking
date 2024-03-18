@@ -2,15 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetBanking.Core.Application.Interfaces.IRepositories;
-using NetBanking.Core.Application.Interfaces.IServices;
 using NetBanking.Infrastructure.Persistence.Contexts;
 using NetBanking.Infrastructure.Persistence.Interceptor;
 using NetBanking.Infrastructure.Persistence.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetBanking.Infrastructure.Persistence
 {
