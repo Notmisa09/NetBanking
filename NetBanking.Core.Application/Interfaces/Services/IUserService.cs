@@ -6,6 +6,7 @@ namespace NetBanking.Core.Application.Interfaces.Services
 {
     public interface IUserService
     {
+        Task<List<UserViewModel>> GetAllAsync();
         Task<AuthenticationResponse> LoginAsync(LoginViewModel vm);
         Task SingOutAsync();
         Task<ServiceResult> RegisterAsync(SaveUserViewModel vm, string origin, string userRole);

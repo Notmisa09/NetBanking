@@ -1,4 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@using NetBanking.Core.Application.Dtos.Account
+@using NetBanking.Core.Application.Helpers;
+@inject IHttpContextAccessor httpContext;
+
+@{
+    var user = httpContext.HttpContext.Session.Get<AuthenticationResponse>("user");
+    var userId = user != null ? user.Id : null;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
