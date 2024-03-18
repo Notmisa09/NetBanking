@@ -18,6 +18,7 @@ builder.Services.AddScoped<LoginAuthorize>();
 
 builder.Services.ApplicationLayerRegistration(builder.Configuration);
 builder.Services.IdentityLayerRegistration(builder.Configuration);
+builder.Services.PersistenceLayerRegistration(builder.Configuration);
 builder.Services.AddSharedInfrastructure(builder.Configuration);
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
