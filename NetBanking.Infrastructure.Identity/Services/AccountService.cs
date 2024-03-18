@@ -179,7 +179,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 HasError = false,
             };
 
-            var user = await _userManager.FindByIdAsync(request.Email);
+            var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
             {
@@ -247,7 +247,7 @@ namespace NetBanking.Infrastructure.Identity.Services
         {
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var route = "User/ReserPassword";
+            var route = "User/ResetPassword";
             var Uri = new Uri(string.Concat($"{origin}/", route));
             var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "userId", user.Id);
             verificationUri = QueryHelpers.AddQueryString(verificationUri, "userId", user.Id);
@@ -264,7 +264,7 @@ namespace NetBanking.Infrastructure.Identity.Services
             var route = "User/ConfirmEmail";
             var Uri = new Uri(string.Concat($"{origin}/", route));
             var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "userId", user.Id);
-            verificationUri = QueryHelpers.AddQueryString(verificationUri, "token", code);
+            verificationUri = QueryHelpers.AddQueryString(verificationUri, "Token", code);
 
             return verificationUri;
         }
