@@ -25,6 +25,16 @@ namespace NetBanking.Core.Application.Mappings
                 .ForMember(a => a.Error , opt => opt.Ignore())
                 .ForMember(a => a.HasError , opt => opt.Ignore())   
                 .ReverseMap();
+
+            CreateMap<ForgotPasswordRequest, ForgorPasswordViewModel>()
+                .ForMember(r => r.Error, opt => opt.Ignore())
+                .ForMember(r => r.HasError, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<ResetPasswordRequest, ResetPasswordViewModel>()
+                .ForMember(rp => rp.HasError, opt => opt.Ignore())
+                .ForMember(rp => rp.Error, opt => opt.Ignore())
+                .ReverseMap();
         }
     }
 }
