@@ -11,7 +11,7 @@ namespace NetBanking.Infrastructure.Persistence
 {
     public static class ServiceRegistration
     {
-        public static void IdentityLayerRegistration(this IServiceCollection service, IConfiguration configuration)
+        public static void PersistenceLayerRegistration(this IServiceCollection service, IConfiguration configuration)
         {
             #region Context
             if (configuration.GetValue<bool>("UseInMemoryDatabase"))

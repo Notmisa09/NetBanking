@@ -5,6 +5,7 @@ using WebApp.Middlewares;
 using Microsoft.AspNetCore.Identity;
 using NetBanking.Infrastructure.Identity.Entities;
 using NetBanking.Infrastructure.Identity.Seeds;
+using NetBanking.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
