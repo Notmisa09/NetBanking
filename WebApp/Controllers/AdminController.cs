@@ -16,7 +16,5 @@ namespace WebApp.Controllers
         {
             return View(await _adminService.GetAllAsync());
         }
-
-
     }
 }
