@@ -5,19 +5,24 @@ using WebApp.Middlewares;
 using Microsoft.AspNetCore.Identity;
 using NetBanking.Infrastructure.Identity.Entities;
 using NetBanking.Infrastructure.Identity.Seeds;
+using NetBanking.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddSession();
+builder.Services.AddTransient<ValidateUserSession, ValidateUserSession>();
+builder.Services.AddScoped<LoginAuthorize>();
+
 
 builder.Services.ApplicationLayerRegistration(builder.Configuration);
 builder.Services.IdentityLayerRegistration(builder.Configuration);
-builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddTransient<ValidateUserSession, ValidateUserSession>();
-builder.Services.AddScoped<LoginAuthorize>();
-builder.Services.AddSession();
+builder.Services.PersistenceLayerRegistration(builder.Configuration);
 builder.Services.AddSharedInfrastructure(builder.Configuration);
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 
 var app = builder.Build();
 

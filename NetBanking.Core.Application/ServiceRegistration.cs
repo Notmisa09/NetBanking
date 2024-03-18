@@ -12,6 +12,8 @@ namespace NetBanking.Core.Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<ITransactionService, TransactionService>();
         }
     }
 }

@@ -6,17 +6,12 @@ using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Infrastructure.Persistence.Contexts;
 using NetBanking.Infrastructure.Persistence.Interceptor;
 using NetBanking.Infrastructure.Persistence.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetBanking.Infrastructure.Persistence
 {
     public static class ServiceRegistration
     {
-        public static void IdentityLayerRegistration(this IServiceCollection service, IConfiguration configuration)
+        public static void PersistenceLayerRegistration(this IServiceCollection service, IConfiguration configuration)
         {
             #region Context
             if (configuration.GetValue<bool>("UseInMemoryDatabase"))

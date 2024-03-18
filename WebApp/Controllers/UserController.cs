@@ -19,21 +19,24 @@ namespace WebApp.Controllers
             _userService = userService;
         }
 
+
+        //INDEX
+
         public IActionResult Index()
         {
             return View(new LoginViewModel());
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Index(LoginViewModel vm)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(vm);
             }
 
             AuthenticationResponse userVm = await _userService.LoginAsync(vm);
-            if(userVm != null && userVm.HasError != true)
+            if (userVm != null && userVm.HasError != true)
             {
                 HttpContext.Session.Set<AuthenticationResponse>("user", userVm);
                 return RedirectToRoute(new { controller = "Home", action = "Index" });
@@ -46,6 +49,15 @@ namespace WebApp.Controllers
             }
         }
 
+        //CONFIRM EMAIL
+        public async Task<IActionResult> ConfirmEmailAsync(string UserId, string token)
+        {
+            string response = await _userService.ConfirmEmailAsync(UserId, token);
+            return View("ConfirmEmail", response);
+        }
+
+        //LOGOUT
+
         public async Task<IActionResult> LogOut()
         {
             await _userService.SingOutAsync();
@@ -53,6 +65,8 @@ namespace WebApp.Controllers
             return RedirectToRoute(new { controller = "User", action = "Index" });
         }
 
+
+        //REGISTER
         public IActionResult Register()
         {
             return View(new SaveUserViewModel());
@@ -76,11 +90,53 @@ namespace WebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+
+        // FORGOT PASSWORD
+        public IActionResult ForgotPassword()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ForgorPasswordViewModel());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgorPasswordViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+            var origin = Request.Headers["origin"];
+            ServiceResult response = await _userService.ForgotPasswordAsync(vm, origin);
+            if (response.HasError)
+            {
+                vm.Error = response.Error;
+                vm.HasError = response.HasError;
+                return View(vm);
+            }
+            return RedirectToRoute(new { controller="User", action="Index" });
+        }
+
+
+        //RESET PASSWORD
+        public IActionResult ResetPassword(string Token)
+        {
+            return View(new ResetPasswordViewModel { Token = Token });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel vm)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View("ResetPassword", vm);
+            }
+            ServiceResult response = await _userService.ResetPasswordAsync(vm);
+            if(response.HasError)
+            {
+                vm.Error = response.Error;
+                vm.HasError = response.HasError;
+                return View("ResetPassword", vm);
+            }
+            return RedirectToRoute(new { controller = "User", action = "Index" });
+        }
     }
 }

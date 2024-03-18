@@ -28,7 +28,7 @@ namespace NetBanking.Infrastructure.Identity
             }
             #endregion
 
-            #region Context
+            #region Services
             service.AddIdentity<AppUser, IdentityRole>()
               .AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 
