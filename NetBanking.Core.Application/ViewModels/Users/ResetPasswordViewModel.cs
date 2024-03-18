@@ -8,7 +8,9 @@ namespace NetBanking.Core.Application.ViewModels.Users
         [DataType(DataType.Text)]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "You should enter a password")]
+        [Required(ErrorMessage = "Please type in a password")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).+$"
+        , ErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
@@ -18,6 +20,6 @@ namespace NetBanking.Core.Application.ViewModels.Users
         public string ConfirmPassword { get; set; }
         public string Token { get; set; }
         public bool HasError { get; set; }
-        public string Error { get; set; }
+        public string? Error { get; set; }
     }
 }
