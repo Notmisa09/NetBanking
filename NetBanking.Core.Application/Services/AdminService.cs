@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.ViewModels.Dashboard;
 using NetBanking.Core.Application.ViewModels.Users;
@@ -9,10 +10,12 @@ namespace NetBanking.Core.Application.Services
     {
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
-        public AdminService(IAccountService accountService, IMapper mapper)
+        private readonly ITransactionRepository _trasactionRepository;
+        public AdminService(IAccountService accountService, IMapper mapper, ITransactionRepository trasactionRepository)
         {
             _accountService = accountService;
             _mapper = mapper;
+            _trasactionRepository = trasactionRepository;
         }
 
         public async Task<List<UserViewModel>> GetAllAsync()
@@ -22,9 +25,13 @@ namespace NetBanking.Core.Application.Services
             return userlist;
         }
 
-        //public async Task<DashboardViewModel> GetDashboard()
-        //{
+        public async Task<DashboardViewModel> GetDashboard()
+        {
+            DashboardViewModel vm = new();
+            var transactions = await _trasactionRepository.GetAllAsync();
 
-        //}
+            vm.AllTransaction = transactions.Count();
+
+        }
     }
 }
