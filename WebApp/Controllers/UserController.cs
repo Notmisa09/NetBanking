@@ -65,7 +65,7 @@ namespace WebApp.Controllers
             }
             var origin = Request.Headers["origin"];
             ServiceResult response = await _userService.RegisterAsync(vm, origin, RolesEnum.Client.ToString());
-            if (response.HasError)
+            if (!response.HasError)
             {
                 vm.Error = response.Error;
                 vm.HasError = response.HasError;
@@ -73,5 +73,6 @@ namespace WebApp.Controllers
             }
             return RedirectToAction("Index");
         }
+
     }
 }

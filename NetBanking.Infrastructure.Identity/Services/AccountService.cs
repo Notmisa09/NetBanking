@@ -50,7 +50,7 @@ namespace NetBanking.Infrastructure.Identity.Services
 
             response.Id = user.Id;
             response.Email = user.Email;
-            response.UseName = user.UserName;
+            response.UserName = user.UserName;
 
             var roleList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
 
@@ -77,7 +77,7 @@ namespace NetBanking.Infrastructure.Identity.Services
             if (userWithSameUserName != null)
             {
                 response.HasError = true;
-                response.Error = $"Username {request.UseName} is already taken";
+                response.Error = $"Username {request.UserName} is already taken";
                 return response;
             }
 
@@ -94,7 +94,10 @@ namespace NetBanking.Infrastructure.Identity.Services
                 Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                UserName = request.UseName
+                UserName = request.UserName,
+                UserStatus = request.UserStatus,
+                IdCard = request.IdCard,
+                
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
@@ -118,6 +121,7 @@ namespace NetBanking.Infrastructure.Identity.Services
 
             return response;
         }
+
 
         //CONFIRMACCOUNT
 
