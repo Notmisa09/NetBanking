@@ -24,6 +24,7 @@ namespace NetBanking.Infrastructure.Identity.Services
             _emailService = emailService;
         }
 
+
         //USERS GETALL
 
         public async Task<List<DtoAccounts>> GetAllUsers()
@@ -122,7 +123,8 @@ namespace NetBanking.Infrastructure.Identity.Services
                 UserName = request.UserName,
                 UserStatus = request.UserStatus,
                 IdCard = request.IdCard,
-
+                ImageURL = request.ImageURL,
+                PhoneNumber = request.PhoneNumber
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
@@ -249,8 +251,7 @@ namespace NetBanking.Infrastructure.Identity.Services
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             var route = "User/ResetPassword";
             var Uri = new Uri(string.Concat($"{origin}/", route));
-            var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "userId", user.Id);
-            verificationUri = QueryHelpers.AddQueryString(verificationUri, "userId", user.Id);
+            var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "Token", code);
 
             return verificationUri;
         }

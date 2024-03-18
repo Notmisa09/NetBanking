@@ -21,7 +21,13 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     }
-                    <form method="post" asp-controller="User" asp-action="Register">
+                    <form method="post" enctype="multipart/form-data" asp-controller="User" asp-action="Register">
+                       
+                        <div class="mb-3">
+                            <label asp-for="formFile" class="form-label">Upload a profile picture (optional): </label>
+                            <input asp-for="formFile" class="form-control" />
+                            <span asp-validation-for="formFile" class="text-danger"></span>
+                        </div>
 
                         <div class="mb-3">
                             <label asp-for="FirstName" class="form-label">Nombre: </label>

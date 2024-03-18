@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.Dtos.Error;
+using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.ViewModels.Users;
 
@@ -32,6 +33,13 @@ namespace NetBanking.Core.Application.Services
         public async Task<ServiceResult> RegisterAsync(SaveUserViewModel vm, string origin, string userRole)
         {
             RegisterRequest resgisterRequest = _mapper.Map<RegisterRequest>(vm);
+            if(resgisterRequest !=  null && string.IsNullOrEmpty(resgisterRequest.Id))
+            {
+                if(vm.formFile  != null)
+                {
+                    resgisterRequest.ImageURL = UploadImage.UploadFile(vm.formFile, resgisterRequest.Id, "User");
+                }
+            }
             return await _accountService.RegisterUserAsync(resgisterRequest, origin, userRole);
         }
 
