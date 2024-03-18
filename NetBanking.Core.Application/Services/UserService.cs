@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.Dtos.Error;
-using NetBanking.Core.Application.Interfaces.IServices;
+using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.ViewModels.Users;
 
 namespace NetBanking.Core.Application.Services

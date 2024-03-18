@@ -1,7 +1,7 @@
 ﻿using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.Dtos.Error;
 
-namespace NetBanking.Core.Application.Interfaces.IServices
+namespace NetBanking.Core.Application.Interfaces.Services
 {
     public interface IAccountService
     {

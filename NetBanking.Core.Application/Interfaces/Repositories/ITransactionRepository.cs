@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetBanking.Core.Application.Interfaces.IRepositories
+namespace NetBanking.Core.Application.Interfaces.Repositories
 {
-    public interface IBeneficiaryRepository : IGenericRepository<Beneficiary>
+    public interface ITransactionRepository : IGenericRepository<Transaction>
     {
     }
 }

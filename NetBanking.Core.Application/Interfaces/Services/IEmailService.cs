@@ -1,6 +1,6 @@
 ﻿using NetBanking.Core.Application.Dtos.Email;
 
-namespace NetBanking.Core.Application.Interfaces.IServices
+namespace NetBanking.Core.Application.Interfaces.Services
 {
     public interface IEmailService
     {
