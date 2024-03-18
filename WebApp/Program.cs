@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ApplicationLayerRegistration(builder.Configuration);
 builder.Services.IdentityLayerRegistration(builder.Configuration);
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<ValidateUserSession, ValidateUserSession>();
 builder.Services.AddScoped<LoginAuthorize>();
@@ -42,16 +42,16 @@ using (var scope = app.Services.CreateScope())
     // Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())
     {
-        app.UseExceptionHandler("/Home/Error");
+        app.UseExceptionHandler("/User/Error");
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
     }
-
 app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

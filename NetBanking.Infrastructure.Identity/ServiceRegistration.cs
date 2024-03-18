@@ -33,6 +33,11 @@ namespace NetBanking.Infrastructure.Identity
               .AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 
             service.AddAuthentication();
+            service.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Users/Login";
+                options.AccessDeniedPath = "/Home/AccessDenied";
+            });
             #endregion
 
             service.AddTransient<IAccountService, AccountService>();
