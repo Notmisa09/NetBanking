@@ -17,7 +17,7 @@ namespace NetBanking.Infrastructure.Persistence
             if (configuration.GetValue<bool>("UseInMemoryDatabase"))
             {
                 service.AddDbContext<ApplicationContext>(options =>
-                                                        options.UseInMemoryDatabase("Twitter"));
+                                                        options.UseInMemoryDatabase("NetBanking"));
             }
             else
             {
@@ -25,7 +25,7 @@ namespace NetBanking.Infrastructure.Persistence
                 service.AddDbContext<ApplicationContext>((sp, options) =>
                 {
                     var interceptor = sp.GetService<UpdateAuditableEntitiesInterceptor>();
-                    options.UseSqlServer(configuration.GetConnectionString("Default"),
+                    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                     m => m.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName)).AddInterceptors(interceptor);
                 });
 

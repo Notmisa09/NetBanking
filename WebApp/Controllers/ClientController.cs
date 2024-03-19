@@ -4,8 +4,9 @@ namespace WebApp.Controllers
 {
     public class ClientController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Home()
         {
+            
             return View();
         }
     }
