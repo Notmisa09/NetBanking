@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using NetBanking.Core.Application.Dtos.Account;
+using NetBanking.Core.Application.ViewModels.Beneficiary;
 using NetBanking.Core.Application.ViewModels.Users;
+using NetBanking.Core.Domain.Entities;
 
 namespace NetBanking.Core.Application.Mappings
 {
@@ -38,6 +40,8 @@ namespace NetBanking.Core.Application.Mappings
                 .ForMember(rp => rp.Token, src => src.MapFrom(x => x.Token));
 
             CreateMap<DtoAccounts, UserViewModel>()
+                .ReverseMap();
+            CreateMap<Beneficiary, BeneficiaryViewModel>()
                 .ReverseMap();
         }
     }

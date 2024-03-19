@@ -17,7 +17,7 @@ namespace NetBanking.Infrastructure.Persistence
             if (configuration.GetValue<bool>("UseInMemoryDatabase"))
             {
                 service.AddDbContext<ApplicationContext>(options =>
-                                                        options.UseInMemoryDatabase("Twitter"));
+                                                        options.UseInMemoryDatabase("NetBanking"));
             }
             else
             {
