@@ -12,7 +12,7 @@
 <div class="container-fluid">
     <div class="col-10 offset-1">
 
-        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Register a new patient</a>
+        <a asp-controller="Admin" asp-action="Register " class="btn btn-primary">Register a new patient</a>
 
         <div class="card mt-4">
             <div class="card-body">
@@ -23,15 +23,15 @@
                             <th>Name</th>
                             <th>Last Name</th>
                             <th>Identification</th>
-                            <th>Allergies</th>
-                            <th>Smoke</th>
-                            <th>Actions</th>
+                            <th>Status</th>
+                            <th>Roles</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
                             <tr>
+@*                                 <td>@item.ImageURL</td> *@
                                 <td>@item.FirstName</td>
                                 <td>@item.LastName</td>
                                 <td>@item.Email</td>
@@ -39,7 +39,7 @@
                                 <td>
                                     @foreach (var role in @item.Roles)
                                     {
-                                       @role
+                                        @role[0]
                                     }
                                 </td>
                                 <td>
@@ -52,5 +52,5 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div>
 </div>

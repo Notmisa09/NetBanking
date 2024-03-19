@@ -25,7 +25,7 @@ namespace NetBanking.Infrastructure.Persistence
                 service.AddDbContext<ApplicationContext>((sp, options) =>
                 {
                     var interceptor = sp.GetService<UpdateAuditableEntitiesInterceptor>();
-                    options.UseSqlServer(configuration.GetConnectionString("Default"),
+                    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                     m => m.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName)).AddInterceptors(interceptor);
                 });
 

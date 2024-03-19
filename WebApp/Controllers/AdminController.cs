@@ -16,5 +16,9 @@ namespace WebApp.Controllers
         {
             return View(await _adminService.GetAllAsync());
         }
+        public async Task<IActionResult> DashBoard()
+        {
+            return View(await _adminService.GetDashboard());
+        }
     }
 }
