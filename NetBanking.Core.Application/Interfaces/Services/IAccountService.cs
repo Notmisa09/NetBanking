@@ -13,5 +13,6 @@ namespace NetBanking.Core.Application.Interfaces.Services
         Task<ServiceResult> ResetPasswordAsync(ResetPasswordRequest request);
         Task SingOutAsync();
         Task<DtoAccounts> GetByIdAsync(string UserId);
+        Task<ServiceResult> EditUserAsync(RegisterRequest request);
     }
 }

@@ -25,6 +25,13 @@ namespace NetBanking.Core.Application.Services
             return userResponse;
         }
 
+        public async Task<ServiceResult> UpdateAsync(SaveUserViewModel vm)
+        {
+            var user = _mapper.Map<RegisterRequest>(vm);
+            var response = await _accountService.EditUserAsync(user);
+            return response;
+        }
+
         public async Task SingOutAsync()
         {
             await _accountService.SingOutAsync();

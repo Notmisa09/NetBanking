@@ -152,7 +152,7 @@ namespace WebApp.Controllers
             {
                 return View(vm);
             };
-            ServiceResult response = new();
+            ServiceResult response = await _userService.UpdateAsync(vm);
             if (response.HasError)
             {
                 vm.Error = response.Error;
@@ -161,6 +161,5 @@ namespace WebApp.Controllers
             }
             return View();
         }
-
     }
 }
