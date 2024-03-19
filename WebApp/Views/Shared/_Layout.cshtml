@@ -1,6 +1,7 @@
 ﻿@using NetBanking.Core.Application.Dtos.Account
 @using NetBanking.Core.Application.Helpers;
 @using Microsoft.AspNetCore.Http
+@using NetBanking.Core.Application.Enums;
 @inject IHttpContextAccessor httpContext;
 
 @{
@@ -35,7 +36,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Login</a>
                         </li>
                         }
-                        else if (user.Roles.Contains("Admin"))
+                        else if (user.Roles.Contains(RolesEnum.Admin.ToString()))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Home">Home</a>
@@ -44,7 +45,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="UserAdministration">User Administration</a>
                             </li>
                         }
-                        else if (user.Roles.Contains("Client"))
+                        else if (user.Roles.Contains(RolesEnum.Client.ToString()))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Home">Home</a>
@@ -68,7 +69,6 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="CashTransfer">Cash Transfer</a>
                             </li>
                         }
-                        
                     </ul>
                 </div>
             </div>
