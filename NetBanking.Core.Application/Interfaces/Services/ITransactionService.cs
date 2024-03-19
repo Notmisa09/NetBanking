@@ -1,6 +1,9 @@
-﻿namespace NetBanking.Core.Application.Interfaces.Services
+﻿using NetBanking.Core.Application.ViewModels.Transaction;
+using System.Transactions;
+
+namespace NetBanking.Core.Application.Interfaces.Services
 {
-    public interface ITransactionService
+    public interface ITransactionService : IGenericService<TransactionViewModel , SaveTransactionViewModel , Transaction>
     {
 
     }

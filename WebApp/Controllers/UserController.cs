@@ -22,7 +22,6 @@ namespace WebApp.Controllers
 
 
         //INDEX
-
         public IActionResult Index()
         {
             return View(new LoginViewModel());
@@ -58,7 +57,6 @@ namespace WebApp.Controllers
         }
 
         //LOGOUT
-
         public async Task<IActionResult> LogOut()
         {
             await _userService.SingOutAsync();
@@ -140,9 +138,29 @@ namespace WebApp.Controllers
             return RedirectToRoute(new { controller = "User", action = "Index" });
         }
 
-        public async Task<IActionResult> EditUers(int Id)
+
+        //EDIT USER
+        public async Task<IActionResult> Edit(string UserId)
         {
-            return(await _userService.Ge)
+            return View(await _userService.GetByIdAsync(UserId));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(SaveUserViewModel vm)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(vm);
+            };
+            ServiceResult response = new();
+            if (response.HasError)
+            {
+                vm.Error = response.Error;
+                vm.HasError = response.HasError;
+                return View(vm);
+            }
+            return View();
+        }
+
     }
 }
