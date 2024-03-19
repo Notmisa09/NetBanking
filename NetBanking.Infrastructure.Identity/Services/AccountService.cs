@@ -24,6 +24,22 @@ namespace NetBanking.Infrastructure.Identity.Services
             _emailService = emailService;
         }
 
+        //GETBYID
+        public async Task<DtoAccounts> GetByIdAsync(string UserId)
+        {
+            var  user = await _userManager.FindByIdAsync(UserId);
+            DtoAccounts dtoaccount = new()
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Id = user.Id,
+                ImageURL = user.ImageURL,
+                IsActive = user.UserStatus,
+            };
+
+            return dtoaccount;
+        }
 
         //USERS GETALL
 
@@ -36,6 +52,7 @@ namespace NetBanking.Infrastructure.Identity.Services
             {
                 var userDto = new DtoAccounts();
 
+                userDto.ImageURL = user.ImageURL;
                 userDto.FirstName = user.FirstName;
                 userDto.LastName = user.LastName;
                 userDto.IsActive = user.UserStatus;
@@ -71,6 +88,12 @@ namespace NetBanking.Infrastructure.Identity.Services
             {
                 response.HasError = true;
                 response.Error = $"Account not confirmed for {request.Email}";
+                return response;
+            }
+            if(user.UserStatus == false)
+            {
+                response.HasError = true;
+                response.Error = $"Your account user {request.Email} is not active please get in contact with a manager";
                 return response;
             }
 

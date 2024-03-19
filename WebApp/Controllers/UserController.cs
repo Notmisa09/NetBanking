@@ -7,6 +7,7 @@ using NetBanking.Core.Application.Enums;
 using NetBanking.Core.Application.Dtos.Error;
 using System.Diagnostics;
 using WebApp.Models;
+using Org.BouncyCastle.Asn1.IsisMtt.X509;
 
 namespace WebApp.Controllers
 {
@@ -137,6 +138,11 @@ namespace WebApp.Controllers
                 return View("ResetPassword", vm);
             }
             return RedirectToRoute(new { controller = "User", action = "Index" });
+        }
+
+        public async Task<IActionResult> EditUers(int Id)
+        {
+            return(await _userService.Ge)
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NetBanking.Core.Application.Interfaces.Services;
+using NetBanking.Core.Application.ViewModels.Users;
+using Org.BouncyCastle.Asn1.IsisMtt.X509;
 
 namespace WebApp.Controllers
 {
@@ -15,6 +17,10 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _adminService.GetAllAsync());
+        }
+        public IActionResult Register()
+        {
+            return View(new SaveUserViewModel());
         }
     }
 }
