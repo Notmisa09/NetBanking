@@ -5,7 +5,6 @@ namespace WebApp.Controllers
 {
     public class AdminController : Controller
     {
-
         private readonly IAdminService _adminService;
 
         public AdminController(IAdminService adminService)
