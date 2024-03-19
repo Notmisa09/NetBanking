@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.Dtos.Error;
+using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Infrastructure.Identity.Entities;
 using System.Text;
@@ -24,6 +25,22 @@ namespace NetBanking.Infrastructure.Identity.Services
             _emailService = emailService;
         }
 
+        //GETBYID
+        public async Task<DtoAccounts> GetByIdAsync(string UserId)
+        {
+            var  user = await _userManager.FindByIdAsync(UserId);
+            DtoAccounts dtoaccount = new()
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Id = user.Id,
+                ImageURL = user.ImageURL,
+                IsActive = user.UserStatus,
+            };
+
+            return dtoaccount;
+        }
 
         //USERS GETALL
 
@@ -36,6 +53,7 @@ namespace NetBanking.Infrastructure.Identity.Services
             {
                 var userDto = new DtoAccounts();
 
+                userDto.ImageURL = user.ImageURL;
                 userDto.FirstName = user.FirstName;
                 userDto.LastName = user.LastName;
                 userDto.IsActive = user.UserStatus;
@@ -73,6 +91,12 @@ namespace NetBanking.Infrastructure.Identity.Services
                 response.Error = $"Account not confirmed for {request.Email}";
                 return response;
             }
+            if(user.UserStatus == false)
+            {
+                response.HasError = true;
+                response.Error = $"Your account user {request.Email} is not active please get in contact with a manager";
+                return response;
+            }
 
             response.Id = user.Id;
             response.Email = user.Email;
@@ -90,9 +114,38 @@ namespace NetBanking.Infrastructure.Identity.Services
             return response;
         }
 
+        public async Task<ServiceResult> EditUserAsync(RegisterRequest request)
+        {
+            ServiceResult response = new();
+            var userget = await _userManager.FindByEmailAsync(request.Id);
+            {
+                userget.Id = request.Id;
+                userget.PhoneNumber = request.PhoneNumber;
+                userget.UserName = request.UserName;
+                userget.UserName = request.FirstName;
+                userget.LastName = request.LastName;
+                userget.Email = request.Email;
+                userget.UserStatus = request.UserStatus;
+                userget.IdCard = request.IdCard;
+                userget.ImageURL = request.ImageURL;
+            }
+            if(request.Password != null)
+            {
+                var Token = await _userManager.GeneratePasswordResetTokenAsync(userget);
+                await _userManager.ResetPasswordAsync(userget, Token, request.Password);
+            }
+            var result = await _userManager.UpdateAsync(userget);
+            if (!result.Succeeded)
+            {
+                response.HasError = true;
+                response.Error = $"There was an error while trying to update the user{userget.UserName}";
+            }
+            return response;
+        }
 
-        //REGISTER USER
-        public async Task<ServiceResult> RegisterUserAsync(RegisterRequest request, string origin, string UserRoles)
+
+            //REGISTER USER
+            public async Task<ServiceResult> RegisterUserAsync(RegisterRequest request, string origin, string UserRoles)
         {
             ServiceResult response = new()
             {

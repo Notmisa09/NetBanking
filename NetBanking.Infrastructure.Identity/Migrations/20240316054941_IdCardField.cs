@@ -6,11 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NetBanking.Infrastructure.Identity.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:NetBanking.Infrastructure.Identity/Migrations/20240318222750_InitialMigration.cs
-    public partial class InitialMigration : Migration
-========
-    public partial class IdentityMigration : Migration
->>>>>>>> 1b7afd5920542fbc8f78e362885467cb8fae31b6:NetBanking.Infrastructure.Identity/Migrations/20240319062345_IdentityMigration.cs
+    public partial class IdCardField : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

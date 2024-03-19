@@ -4,7 +4,7 @@ namespace NetBanking.Core.Application.Interfaces.Repositories
 {
     public interface IGenericRepository<Entity> where Entity : class
     {
-        Task<Entity> SaveAsync(Entity entity);
+        Task<Entity> AddAsync(Entity entity);
         Task UpdateAsync(Entity entity, int Id);
         Task DeleteAsync(Entity entity);
         Task<List<Entity>> GetAllAsync();

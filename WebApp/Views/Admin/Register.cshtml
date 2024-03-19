@@ -6,6 +6,7 @@
 
 @{
     ViewData["Title"] = "Registro";
+    bool editMode = Model != null && Model.IdCard != null;
 }
 
 <div class="container-fluid">
@@ -52,7 +53,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="IdCard" class="form-label">Cedula:</label>
+                            <label asp-for="IdCard" class="form-label">IdCard:</label>
                             <input asp-for="IdCard" class="form-control" />
                             <span asp-validation-for="IdCard" class="text-danger"></span>
                         </div>
@@ -73,6 +74,14 @@
                             <label asp-for="UserName" class="form-label">Nombre de usuario: </label>
                             <input asp-for="UserName" class="form-control" />
                             <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Choose the user role</label>
+                            <select class="form-select">
+                                <option value="@RolesEnum.Client">Client</option>
+                                <option value="@RolesEnum.Admin">Admin</option>
+                            </select>
                         </div>
 
                         <div class="mb-3">
