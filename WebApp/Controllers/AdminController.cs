@@ -22,5 +22,9 @@ namespace WebApp.Controllers
         {
             return View(new SaveUserViewModel());
         }
+        public async Task<IActionResult> DashBoard()
+        {
+            return View(await _adminService.GetDashboard());
+        }
     }
 }

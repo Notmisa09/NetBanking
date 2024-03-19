@@ -31,7 +31,7 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.ImageURL</td>
+@*                                 <td>@item.ImageURL</td> *@
                                 <td>@item.FirstName</td>
                                 <td>@item.LastName</td>
                                 <td>@item.Email</td>
@@ -39,7 +39,7 @@
                                 <td>
                                     @foreach (var role in @item.Roles)
                                     {
-                                       @role[0]
+                                        @role[0]
                                     }
                                 </td>
                                 <td>
@@ -52,5 +52,5 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div>
 </div>
