@@ -12,8 +12,8 @@ using NetBanking.Infrastructure.Persistence.Contexts;
 namespace NetBanking.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20240318222750_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240318182250_ImageURLfield")]
+    partial class ImageURLfield
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -184,6 +184,9 @@ namespace NetBanking.Infrastructure.Identity.Migrations
 
                     b.Property<string>("IdCard")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageURL")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")

@@ -36,6 +36,10 @@ namespace NetBanking.Core.Application.Mappings
             CreateMap<ResetPasswordRequest, ResetPasswordViewModel>()
                 .ForMember(rp => rp.HasError, opt => opt.Ignore())
                 .ForMember(rp => rp.Error, opt => opt.Ignore())
+                .ReverseMap()
+                .ForMember(rp => rp.Token, src => src.MapFrom(x => x.Token));
+
+            CreateMap<DtoAccounts, UserViewModel>()
                 .ReverseMap();
             CreateMap<Beneficiary, BeneficiaryViewModel>()
                 .ReverseMap();

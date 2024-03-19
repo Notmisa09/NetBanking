@@ -5,6 +5,12 @@ using NetBanking.Core.Application.Enums;
 using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.ViewModels.Users;
+using NetBanking.Core.Application.Helpers;
+using NetBanking.Core.Application.Enums;
+using NetBanking.Core.Application.Dtos.Error;
+using System.Diagnostics;
+using WebApp.Models;
+using Org.BouncyCastle.Asn1.IsisMtt.X509;
 
 namespace WebApp.Controllers
 {
@@ -19,7 +25,6 @@ namespace WebApp.Controllers
 
 
         //INDEX
-
         public IActionResult Index()
         {
             return View(new LoginViewModel());
@@ -55,7 +60,6 @@ namespace WebApp.Controllers
         }
 
         //LOGOUT
-
         public async Task<IActionResult> LogOut()
         {
             await _userService.SingOutAsync();
@@ -136,5 +140,30 @@ namespace WebApp.Controllers
             }
             return RedirectToRoute(new { controller = "User", action = "Index" });
         }
+
+
+        //EDIT USER
+        public async Task<IActionResult> Edit(string UserId)
+        {
+            return View(await _userService.GetByIdAsync(UserId));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(SaveUserViewModel vm)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(vm);
+            };
+            ServiceResult response = new();
+            if (response.HasError)
+            {
+                vm.Error = response.Error;
+                vm.HasError = response.HasError;
+                return View(vm);
+            }
+            return View();
+        }
+
     }
 }

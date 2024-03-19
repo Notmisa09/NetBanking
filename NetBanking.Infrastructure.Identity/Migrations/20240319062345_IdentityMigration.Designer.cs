@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetBanking.Infrastructure.Persistence.Contexts;
 
@@ -11,9 +12,16 @@ using NetBanking.Infrastructure.Persistence.Contexts;
 namespace NetBanking.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    partial class IdentityContextModelSnapshot : ModelSnapshot
+<<<<<<<< HEAD:NetBanking.Infrastructure.Identity/Migrations/20240318222750_InitialMigration.Designer.cs
+    [Migration("20240318222750_InitialMigration")]
+    partial class InitialMigration
+========
+    [Migration("20240319062345_IdentityMigration")]
+    partial class IdentityMigration
+>>>>>>>> 1b7afd5920542fbc8f78e362885467cb8fae31b6:NetBanking.Infrastructure.Identity/Migrations/20240319062345_IdentityMigration.Designer.cs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,9 +189,6 @@ namespace NetBanking.Infrastructure.Identity.Migrations
 
                     b.Property<string>("IdCard")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageURL")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
