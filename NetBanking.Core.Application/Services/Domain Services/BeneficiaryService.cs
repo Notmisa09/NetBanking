@@ -1,16 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using NetBanking.Core.Application.Interfaces.Repositories;
-using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
 using NetBanking.Core.Application.ViewModels.Beneficiary;
-using NetBanking.Core.Application.ViewModels.Transaction;
 using NetBanking.Core.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetBanking.Core.Application.Services.Domain_Services
 {
@@ -25,6 +18,12 @@ namespace NetBanking.Core.Application.Services.Domain_Services
         {
             _mapper = mapper;
             _repository = repository;
+        }
+
+        public async Task<List<BeneficiaryViewModel>> GetByOwnerIdAsync(string Id)
+        {
+            var list = await _repository.FindAllAsync(x => x.AccountId == Id);
+            return _mapper.Map<List<BeneficiaryViewModel>>(list);
         }
     }
 }

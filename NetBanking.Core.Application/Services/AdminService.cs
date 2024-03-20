@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using NetBanking.Core.Application.Dtos.Account;
+using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.ViewModels.Dashboard;
@@ -11,18 +14,23 @@ namespace NetBanking.Core.Application.Services
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
         private readonly ITransactionRepository _trasactionRepository;
+        private readonly AuthenticationResponse _userViewModel;
 
         //Transacciones
         private readonly ICreditCardRepository _creditCardRepository;
         private readonly ILoanRepository _loanRepository;
         private readonly ISavingsAccountRepository _savingsAccountRepository;
 
+
         public AdminService(IAccountService accountService, IMapper mapper,
             ITransactionRepository trasactionRepository, ICreditCardRepository creditCardRepository,
-            ILoanRepository loanRepository, ISavingsAccountRepository savingsAccountRepository)
+            ILoanRepository loanRepository, ISavingsAccountRepository savingsAccountRepository,
+            IHttpContextAccessor httpContextAccessor)
         {
+
             _accountService = accountService;
             _mapper = mapper;
+            _userViewModel = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
             _creditCardRepository = creditCardRepository;
             _loanRepository = loanRepository;
             _savingsAccountRepository = savingsAccountRepository;
@@ -34,6 +42,31 @@ namespace NetBanking.Core.Application.Services
             var user = await _accountService.GetAllUsers();
             var userlist = _mapper.Map<List<UserViewModel>>(user);
             return userlist;
+        }
+
+        public async Task<string> ChangeAccountStatus(ActiveUserViewModel vm)
+        {
+            if (vm.IdUser == _userViewModel.Id)
+            {
+                return "No puedes desactivar tu propia cuenta.";
+            }
+            else
+            {
+                var user = await _accountService.GetByIdAsync(vm.IdUser);
+                if (user == null)
+                {
+                    user.IsActive = vm.ChangeStatus;
+
+                    var userVm = _mapper.Map<RegisterRequest>(user);
+                    await _accountService.UpdateUserAsync(userVm);
+
+                    return "Se ha cambiado el estado de la cuenta";
+                }
+                else
+                {
+                    return "No se encontro el usuario.";
+                }
+            }
         }
 
         public async Task<DashboardViewModel> GetDashboard()
