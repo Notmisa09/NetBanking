@@ -1,27 +1,24 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.ViewModels.Transaction;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
+using NetBanking.Core.Domain.Entities;
+using System.Linq.Expressions;
 
-namespace NetBanking.Core.Application.Services
+namespace NetBanking.Core.Application.Services.Domain_Services
 {
-    public class TransactionService : GenericService<TransactionViewModel , SaveTransactionViewModel, Transaction>, ITransactionService
-    { 
-        private readonly IGenericRepository<Transaction> _repository;
+    public class TransactionService : GenericService<SaveTransactionViewModel, TransactionViewModel, Transaction>, ITransactionService
+    {
         private readonly IMapper _mapper;
-
-        public TransactionService(IMapper mapper,
-            IGenericRepository<Transaction> repository) : base(mapper, repository)
+        private readonly ITransactionRepository _repository;
+        public TransactionService(ITransactionRepository repository, IMapper mapper) : base(repository, mapper)
         {
-            _mapper = mapper;
             _repository = repository;
+            _mapper = mapper;
+        }
+        public Task<List<TransactionViewModel>> FindAllAsync(Expression<Func<Domain.Entities.Transaction, bool>> filter)
+        {
+            throw new NotImplementedException();
         }
     }
 }

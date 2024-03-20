@@ -54,5 +54,9 @@ namespace WebApp.Controllers
             return RedirectToRoute(new { controller = "Admin", action = "Index" });
         }
 
+        public async Task<IActionResult> Remove(string Id)
+        {
+            return View("Remove", await _userService.GetByIdAsync(Id));
+        }
     }
 }

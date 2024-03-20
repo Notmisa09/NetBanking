@@ -5,6 +5,7 @@ namespace NetBanking.Core.Application.Interfaces.Services
 {
     public interface IAccountService
     {
+        Task Remove(DtoAccounts account);
         Task<List<DtoAccounts>> GetAllUsers();
         Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request);
         Task<ServiceResult> RegisterUserAsync(RegisterRequest request, string origin, string UserRoles);

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Services;
+using NetBanking.Core.Application.Services.Domain_Services;
 using System.Reflection;
 
 namespace NetBanking.Core.Application

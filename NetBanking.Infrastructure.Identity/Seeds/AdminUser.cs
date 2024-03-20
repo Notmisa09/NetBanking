@@ -15,7 +15,7 @@ namespace NetBanking.Infrastructure.Identity.Seeds
             adminuser.LastName = "user";
             adminuser.PhoneNumber = "829-123-9811";
             adminuser.IdCard = "91-1981-1919";
-            adminuser.UserStatus = true;
+            adminuser.IsActive = true;
             adminuser.EmailConfirmed = true;
             adminuser.PhoneNumberConfirmed = true;
 

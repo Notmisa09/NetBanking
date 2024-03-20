@@ -30,11 +30,11 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @if(user == null)
+                        @if (user == null)
                         {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Login</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Login</a>
+                            </li>
                         }
                         else if (user.Roles.Contains(RolesEnum.Admin.ToString()))
                         {
@@ -91,3 +91,9 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+<style>
+    body{ background: rgb(9,208,156);
+    background: linear-gradient(198deg, rgba(9,208,156,1) 38%, rgba(39,141,183,1) 67%);
+    }
+</style>
