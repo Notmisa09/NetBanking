@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using NetBanking.Core.Application.Enums;
 using NetBanking.Infrastructure.Identity.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetBanking.Infrastructure.Identity.Seeds
 {
@@ -20,7 +15,7 @@ namespace NetBanking.Infrastructure.Identity.Seeds
             clientuser.LastName = "User";
             clientuser.PhoneNumber = "829-123-9811";
             clientuser.IdCard = "91-1981-1919";
-            clientuser.IsActive = true;
+            clientuser.UserStatus = true;
             clientuser.EmailConfirmed = true;
             clientuser.PhoneNumberConfirmed = true;
 

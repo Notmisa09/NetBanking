@@ -12,8 +12,13 @@ using NetBanking.Infrastructure.Persistence.Contexts;
 namespace NetBanking.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
+<<<<<<<< HEAD:NetBanking.Infrastructure.Identity/Migrations/20240320020520_IdentityMig.Designer.cs
+    [Migration("20240320020520_IdentityMig")]
+    partial class IdentityMig
+========
     [Migration("20240320025105_InitialMigration")]
     partial class InitialMigration
+>>>>>>>> 4919ed969023bfcb3a33a3f3b70dd24bd41f6390:NetBanking.Infrastructure.Identity/Migrations/20240320025105_InitialMigration.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -229,6 +234,12 @@ namespace NetBanking.Infrastructure.Identity.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+<<<<<<<< HEAD:NetBanking.Infrastructure.Identity/Migrations/20240320020520_IdentityMig.Designer.cs
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+========
+>>>>>>>> 4919ed969023bfcb3a33a3f3b70dd24bd41f6390:NetBanking.Infrastructure.Identity/Migrations/20240320025105_InitialMigration.Designer.cs
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")

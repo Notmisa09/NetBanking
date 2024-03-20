@@ -67,10 +67,10 @@ namespace NetBanking.Core.Application.Services
             return await _accountService.ResetPasswordAsync(resetRequest);
         }
 
-        public async Task<UserViewModel> GetByIdAsync(string UserId)
+        public async Task<SaveUserViewModel> GetByIdAsync(string UserId)
         {
             var user = await _accountService.GetByIdAsync(UserId);
-            UserViewModel vm = _mapper.Map<UserViewModel>(user);
+            SaveUserViewModel vm = _mapper.Map<SaveUserViewModel>(user);
             return vm;
         }
     }

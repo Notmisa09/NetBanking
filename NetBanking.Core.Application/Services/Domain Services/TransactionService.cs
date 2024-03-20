@@ -4,17 +4,22 @@ using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.ViewModels.CreditCard;
 using NetBanking.Core.Application.ViewModels.Transaction;
-using NetBanking.Core.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Transactions;
+
 namespace NetBanking.Core.Application.Services
 {
-    public class TransactionService : GenericService<SaveTransactionViewModel, TransactionViewModel, Transaction>, ITransactionService
-    {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+    public class TransactionService : GenericService<TransactionViewModel , SaveTransactionViewModel, Transaction>, ITransactionService
+    { 
+        private readonly IGenericRepository<Transaction> _repository;
         private readonly IMapper _mapper;
-        private readonly ITransactionRepository _repository;
-        public TransactionService(
-            IMapper mapper, 
-            ITransactionRepository repository) : base(repository, mapper)
+
+        public TransactionService(IMapper mapper,
+            IGenericRepository<Transaction> repository) : base(mapper, repository)
         {
             _mapper = mapper;
             _repository = repository;

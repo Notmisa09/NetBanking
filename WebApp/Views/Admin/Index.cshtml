@@ -10,41 +10,42 @@
 </head>
 
 <div class="container-fluid">
-    <div class="col-10 offset-1">
+    <div>
 
         <a asp-controller="Admin" asp-action="Register " class="btn btn-primary">Register a new patient</a>
 
         <div class="card mt-4">
             <div class="card-body">
-                <table class="table table-bordered table-striped">
+                <table class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th>Photo</th>
-                            <th>Name</th>
+                            <th>First Name</th>
                             <th>Last Name</th>
+                            <th>Email</th>
                             <th>Identification</th>
-                            <th>Status</th>
+                            <th>Is Active</th>
                             <th>Roles</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
+                        @foreach (var user in Model)
                         {
                             <tr>
-@*                                 <td>@item.ImageURL</td> *@
-                                <td>@item.FirstName</td>
-                                <td>@item.LastName</td>
-                                <td>@item.Email</td>
-                                <td>@item.IsActive</td>
+                                <td>@user.FirstName</td>
+                                <td>@user.LastName</td>
+                                <td>@user.Email</td>
+                                <td>@user.</td>
+                                <td>@user.IsActive</td>
                                 <td>
-                                    @foreach (var role in @item.Roles)
+                                    @foreach (var role in @user.Roles)
                                     {
-                                        @role[0]
+                                       @role[0]
                                     }
                                 </td>
                                 <td>
-                                    <a asp-route-Id="@item.Id" asp-controller="Patient" asp-action="Edit"><i class="fa-solid fa-pencil fa-sm" style="color: #19191a;"></i></a>
-                                    <a asp-route-Id="@item.Id" asp-controller="Patient" asp-action="Delete"><i class="fa-regular fa-trash-can ms-2"></i></a>
+                                    <a asp-route-Id="@user.Id" asp-controller="Admin" asp-action="Edit"><i class="fa-solid fa-pencil fa-sm" style="color: #19191a;"></i></a>
+                                    <a asp-route-Id="@user.Id" asp-controller="User" asp-action="Delete"><i class="fa-regular fa-trash-can ms-2"></i></a>
                                 </td>
                             </tr>
                         }

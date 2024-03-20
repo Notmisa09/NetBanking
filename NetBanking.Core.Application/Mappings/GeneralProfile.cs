@@ -14,6 +14,13 @@ namespace NetBanking.Core.Application.Mappings
     {
         public GeneralProfile()
         {
+            CreateMap<DtoAccounts, SaveUserViewModel>()
+                .ForMember(a => a.Error, opt => opt.Ignore())
+                .ForMember(a => a.HasError, opt => opt.Ignore())
+                .ForMember(a => a.formFile, opt => opt.Ignore())
+                .ForMember(a => a.InitialAmount, opt => opt.Ignore())
+                .ReverseMap();
+
             CreateMap<AuthenticationResponse, SaveUserViewModel>()
                .ForMember(c => c.ConfirmPassword, opt => opt.Ignore())
                .ReverseMap()
@@ -25,7 +32,7 @@ namespace NetBanking.Core.Application.Mappings
                 .ForMember(r => r.Error, opt => opt.Ignore())
                 .ForMember(r => r.HasError, opt => opt.Ignore())
                 .ReverseMap()
-                .ForMember(r => r.UserStatus, opt => opt.Ignore());
+                .ForMember(r => r.IsActive, opt => opt.Ignore());
 
             CreateMap<AuthenticationRequest, LoginViewModel>()
                 .ForMember(a => a.Error , opt => opt.Ignore())
