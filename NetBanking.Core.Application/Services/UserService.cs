@@ -58,5 +58,17 @@ namespace NetBanking.Core.Application.Services
             ResetPasswordRequest resetRequest = _mapper.Map<ResetPasswordRequest>(vm);
             return await _accountService.ResetPasswordAsync(resetRequest);
         }
+
+        public Task<SaveUserViewModel> GetByIdAsync(string UserId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<SaveUserViewModel> GetByIdAsync(string UserId)
+        {
+            var user = await _accountService.GetByIdAsync(UserId);
+            SaveUserViewModel vm = _mapper.Map<SaveUserViewModel>(user);
+            return vm;
+        }
     }
 }
