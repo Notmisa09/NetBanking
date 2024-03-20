@@ -58,7 +58,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 userDto.ImageURL = user.ImageURL;
                 userDto.FirstName = user.FirstName;
                 userDto.LastName = user.LastName;
-                userDto.IsActive = user.UserStatus;
+                userDto.IsActive = user.IsActive;
                 userDto.Email = user.Email;
                 userDto.Id = user.Id;
                 userDto.Roles = _userManager.GetRolesAsync(user).Result.ToList();
