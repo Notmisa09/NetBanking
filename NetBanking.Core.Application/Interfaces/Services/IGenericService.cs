@@ -10,6 +10,5 @@
         Task Delete(int Id);
         Task<AddVm> AddAsync (AddVm vm);
         Task Update(AddVm vm , int Id);
-
     }
 }

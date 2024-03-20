@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NetBanking.Infrastructure.Identity.Migrations
 {
     /// <inheritdoc />
-    public partial class IdCardField : Migration
+    public partial class IdentityMig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,6 +39,7 @@ namespace NetBanking.Infrastructure.Identity.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdCard = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserStatus = table.Column<bool>(type: "bit", nullable: false),
+                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),

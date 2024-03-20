@@ -14,7 +14,7 @@ namespace NetBanking.Core.Application.Dtos.Account
         public string IdCard { get; set; }
         public IFormFile? formFile { get; set; }
         public string? ImageURL { get; set; }
-        public bool UserStatus { get; set; }
+        public bool IsActive { get; set; }
         public string PhoneNumber { get; set; }
     }
 }

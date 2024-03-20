@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.Dtos.Error;
+using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Infrastructure.Identity.Entities;
 using System.Text;
@@ -27,17 +28,19 @@ namespace NetBanking.Infrastructure.Identity.Services
         //GETBYID
         public async Task<DtoAccounts> GetByIdAsync(string UserId)
         {
-            var  user = await _userManager.FindByIdAsync(UserId);
+            var user = await _userManager.FindByIdAsync(UserId);
             DtoAccounts dtoaccount = new()
             {
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Id = user.Id,
+                UserName = user.UserName,
                 ImageURL = user.ImageURL,
+                IdCard = user.IdCard,
                 IsActive = user.UserStatus,
+                PhoneNumber = user.PhoneNumber,
             };
-
             return dtoaccount;
         }
 
@@ -90,7 +93,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 response.Error = $"Account not confirmed for {request.Email}";
                 return response;
             }
-            if(user.UserStatus == false)
+            if (user.UserStatus == false)
             {
                 response.HasError = true;
                 response.Error = $"Your account user {request.Email} is not active please get in contact with a manager";
@@ -126,14 +129,22 @@ namespace NetBanking.Infrastructure.Identity.Services
                 userget.UserName = request.FirstName;
                 userget.LastName = request.LastName;
                 userget.Email = request.Email;
-                userget.UserStatus = request.UserStatus;
+                userget.UserStatus = request.IsActive;
                 userget.IdCard = request.IdCard;
                 userget.ImageURL = request.ImageURL;
             }
-            if(request.Password != null)
+            if (request.Password != null)
             {
                 var Token = await _userManager.GeneratePasswordResetTokenAsync(userget);
                 await _userManager.ResetPasswordAsync(userget, Token, request.Password);
+            }
+            if(request.ImageURL == null)
+            {
+                userget.ImageURL = UploadImage.UploadFile(request.formFile, request.Id, "User");
+            }
+            else
+            {
+                userget.ImageURL = UploadImage.UploadFile(request.formFile, request.Id, "User", true, request.ImageURL);
             }
             var result = await _userManager.UpdateAsync(userget);
             if (!result.Succeeded)
@@ -145,8 +156,9 @@ namespace NetBanking.Infrastructure.Identity.Services
         }
 
 
-            //REGISTER USER
-            public async Task<ServiceResult> RegisterUserAsync(RegisterRequest request, string origin, string UserRoles)
+        //REGISTER USER
+
+        public async Task<ServiceResult> RegisterUserAsync(RegisterRequest request, string origin, string UserRoles)
         {
             ServiceResult response = new()
             {
@@ -175,7 +187,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 UserName = request.UserName,
-                UserStatus = request.UserStatus,
+                UserStatus = request.IsActive,
                 IdCard = request.IdCard,
                 ImageURL = request.ImageURL,
                 PhoneNumber = request.PhoneNumber

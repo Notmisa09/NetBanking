@@ -12,7 +12,7 @@ namespace NetBanking.Core.Application.Interfaces.Services
         Task<string> ConfirmEmailAsync(string UserId, string token);
         Task<ServiceResult> ResetPasswordAsync(ResetPasswordViewModel vm);
         Task<ServiceResult> ForgotPasswordAsync(ForgorPasswordViewModel vm, string origin);
-        Task<UserViewModel> GetByIdAsync(string UserId);
+        Task<SaveUserViewModel> GetByIdAsync(string UserId);
         Task<ServiceResult> UpdateAsync(SaveUserViewModel vm);
     }
 }

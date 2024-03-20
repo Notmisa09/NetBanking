@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetBanking.Core.Application.Interfaces.Repositories;
-using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Infrastructure.Persistence.Contexts;
 using NetBanking.Infrastructure.Persistence.Interceptor;
 using NetBanking.Infrastructure.Persistence.Repositories;

@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NetBanking.Core.Application.Helpers
+﻿namespace NetBanking.Core.Application.Helpers
 {
     public class CodeGenerator
     {
         public static string GenerateCode(string ProductCode, int ProductType)
         {
+
             Random rand = new Random();
             List<int> NumsGenerated = new List<int>();
 
@@ -24,7 +18,6 @@ namespace NetBanking.Core.Application.Helpers
             {
                 ProductCode += nums;
             }
-
             return ProductCode;
         }
     }
