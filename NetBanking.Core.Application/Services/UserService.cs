@@ -65,5 +65,12 @@ namespace NetBanking.Core.Application.Services
             SaveUserViewModel vm = _mapper.Map<SaveUserViewModel>(user);
             return vm;
         }
+
+        public async Task Remove(string Id)
+        {
+            var user = await GetByIdAsync(Id);
+            var account = _mapper.Map<DtoAccounts>(user);
+            await _accountService.Remove(account);
+        }
     }
 }

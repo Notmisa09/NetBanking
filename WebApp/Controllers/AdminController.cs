@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NetBanking.Core.Application.Dtos.Error;
 using NetBanking.Core.Application.Interfaces.Services;
-using NetBanking.Core.Application.Services;
 using NetBanking.Core.Application.ViewModels.Users;
-using Org.BouncyCastle.Asn1.IsisMtt.X509;
 
 namespace WebApp.Controllers
 {
@@ -18,17 +16,23 @@ namespace WebApp.Controllers
             _adminService = adminService;
             _userService = userService;
         }
+
+        //INDEX
         public async Task<IActionResult> Index()
         {
             return View(await _adminService.GetAllAsync());
         }
-        public IActionResult Register()
-        {
-            return View(new SaveUserViewModel());
-        }
+
+        //DASHBORAD
         public async Task<IActionResult> DashBoard()
         {
             return View(await _adminService.GetDashboard());
+        }
+
+        //REGISTER USER
+        public IActionResult Register()
+        {
+            return View(new SaveUserViewModel());
         }
 
         //EDIT USER
@@ -54,9 +58,17 @@ namespace WebApp.Controllers
             return RedirectToRoute(new { controller = "Admin", action = "Index" });
         }
 
+        //REMOVE USERS
         public async Task<IActionResult> Remove(string Id)
         {
             return View("Remove", await _userService.GetByIdAsync(Id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveTrue(string Id)
+        {
+            await _userService.Remove(Id);
+            return RedirectToAction("Index");
         }
     }
 }

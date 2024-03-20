@@ -21,4 +21,8 @@
     <ProjectReference Include="..\NetBanking.Core.Domain\NetBanking.Core.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\Base\" />
+  </ItemGroup>
+
 </Project>

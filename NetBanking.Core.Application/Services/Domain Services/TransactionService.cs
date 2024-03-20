@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services;
-using NetBanking.Core.Application.ViewModels.CreditCard;
 using NetBanking.Core.Application.ViewModels.Transaction;
 using NetBanking.Core.Domain.Entities;
 using System.Linq.Expressions;
