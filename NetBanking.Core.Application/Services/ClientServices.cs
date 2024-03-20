@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using NetBanking.Core.Application.Dtos.Account;
-using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services;
-using NetBanking.Core.Application.ViewModels.Users;
 using NetBanking.Core.Application.Helpers;
 using Microsoft.AspNetCore.Http;
 using NetBanking.Core.Application.ViewModels.Client;
@@ -121,21 +119,21 @@ namespace NetBanking.Core.Application.Services
         public async Task<BaseProduct> GetProductByIdAsync(string Id)
         {
             BaseProduct product = null;
-            //Asumiendo que las targetas de credito comienzan con 3 digitos entre 100 y 299
-            if (100 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) < 300)
-            {
-                product = await _creditCardService.GetByIdAsync(Id);
-            }
-            //Asumiendo que las cuentas de ahorro comienzan con 3 digitos entre 300 y 599
-            else if (300 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
-            {
-                product = _savingsAccountService.GetByIdAsync(Id);
-            }
-            //Asumiendo que los préstamos comienzan con 3 digitos entre 600 y 999
-            else if (300 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
-            {
-                product = _loanService.GetByIdAsync(Id);
-            }
+            ////Asumiendo que las targetas de credito comienzan con 3 digitos entre 100 y 299
+            //if (100 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) < 300)
+            //{
+            //    product = await _creditCardService.GetByIdAsync(Id);
+            //}
+            ////Asumiendo que las cuentas de ahorro comienzan con 3 digitos entre 300 y 599
+            //else if (300 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
+            //{
+            //    product = _savingsAccountService.GetByIdAsync(Id);
+            //}
+            ////Asumiendo que los préstamos comienzan con 3 digitos entre 600 y 999
+            //else if (300 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
+            //{
+            //    product = _loanService.GetByIdAsync(Id);
+            //}
             return product;
         }
 
