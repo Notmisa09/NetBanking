@@ -35,7 +35,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 LastName = user.LastName,
                 Id = user.Id,
                 ImageURL = user.ImageURL,
-                IsActive = user.UserStatus,
+                IsActive = user.IsActive,
             };
 
             return dtoaccount;
@@ -55,7 +55,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 userDto.ImageURL = user.ImageURL;
                 userDto.FirstName = user.FirstName;
                 userDto.LastName = user.LastName;
-                userDto.IsActive = user.UserStatus;
+                userDto.IsActive = user.IsActive;
                 userDto.Email = user.Email;
                 userDto.Id = user.Id;
                 userDto.Roles = _userManager.GetRolesAsync(user).Result.ToList();
@@ -90,7 +90,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 response.Error = $"Account not confirmed for {request.Email}";
                 return response;
             }
-            if(user.UserStatus == false)
+            if(user.IsActive == false)
             {
                 response.HasError = true;
                 response.Error = $"Your account user {request.Email} is not active please get in contact with a manager";
@@ -126,7 +126,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 userget.UserName = request.FirstName;
                 userget.LastName = request.LastName;
                 userget.Email = request.Email;
-                userget.UserStatus = request.UserStatus;
+                userget.IsActive = request.UserStatus;
                 userget.IdCard = request.IdCard;
                 userget.ImageURL = request.ImageURL;
             }
@@ -175,7 +175,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 UserName = request.UserName,
-                UserStatus = request.UserStatus,
+                IsActive = request.UserStatus,
                 IdCard = request.IdCard,
                 ImageURL = request.ImageURL,
                 PhoneNumber = request.PhoneNumber

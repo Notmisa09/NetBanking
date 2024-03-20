@@ -12,7 +12,7 @@ using NetBanking.Infrastructure.Persistence.Contexts;
 namespace NetBanking.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20240320023409_InitialMigration")]
+    [Migration("20240320025105_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -189,6 +189,9 @@ namespace NetBanking.Infrastructure.Identity.Migrations
                     b.Property<string>("ImageURL")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -225,9 +228,6 @@ namespace NetBanking.Infrastructure.Identity.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("UserStatus")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

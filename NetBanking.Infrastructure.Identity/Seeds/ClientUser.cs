@@ -20,11 +20,11 @@ namespace NetBanking.Infrastructure.Identity.Seeds
             clientuser.LastName = "User";
             clientuser.PhoneNumber = "829-123-9811";
             clientuser.IdCard = "91-1981-1919";
-            clientuser.UserStatus = false;
+            clientuser.IsActive = true;
             clientuser.EmailConfirmed = true;
             clientuser.PhoneNumberConfirmed = true;
 
-            if (userManager.Users.All(u => u.Id == clientuser.Id))
+            if (userManager.Users.All(u => u.Id != clientuser.Id))
             {
                 var user = await userManager.FindByEmailAsync(clientuser.Email);
                 if (user == null)
