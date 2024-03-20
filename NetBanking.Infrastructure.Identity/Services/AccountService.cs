@@ -38,7 +38,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 UserName = user.UserName,
                 ImageURL = user.ImageURL,
                 IdCard = user.IdCard,
-                IsActive = user.UserStatus,
+                IsActive = user.IsActive,
                 PhoneNumber = user.PhoneNumber,
             };
             return dtoaccount;
@@ -93,7 +93,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 response.Error = $"Account not confirmed for {request.Email}";
                 return response;
             }
-            if (user.UserStatus == false)
+            if (user.IsActive == false)
             {
                 response.HasError = true;
                 response.Error = $"Your account user {request.Email} is not active please get in contact with a manager";
@@ -118,7 +118,7 @@ namespace NetBanking.Infrastructure.Identity.Services
 
 
         //EDITUSER
-        public async Task<ServiceResult> EditUserAsync(RegisterRequest request)
+        public async Task<ServiceResult> UpdateUserAsync(RegisterRequest request)
         {
             ServiceResult response = new();
             var userget = await _userManager.FindByEmailAsync(request.Id);
@@ -129,7 +129,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 userget.UserName = request.FirstName;
                 userget.LastName = request.LastName;
                 userget.Email = request.Email;
-                userget.UserStatus = request.IsActive;
+                userget.IsActive = request.IsActive;
                 userget.IdCard = request.IdCard;
                 userget.ImageURL = request.ImageURL;
             }
@@ -187,7 +187,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 UserName = request.UserName,
-                UserStatus = request.IsActive,
+                IsActive = request.IsActive,
                 IdCard = request.IdCard,
                 ImageURL = request.ImageURL,
                 PhoneNumber = request.PhoneNumber
