@@ -7,9 +7,9 @@
 
 <div class="container-fluid">
     <div class="col-4 offset-4">
-        <div class="card border-1 border-dark">
+        <div class="card border-2 shadow-sm">
             <div class="card-header">
-                <h4 class="text-center fw-bold">Log in</h4>
+                <h2 class="text-center mb-4">~ Log in ~</h2>
             </div>
             <div class="card-body">
                 @if (Model.HasError)
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     <div>
-                        <button type="submit" class="btn btn-info  mt-2 col-4 offset-4 ">Log in</button>
+                        <button type="submit" class="btn btn-outline-info mt-2 col-4 offset-4 ">Log in</button>
                     </div>
                     <hr />
                     <a asp-controller="User" asp-action="ForgotPassword" class="mt-4">You forgot your password?</a>
@@ -43,7 +43,7 @@
     </div>
 
     <div class="col-4 offset-4 mt-3">
-        <div class="card border-1 border-dark">
+        <div class="card border-2 shadow-sm">
             <div class="card-body">
                 <p>You dont have an account yet?</p>
                 <a asp-controller="User" asp-action="Register" class="mt-4">Sign up</a>
@@ -52,3 +52,9 @@
     </div>
 
 </div>
+
+<style>
+    .body {
+        font-family: "Josefin Sans", sans-serif;
+    }
+</style>

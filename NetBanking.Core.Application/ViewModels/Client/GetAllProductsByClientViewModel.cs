@@ -1,11 +1,6 @@
 ﻿using NetBanking.Core.Application.ViewModels.CreditCard;
 using NetBanking.Core.Application.ViewModels.Loan;
 using NetBanking.Core.Application.ViewModels.SavingsAccount;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetBanking.Core.Application.ViewModels.Client
 {

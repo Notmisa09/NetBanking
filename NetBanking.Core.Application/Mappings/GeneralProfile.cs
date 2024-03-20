@@ -14,11 +14,12 @@ namespace NetBanking.Core.Application.Mappings
     {
         public GeneralProfile()
         {
+            
             CreateMap<DtoAccounts, SaveUserViewModel>()
                 .ForMember(a => a.Error, opt => opt.Ignore())
                 .ForMember(a => a.HasError, opt => opt.Ignore())
                 .ForMember(a => a.formFile, opt => opt.Ignore())
-                .ForMember(a => a.InitialAmount, opt => opt.Ignore())
+                //.ForMember(a => a.InitialAmount, opt => opt.Ignore())
                 .ReverseMap();
 
             CreateMap<AuthenticationResponse, SaveUserViewModel>()
