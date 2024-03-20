@@ -9,6 +9,10 @@ using NetBanking.Core.Application.ViewModels.Client;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
 using NetBanking.Core.Application.ViewModels.Beneficiary;
 using NetBanking.Core.Application.ViewModels.Transaction;
+using NetBanking.Core.Domain.Entities;
+using NetBanking.Core.Application.ViewModels.CreditCard;
+using NetBanking.Core.Application.ViewModels.SavingsAccount;
+using NetBanking.Core.Application.ViewModels.Loan;
 
 namespace NetBanking.Core.Application.Services
 {
@@ -67,23 +71,73 @@ namespace NetBanking.Core.Application.Services
         {
             if(svm.Type == Domain.Enums.TransactionType.ExpressPay)
             {
-                svm.EmissorProductId = "1";
+                var emissorProduct = await GetProductByIdAsync(svm.EmissorProductId);
+                var receiverProduct = await GetProductByIdAsync(svm.ReceiverProductId);
+                if (emissorProduct != null && receiverProduct != null)
+                {
+                    emissorProduct.Amount -= svm.Cantity;
+                    receiverProduct.Amount += svm.Cantity;
+
+                    #region Determina a donde enviar la actualización del emissorProduct
+                    //Asumiendo que las targetas de credito comienzan con 3 digitos entre 100 y 299
+                    if (100 >= Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) && Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) < 300)
+                    {
+                        await _creditCardService.UpdateAsync(_mapper.Map<SaveCreditCardViewModel>(emissorProduct), emissorProduct.Id);
+                    }
+                    //Asumiendo que las cuentas de ahorro comienzan con 3 digitos entre 300 y 599
+                    else if (300 >= Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) && Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) <= 599)
+                    {
+                        await _savingsAccountService.UpdateAsync(_mapper.Map<SaveSavingsAccountViewModel>(emissorProduct), emissorProduct.Id);
+                    }
+                    //Asumiendo que los préstamos comienzan con 3 digitos entre 600 y 999
+                    else if (300 >= Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) && Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) <= 599)
+                    {
+                        await _loanService.UpdateAsync(_mapper.Map<SaveLoanViewModel>(emissorProduct), emissorProduct.Id);
+                    }
+                    #endregion
+
+                    #region Determina a donde enviar la actualización del receiverProduct
+                    //Asumiendo que las targetas de credito comienzan con 3 digitos entre 100 y 299
+                    if (100 >= Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) && Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) < 300)
+                    {
+                        await _creditCardService.UpdateAsync(_mapper.Map<SaveCreditCardViewModel>(receiverProduct), receiverProduct.Id);
+                    }
+                    //Asumiendo que las cuentas de ahorro comienzan con 3 digitos entre 300 y 599
+                    else if (300 >= Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) && Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) <= 599)
+                    {
+                        await _savingsAccountService.UpdateAsync(_mapper.Map<SaveSavingsAccountViewModel>(receiverProduct), receiverProduct.Id);
+                    }
+                    //Asumiendo que los préstamos comienzan con 3 digitos entre 600 y 999
+                    else if (300 >= Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) && Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) <= 599)
+                    {
+                        await _loanService.UpdateAsync(_mapper.Map<SaveLoanViewModel>(receiverProduct), receiverProduct.Id);
+                    }
+                    #endregion
+                }
             }
             await _transactionService.AddAsync(svm);
         }
 
-        /*public async Task<dynamic> GetProductByIdAsync(string Id)
+        public async Task<BaseProduct> GetProductByIdAsync(string Id)
         {
+            BaseProduct product = null;
             //Asumiendo que las targetas de credito comienzan con 3 digitos entre 100 y 299
-            if (100 >= Convert.ToInt32(Id.Substring(0,3)) && Convert.ToInt32(Id.Substring(0, 3)) <300 )
+            if (100 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) < 300)
             {
-                return _creditCardService.GetByIdAsync(Id);
+                product = await _creditCardService.GetByIdAsync(Id);
             }
-            else if(300 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
+            //Asumiendo que las cuentas de ahorro comienzan con 3 digitos entre 300 y 599
+            else if (300 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
             {
-                return _creditCardService.GetByIdAsync(Id);
+                product = _savingsAccountService.GetByIdAsync(Id);
             }
-        }*/
+            //Asumiendo que los préstamos comienzan con 3 digitos entre 600 y 999
+            else if (300 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
+            {
+                product = _loanService.GetByIdAsync(Id);
+            }
+            return product;
+        }
 
         //Falta hacer la interfaz
     }
