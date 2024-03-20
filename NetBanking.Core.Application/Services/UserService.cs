@@ -59,11 +59,6 @@ namespace NetBanking.Core.Application.Services
             return await _accountService.ResetPasswordAsync(resetRequest);
         }
 
-        public Task<SaveUserViewModel> GetByIdAsync(string UserId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<SaveUserViewModel> GetByIdAsync(string UserId)
         {
             var user = await _accountService.GetByIdAsync(UserId);
