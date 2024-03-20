@@ -9,11 +9,10 @@ namespace NetBanking.Core.Application.Interfaces.Services
     {
         public Task<SaveViewModel> AddAsync(SaveViewModel vm);
         public Task<List<ViewModel>> GetAllAsync();
-        public Task<ViewModel> GetByIdAsync(int Id);
-        public Task<SaveViewModel> GetByIdSaveViewModelAsync(int Id);
-        public Task UpdateAsync(SaveViewModel vm, int Id);
-
+        public Task<ViewModel> GetByIdAsync(string Id);
+        public Task<SaveViewModel> GetByIdSaveViewModelAsync(string Id);
+        public Task UpdateAsync(SaveViewModel vm, string Id);
         public Task<List<ViewModel>> FindAllAsync(Expression<Func<Entity, bool>> filter);
-        //public Task Delete(int Id);
+        public Task Delete(string Id);
     }
 }

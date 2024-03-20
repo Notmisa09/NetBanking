@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
+using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.ViewModels.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NetBanking.Core.Application.Helpers;
+using Microsoft.AspNetCore.Http;
+using NetBanking.Core.Application.ViewModels.Client;
+using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
+using NetBanking.Core.Application.ViewModels.Beneficiary;
+using NetBanking.Core.Application.ViewModels.Transaction;
 
 namespace NetBanking.Core.Application.Services
 {
@@ -14,26 +16,75 @@ namespace NetBanking.Core.Application.Services
     {
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
-        private readonly ITransactionRepository _trasactionRepository;
-        private readonly ICreditCardRepository _creditCardRepository;
-        private readonly ILoanRepository _loanRepository;
-        private readonly ISavingsAccountRepository _savingsAccountRepository;
-        public ClientServices(IAccountService accountService, IMapper mapper, ITransactionRepository trasactionRepository, ICreditCardRepository creditCardRepository, ILoanRepository loanRepository, ISavingsAccountRepository savingsAccountRepository)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ISavingsAccountService _savingsAccountService;
+        private readonly ICreditCardService _creditCardService;
+        private readonly ILoanService _loanService;
+        private readonly IBeneficiaryService _beneficiaryService;
+        private readonly ITransactionService _transactionService;
+
+        public ClientServices(
+            IAccountService accountService, 
+            IMapper mapper, 
+            IHttpContextAccessor httpContextAccessor,
+            ISavingsAccountService savingsAccountService,
+            ICreditCardService creditCardService,
+            ILoanService loanService,
+            IBeneficiaryService beneficiaryService,
+            ITransactionService transactionService
+            )
         {
             _accountService = accountService;
+            _beneficiaryService = beneficiaryService;
+            _creditCardService = creditCardService;
+            _transactionService = transactionService;
             _mapper = mapper;
-            _trasactionRepository = trasactionRepository;
-            _creditCardRepository = creditCardRepository;
-            _loanRepository = loanRepository;
-            _savingsAccountRepository = savingsAccountRepository;
+            _httpContextAccessor = httpContextAccessor;
+            _loanService = loanService;
+            _savingsAccountService = savingsAccountService;
         }
-
-        public async Task<List<UserViewModel>> GetAllClientProducts()
+        
+        public async Task<GetAllProductsByClientViewModel> GetAllProductsByClientAsync()
         {
-            var user = await _accountService.GetAllUsers();
-            var userlist = _mapper.Map<List<UserViewModel>>(user);
-            return userlist;
+            var userId = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user").Id;
+            GetAllProductsByClientViewModel vm = new()
+            {
+                SavingsAccounts = await _savingsAccountService.GetByOwnerIdAsync(userId),
+                CreditCards = await _creditCardService.GetByOwnerIdAsync(userId),
+                Loans = await _loanService.GetByOwnerIdAsync(userId)
+            };
+            
+            return vm;
         }
 
+        public async Task<List<BeneficiaryViewModel>> GetAllBeneficiariesByClientAsync()
+        {
+            var userId = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user").Id;
+            return await _beneficiaryService.GetByOwnerIdAsync(userId);
+        }
+
+        public async Task RealizeTransaction(SaveTransactionViewModel svm)
+        {
+            if(svm.Type == Domain.Enums.TransactionType.ExpressPay)
+            {
+                svm.EmissorProductId = "1";
+            }
+            await _transactionService.AddAsync(svm);
+        }
+
+        /*public async Task<dynamic> GetProductByIdAsync(string Id)
+        {
+            //Asumiendo que las targetas de credito comienzan con 3 digitos entre 100 y 299
+            if (100 >= Convert.ToInt32(Id.Substring(0,3)) && Convert.ToInt32(Id.Substring(0, 3)) <300 )
+            {
+                return _creditCardService.GetByIdAsync(Id);
+            }
+            else if(300 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
+            {
+                return _creditCardService.GetByIdAsync(Id);
+            }
+        }*/
+
+        //Falta hacer la interfaz
     }
 }

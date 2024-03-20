@@ -11,5 +11,6 @@ namespace NetBanking.Core.Application.Interfaces.Services.Domain_Services
 {
     public interface ICreditCardService : IGenericService<SaveCreditCardViewModel, CreditCardViewModel, CreditCard>
     {
+        public Task<List<CreditCardViewModel>> GetByOwnerIdAsync(string Id);
     }
 }

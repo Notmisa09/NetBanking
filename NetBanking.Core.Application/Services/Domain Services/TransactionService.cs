@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services;
+using NetBanking.Core.Application.ViewModels.CreditCard;
 using NetBanking.Core.Application.ViewModels.Transaction;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,12 @@ namespace NetBanking.Core.Application.Services
         {
             _mapper = mapper;
             _repository = repository;
+        }
+
+        public async Task<List<TransactionViewModel>> GetByOwnerIdAsync(string Id)
+        {
+            var list = await _repository.FindAllAsync(x => x.EmissorProductId == Id);
+            return _mapper.Map<List<TransactionViewModel>>(list);
         }
     }
 }

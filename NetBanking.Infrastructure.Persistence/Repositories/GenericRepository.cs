@@ -47,7 +47,7 @@ namespace NetBanking.Infrastructure.Persistence.Repositories
             return await query.ToListAsync();
         }
 
-        public virtual async Task<Entity> GeEntityByIDAsync(int Id)
+        public virtual async Task<Entity> GeEntityByIDAsync(string Id)
         {
             return await _entities.FindAsync(Id);
         }
@@ -59,7 +59,7 @@ namespace NetBanking.Infrastructure.Persistence.Repositories
             return entity;
         }
 
-        public virtual async Task UpdateAsync(Entity entity, int Id)
+        public virtual async Task UpdateAsync(Entity entity, string Id)
         {
             var entry = await _context.Set<Entity>().FindAsync(Id);
             _context.Entry(entry).CurrentValues.SetValues(entity);

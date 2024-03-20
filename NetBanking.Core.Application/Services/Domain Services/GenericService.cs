@@ -36,26 +36,24 @@ namespace NetBanking.Core.Application.Services
             return newList;
         }
 
-        public virtual async Task<ViewModel> GetByIdAsync(int Id)
+        public virtual async Task<ViewModel> GetByIdAsync(string Id)
         {
             var entity = await _repository.GeEntityByIDAsync(Id);
             return _mapper.Map<ViewModel>(entity);
         }
 
-        public virtual async Task UpdateAsync(SaveViewModel vm, int Id)
+        public virtual async Task UpdateAsync(SaveViewModel vm, string Id)
         {
             Entity entity = _mapper.Map<Entity>(vm);
             await _repository.UpdateAsync(entity, Id);
         }
-
-        //ESTE MÉTODO NO VA AQUÍ
-        public virtual async Task Delete(int Id)
+        public virtual async Task Delete(string Id)
         {
             var entity = await _repository.GeEntityByIDAsync(Id);
             await _repository.DeleteAsync(entity);
         }
 
-        public async Task<SaveViewModel> GetByIdSaveViewModelAsync(int Id)
+        public async Task<SaveViewModel> GetByIdSaveViewModelAsync(string Id)
         {
             var entity = await _repository.GeEntityByIDAsync(Id);
             return _mapper.Map<SaveViewModel>(entity);

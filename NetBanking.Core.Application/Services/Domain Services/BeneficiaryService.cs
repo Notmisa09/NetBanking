@@ -19,5 +19,11 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             _mapper = mapper;
             _repository = repository;
         }
+
+        public async Task<List<BeneficiaryViewModel>> GetByOwnerIdAsync(string Id)
+        {
+            var list = await _repository.FindAllAsync(x => x.AccountId == Id);
+            return _mapper.Map<List<BeneficiaryViewModel>>(list);
+        }
     }
 }
