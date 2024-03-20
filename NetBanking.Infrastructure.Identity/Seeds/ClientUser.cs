@@ -24,7 +24,7 @@ namespace NetBanking.Infrastructure.Identity.Seeds
             clientuser.EmailConfirmed = true;
             clientuser.PhoneNumberConfirmed = true;
 
-            if (userManager.Users.All(u => u.Id != clientuser.Id))
+            if (userManager.Users.All(u => u.Id == clientuser.Id))
             {
                 var user = await userManager.FindByEmailAsync(clientuser.Email);
                 if (user == null)

@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
 using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.ViewModels.Beneficiary;
+using NetBanking.Core.Application.ViewModels.CreditCard;
+using NetBanking.Core.Application.ViewModels.Loan;
+using NetBanking.Core.Application.ViewModels.SavingsAccount;
+using NetBanking.Core.Application.ViewModels.Transaction;
 using NetBanking.Core.Application.ViewModels.Users;
 using NetBanking.Core.Domain.Entities;
 
@@ -41,7 +45,31 @@ namespace NetBanking.Core.Application.Mappings
 
             CreateMap<DtoAccounts, UserViewModel>()
                 .ReverseMap();
+            
+            
             CreateMap<Beneficiary, BeneficiaryViewModel>()
+                .ReverseMap();
+            CreateMap<Beneficiary, SaveBeneficiaryViewModel>()
+                .ReverseMap(); 
+
+            CreateMap<Loan, LoanViewModel>()
+               .ReverseMap();
+            CreateMap<Loan, SaveLoanViewModel>()
+               .ReverseMap();
+
+            CreateMap<CreditCard, CreditCardViewModel>()
+               .ReverseMap();
+            CreateMap<CreditCard, SaveCreditCardViewModel>()
+               .ReverseMap();
+
+            CreateMap<SavingsAccount, SavingsAccountViewModel>()
+                .ReverseMap();
+            CreateMap<SavingsAccount, SaveSavingsAccountViewModel>()
+               .ReverseMap();
+
+            CreateMap<Transaction, TransactionViewModel>()
+                .ReverseMap();
+            CreateMap<Transaction, SaveTransactionViewModel>()
                 .ReverseMap();
         }
     }
