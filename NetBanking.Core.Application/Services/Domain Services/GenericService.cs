@@ -47,8 +47,6 @@ namespace NetBanking.Core.Application.Services
             Entity entity = _mapper.Map<Entity>(vm);
             await _repository.UpdateAsync(entity, Id);
         }
-
-        //ESTE MÉTODO NO VA AQUÍ
         public virtual async Task Delete(int Id)
         {
             var entity = await _repository.GeEntityByIDAsync(Id);

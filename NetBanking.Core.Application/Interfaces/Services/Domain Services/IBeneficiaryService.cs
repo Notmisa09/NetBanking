@@ -11,5 +11,6 @@ namespace NetBanking.Core.Application.Interfaces.Services.Domain_Services
 {
     public interface IBeneficiaryService : IGenericService<SaveBeneficiaryViewModel, BeneficiaryViewModel, Beneficiary>
     {
+        public Task<List<BeneficiaryViewModel>> GetByOwnerIdAsync(string Id);
     }
 }

@@ -1,4 +1,5 @@
-﻿using NetBanking.Core.Application.ViewModels.CreditCard;
+﻿using NetBanking.Core.Application.ViewModels.Beneficiary;
+using NetBanking.Core.Application.ViewModels.CreditCard;
 using NetBanking.Core.Application.ViewModels.Loan;
 using NetBanking.Core.Domain.Entities;
 using System;
@@ -11,5 +12,6 @@ namespace NetBanking.Core.Application.Interfaces.Services.Domain_Services
 {
     public interface ILoanService : IGenericService<SaveLoanViewModel, LoanViewModel, Loan>
     {
+        public Task<List<LoanViewModel>> GetByOwnerIdAsync(string Id);
     }
 }

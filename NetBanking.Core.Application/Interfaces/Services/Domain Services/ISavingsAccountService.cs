@@ -1,4 +1,5 @@
-﻿using NetBanking.Core.Application.ViewModels.SavingsAccount;
+﻿using NetBanking.Core.Application.ViewModels.Loan;
+using NetBanking.Core.Application.ViewModels.SavingsAccount;
 using NetBanking.Core.Application.ViewModels.Transaction;
 using NetBanking.Core.Domain.Entities;
 using System;
@@ -11,5 +12,6 @@ namespace NetBanking.Core.Application.Interfaces.Services.Domain_Services
 {
     public interface ISavingsAccountService : IGenericService<SaveSavingsAccountViewModel, SavingsAccountViewModel, SavingsAccount>
     {
+        public Task<List<SavingsAccountViewModel>> GetByOwnerIdAsync(string Id);
     }
 }
