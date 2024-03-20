@@ -5,6 +5,8 @@ namespace NetBanking.Core.Application.ViewModels.Users
 {
     public class SaveUserViewModel
     {
+        public string Id { get; set; }
+
         [Required(ErrorMessage = "Please enter a IdCard for your user")]
         public  string IdCard { get; set; }
 

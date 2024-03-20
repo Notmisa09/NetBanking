@@ -14,6 +14,7 @@ namespace NetBanking.Core.Application.Mappings
     {
         public GeneralProfile()
         {
+            
             CreateMap<DtoAccounts, SaveUserViewModel>()
                 .ForMember(a => a.Error, opt => opt.Ignore())
                 .ForMember(a => a.HasError, opt => opt.Ignore())
