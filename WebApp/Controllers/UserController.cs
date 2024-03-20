@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NetBanking.Core.Application.Dtos.Account;
+using NetBanking.Core.Application.Dtos.Error;
+using NetBanking.Core.Application.Enums;
+using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.ViewModels.Users;
-using NetBanking.Core.Application.Helpers;
-using NetBanking.Core.Application.Enums;
-using NetBanking.Core.Application.Dtos.Error;
 
 namespace WebApp.Controllers
 {
@@ -19,7 +19,6 @@ namespace WebApp.Controllers
 
 
         //INDEX
-
         public IActionResult Index()
         {
             return View(new LoginViewModel());
@@ -55,7 +54,6 @@ namespace WebApp.Controllers
         }
 
         //LOGOUT
-
         public async Task<IActionResult> LogOut()
         {
             await _userService.SingOutAsync();
@@ -65,7 +63,6 @@ namespace WebApp.Controllers
 
 
         //REGISTER
-
         public IActionResult Register()
         {
             return View(new SaveUserViewModel());
@@ -87,6 +84,55 @@ namespace WebApp.Controllers
                 return View(vm);
             }
             return RedirectToAction("Index");
+        }
+
+
+        // FORGOT PASSWORD
+        public IActionResult ForgotPassword()
+        {
+            return View(new ForgorPasswordViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgorPasswordViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+            var origin = Request.Headers["origin"];
+            ServiceResult response = await _userService.ForgotPasswordAsync(vm, origin);
+            if (response.HasError)
+            {
+                vm.Error = response.Error;
+                vm.HasError = response.HasError;
+                return View(vm);
+            }
+            return RedirectToRoute(new { controller="User", action="Index" });
+        }
+
+
+        //RESET PASSWORD
+        public IActionResult ResetPassword(string Token)
+        {
+            return View(new ResetPasswordViewModel { Token = Token });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel vm)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View("ResetPassword", vm);
+            }
+            ServiceResult response = await _userService.ResetPasswordAsync(vm);
+            if(response.HasError)
+            {
+                vm.Error = response.Error;
+                vm.HasError = response.HasError;
+                return View("ResetPassword", vm);
+            }
+            return RedirectToRoute(new { controller = "User", action = "Index" });
         }
     }
 }

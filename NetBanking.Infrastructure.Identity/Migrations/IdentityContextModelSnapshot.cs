@@ -183,6 +183,12 @@ namespace NetBanking.Infrastructure.Identity.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -220,7 +226,7 @@ namespace NetBanking.Infrastructure.Identity.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<bool>("UserStatus")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");

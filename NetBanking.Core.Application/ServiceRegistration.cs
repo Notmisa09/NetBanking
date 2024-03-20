@@ -11,6 +11,7 @@ namespace NetBanking.Core.Application
         public static void ApplicationLayerRegistration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddTransient(typeof(IGenericService<,,>), typeof(GenericService<,,>));
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<ITransactionService, TransactionService>();

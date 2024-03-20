@@ -1,4 +1,6 @@
-﻿namespace NetBanking.Core.Application.Dtos.Account
+﻿using Microsoft.AspNetCore.Http;
+
+namespace NetBanking.Core.Application.Dtos.Account
 {
     public class RegisterRequest
     {
@@ -10,7 +12,9 @@
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
         public string IdCard { get; set; }
-        public bool UserStatus { get; set; }
+        public IFormFile? formFile { get; set; }
+        public string? ImageURL { get; set; }
+        public bool IsActive { get; set; }
         public string PhoneNumber { get; set; }
     }
 }

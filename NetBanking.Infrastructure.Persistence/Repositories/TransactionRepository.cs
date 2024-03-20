@@ -14,5 +14,12 @@ namespace NetBanking.Infrastructure.Persistence.Repositories
             _context = context;
             _entities = _context.Set<Transaction>();
         }
+
+        public override async Task DeleteAsync(Transaction entity)
+        {
+            _entities.Update(entity);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

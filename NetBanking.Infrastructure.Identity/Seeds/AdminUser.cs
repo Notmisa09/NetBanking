@@ -15,11 +15,11 @@ namespace NetBanking.Infrastructure.Identity.Seeds
             adminuser.LastName = "user";
             adminuser.PhoneNumber = "829-123-9811";
             adminuser.IdCard = "91-1981-1919";
-            adminuser.UserStatus = false;
+            adminuser.UserStatus = true;
             adminuser.EmailConfirmed = true;
             adminuser.PhoneNumberConfirmed = true;
 
-            if (userManager.Users.All(u => u.Id == adminuser.Id))
+            if (userManager.Users.All(u => u.Id != adminuser.Id))
             {
                 var user = await userManager.FindByEmailAsync(adminuser.Email);
                 if (user == null)

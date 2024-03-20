@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.Dtos.Error;
+using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.ViewModels.Users;
 
@@ -24,6 +25,13 @@ namespace NetBanking.Core.Application.Services
             return userResponse;
         }
 
+        public async Task<ServiceResult> UpdateAsync(SaveUserViewModel vm)
+        {
+            var user = _mapper.Map<RegisterRequest>(vm);
+            var response = await _accountService.EditUserAsync(user);
+            return response;
+        }
+
         public async Task SingOutAsync()
         {
             await _accountService.SingOutAsync();
@@ -32,6 +40,13 @@ namespace NetBanking.Core.Application.Services
         public async Task<ServiceResult> RegisterAsync(SaveUserViewModel vm, string origin, string userRole)
         {
             RegisterRequest resgisterRequest = _mapper.Map<RegisterRequest>(vm);
+            if(resgisterRequest !=  null && string.IsNullOrEmpty(resgisterRequest.Id))
+            {
+                if(vm.formFile  != null)
+                {
+                    resgisterRequest.ImageURL = UploadImage.UploadFile(vm.formFile, resgisterRequest.Id, "User");
+                }
+            }
             return await _accountService.RegisterUserAsync(resgisterRequest, origin, userRole);
         }
 
@@ -50,6 +65,13 @@ namespace NetBanking.Core.Application.Services
         {
             ResetPasswordRequest resetRequest = _mapper.Map<ResetPasswordRequest>(vm);
             return await _accountService.ResetPasswordAsync(resetRequest);
+        }
+
+        public async Task<SaveUserViewModel> GetByIdAsync(string UserId)
+        {
+            var user = await _accountService.GetByIdAsync(UserId);
+            SaveUserViewModel vm = _mapper.Map<SaveUserViewModel>(user);
+            return vm;
         }
     }
 }

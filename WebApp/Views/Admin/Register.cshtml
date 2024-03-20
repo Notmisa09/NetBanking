@@ -6,6 +6,7 @@
 
 @{
     ViewData["Title"] = "Registro";
+    bool editMode = Model != null && Model.IdCard != null;
 }
 
 <div class="container-fluid">
@@ -14,7 +15,7 @@
         <div class="col-6 offset-3">
             <div class="card">
                 <div class="card-header bg-dark text-light">
-                    <h4>Registro de nuevo usuario</h4>
+                    <strong>@(editMode ? $"Edit your pruducer {Model.FirstName}" : "Add a new Producers")</strong>
                 </div>
                 <div class="card-body">
 
@@ -25,7 +26,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     }
-                    <form method="post" enctype="multipart/form-data" asp-controller="User" asp-action="Register">
+                    <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action=@(editMode ? "Edit":"Register") >
                        
                         <div class="mb-3">
                             <label asp-for="formFile" class="form-label">Upload a profile picture (optional): </label>
@@ -40,27 +41,21 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="InitialAmount" class="form-label">Initial Amount:</label>
-                            <input asp-for="InitialAmount" class="form-control" />
-                            <span asp-validation-for="InitialAmount" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
                             <label asp-for="LastName" class="form-label">Apellido: </label>
                             <input asp-for="LastName" class="form-control" />
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="IdCard" class="form-label">Cedula:</label>
-                            <input asp-for="IdCard" class="form-control" />
-                            <span asp-validation-for="IdCard" class="text-danger"></span>
+                            <label asp-for="UserName" class="form-label">Nombre de usuario: </label>
+                            <input asp-for="UserName" class="form-control" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="PhoneNumber" class="form-label">Telefono: </label>
-                            <input asp-for="PhoneNumber" class="form-control" />
-                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            <label asp-for="IdCard" class="form-label">IdCard:</label>
+                            <input asp-for="IdCard" class="form-control" />
+                            <span asp-validation-for="IdCard" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
@@ -70,10 +65,21 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="UserName" class="form-label">Nombre de usuario: </label>
-                            <input asp-for="UserName" class="form-control" />
-                            <span asp-validation-for="UserName" class="text-danger"></span>
+                            <label asp-for="PhoneNumber" class="form-label">Telefono: </label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
+
+                        @if(editMode == false)
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Choose the user role</label>
+                                <select class="form-select">
+                                    <option value="@RolesEnum.Client">Client</option>
+                                    <option value="@RolesEnum.Admin">Admin</option>
+                                </select>
+                            </div>
+                        }
 
                         <div class="mb-3">
                             <label asp-for="Password" class="form-label">Contraseña: </label>

@@ -52,7 +52,7 @@ namespace NetBanking.Infrastructure.Persistence.Repositories
             return await _entities.FindAsync(Id);
         }
 
-        public virtual async Task<Entity> SaveAsync(Entity entity)
+        public virtual async Task<Entity> AddAsync(Entity entity)
         {
             await _entities.AddAsync(entity);
             await _context.SaveChangesAsync();

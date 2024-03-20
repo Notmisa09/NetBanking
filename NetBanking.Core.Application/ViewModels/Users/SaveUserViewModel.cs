@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace NetBanking.Core.Application.ViewModels.Users
 {
@@ -6,6 +7,10 @@ namespace NetBanking.Core.Application.ViewModels.Users
     {
         [Required(ErrorMessage = "Please enter a IdCard for your user")]
         public  string IdCard { get; set; }
+
+        [DataType(DataType.Upload)]
+        public IFormFile? formFile { get; set; }
+        public string? ImageURL { get; set; }
 
         [Required(ErrorMessage = "Please enter a First Name")]
         [DataType(DataType.Text)]
@@ -41,5 +46,6 @@ namespace NetBanking.Core.Application.ViewModels.Users
         [Required(ErrorMessage = "You have to type in an inital amout for your first bank account")]
         public bool HasError { get; set; }
         public string? Error { get; set; }
+        public decimal InitialAmount { get; set; } = 0; 
     }
 }

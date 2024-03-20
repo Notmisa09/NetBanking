@@ -9,5 +9,7 @@ namespace NetBanking.Core.Application.ViewModels.Beneficiary
         [Required(ErrorMessage = "Hace falta la ceunta beneficiaria")]
         [DataType(DataType.Text)]
         public string BeneficiaryId { get; set; }
+        public bool HasError { get; set; }
+        public string? Error { get; set; }
     }
 }

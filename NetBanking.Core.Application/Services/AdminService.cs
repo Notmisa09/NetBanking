@@ -17,7 +17,6 @@ namespace NetBanking.Core.Application.Services
         private readonly ILoanRepository _loanRepository;
         private readonly ISavingsAccountRepository _savingsAccountRepository;
 
-
         public AdminService(IAccountService accountService, IMapper mapper,
             ITransactionRepository trasactionRepository, ICreditCardRepository creditCardRepository,
             ILoanRepository loanRepository, ISavingsAccountRepository savingsAccountRepository)

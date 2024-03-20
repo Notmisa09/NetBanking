@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetBanking.Core.Application.Interfaces.Repositories;
-using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Infrastructure.Persistence.Contexts;
 using NetBanking.Infrastructure.Persistence.Interceptor;
 using NetBanking.Infrastructure.Persistence.Repositories;
@@ -17,7 +16,7 @@ namespace NetBanking.Infrastructure.Persistence
             if (configuration.GetValue<bool>("UseInMemoryDatabase"))
             {
                 service.AddDbContext<ApplicationContext>(options =>
-                                                        options.UseInMemoryDatabase("Twitter"));
+                                                        options.UseInMemoryDatabase("NetBanking"));
             }
             else
             {

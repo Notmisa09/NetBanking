@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.Dtos.Error;
+using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Infrastructure.Identity.Entities;
 using System.Text;
@@ -24,6 +25,25 @@ namespace NetBanking.Infrastructure.Identity.Services
             _emailService = emailService;
         }
 
+        //GETBYID
+        public async Task<DtoAccounts> GetByIdAsync(string UserId)
+        {
+            var user = await _userManager.FindByIdAsync(UserId);
+            DtoAccounts dtoaccount = new()
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Id = user.Id,
+                UserName = user.UserName,
+                ImageURL = user.ImageURL,
+                IdCard = user.IdCard,
+                IsActive = user.UserStatus,
+                PhoneNumber = user.PhoneNumber,
+            };
+            return dtoaccount;
+        }
+
         //USERS GETALL
 
         public async Task<List<DtoAccounts>> GetAllUsers()
@@ -35,9 +55,10 @@ namespace NetBanking.Infrastructure.Identity.Services
             {
                 var userDto = new DtoAccounts();
 
+                userDto.ImageURL = user.ImageURL;
                 userDto.FirstName = user.FirstName;
                 userDto.LastName = user.LastName;
-                userDto.IsActive = user.UserStatus;
+                userDto.IsActive = user.IsActive;
                 userDto.Email = user.Email;
                 userDto.Id = user.Id;
                 userDto.Roles = _userManager.GetRolesAsync(user).Result.ToList();
@@ -72,6 +93,12 @@ namespace NetBanking.Infrastructure.Identity.Services
                 response.Error = $"Account not confirmed for {request.Email}";
                 return response;
             }
+            if (user.UserStatus == false)
+            {
+                response.HasError = true;
+                response.Error = $"Your account user {request.Email} is not active please get in contact with a manager";
+                return response;
+            }
 
             response.Id = user.Id;
             response.Email = user.Email;
@@ -90,7 +117,47 @@ namespace NetBanking.Infrastructure.Identity.Services
         }
 
 
+        //EDITUSER
+        public async Task<ServiceResult> EditUserAsync(RegisterRequest request)
+        {
+            ServiceResult response = new();
+            var userget = await _userManager.FindByEmailAsync(request.Id);
+            {
+                userget.Id = request.Id;
+                userget.PhoneNumber = request.PhoneNumber;
+                userget.UserName = request.UserName;
+                userget.UserName = request.FirstName;
+                userget.LastName = request.LastName;
+                userget.Email = request.Email;
+                userget.UserStatus = request.IsActive;
+                userget.IdCard = request.IdCard;
+                userget.ImageURL = request.ImageURL;
+            }
+            if (request.Password != null)
+            {
+                var Token = await _userManager.GeneratePasswordResetTokenAsync(userget);
+                await _userManager.ResetPasswordAsync(userget, Token, request.Password);
+            }
+            if(request.ImageURL == null)
+            {
+                userget.ImageURL = UploadImage.UploadFile(request.formFile, request.Id, "User");
+            }
+            else
+            {
+                userget.ImageURL = UploadImage.UploadFile(request.formFile, request.Id, "User", true, request.ImageURL);
+            }
+            var result = await _userManager.UpdateAsync(userget);
+            if (!result.Succeeded)
+            {
+                response.HasError = true;
+                response.Error = $"There was an error while trying to update the user{userget.UserName}";
+            }
+            return response;
+        }
+
+
         //REGISTER USER
+
         public async Task<ServiceResult> RegisterUserAsync(RegisterRequest request, string origin, string UserRoles)
         {
             ServiceResult response = new()
@@ -120,9 +187,10 @@ namespace NetBanking.Infrastructure.Identity.Services
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 UserName = request.UserName,
-                UserStatus = request.UserStatus,
+                UserStatus = request.IsActive,
                 IdCard = request.IdCard,
-
+                ImageURL = request.ImageURL,
+                PhoneNumber = request.PhoneNumber
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
@@ -179,7 +247,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 HasError = false,
             };
 
-            var user = await _userManager.FindByIdAsync(request.Email);
+            var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
             {
@@ -247,10 +315,9 @@ namespace NetBanking.Infrastructure.Identity.Services
         {
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var route = "User/ReserPassword";
+            var route = "User/ResetPassword";
             var Uri = new Uri(string.Concat($"{origin}/", route));
-            var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "userId", user.Id);
-            verificationUri = QueryHelpers.AddQueryString(verificationUri, "userId", user.Id);
+            var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "Token", code);
 
             return verificationUri;
         }
@@ -264,7 +331,7 @@ namespace NetBanking.Infrastructure.Identity.Services
             var route = "User/ConfirmEmail";
             var Uri = new Uri(string.Concat($"{origin}/", route));
             var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "userId", user.Id);
-            verificationUri = QueryHelpers.AddQueryString(verificationUri, "token", code);
+            verificationUri = QueryHelpers.AddQueryString(verificationUri, "Token", code);
 
             return verificationUri;
         }
