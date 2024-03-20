@@ -74,9 +74,14 @@ namespace NetBanking.Core.Application.Services
 
         public async Task<dynamic> GetProductByIdAsync(string Id)
         {
-            if (100 >= Convert.ToInt32(Id.Substring(0,3)) && Convert.ToInt32(Id.Substring(0, 3)) <=300 )
+            //Asumiendo que las targetas de credito comienzan con 3 digitos entre 100 y 299
+            if (100 >= Convert.ToInt32(Id.Substring(0,3)) && Convert.ToInt32(Id.Substring(0, 3)) <300 )
             {
-
+                return _creditCardService.GetByIdAsync(Id);
+            }
+            else if(300 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
+            {
+                return _creditCardService.GetByIdAsync(Id);
             }
         }
 
