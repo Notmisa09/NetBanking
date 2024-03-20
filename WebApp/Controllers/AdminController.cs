@@ -16,17 +16,23 @@ namespace WebApp.Controllers
             _adminService = adminService;
             _userService = userService;
         }
+
+        //INDEX
         public async Task<IActionResult> Index()
         {
             return View(await _adminService.GetAllAsync());
         }
-        public IActionResult Register()
-        {
-            return View(new SaveUserViewModel());
-        }
+
+        //DASHBORAD
         public async Task<IActionResult> DashBoard()
         {
             return View(await _adminService.GetDashboard());
+        }
+
+        //REGISTER USER
+        public IActionResult Register()
+        {
+            return View(new SaveUserViewModel());
         }
 
         //EDIT USER
@@ -62,7 +68,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> RemoveTrue(string Id)
         {
             await _userService.Remove(Id);
-            return View("Index");
+            return RedirectToAction("Index");
         }
     }
 }

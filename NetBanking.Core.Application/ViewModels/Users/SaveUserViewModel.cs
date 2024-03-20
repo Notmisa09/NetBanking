@@ -12,6 +12,7 @@ namespace NetBanking.Core.Application.ViewModels.Users
 
         [DataType(DataType.Upload)]
         public IFormFile? formFile { get; set; }
+        public string Role {  get; set; }
         public string? ImageURL { get; set; }
 
         [Required(ErrorMessage = "Please enter a First Name")]
@@ -44,10 +45,11 @@ namespace NetBanking.Core.Application.ViewModels.Users
         [Required(ErrorMessage = "Please type in a Phone number")]
         [DataType(DataType.Text)]
         public string PhoneNumber { get; set; }
+        
+        public int InitialAmount { get; set; }
 
         [Required(ErrorMessage = "You have to type in an inital amout for your first bank account")]
         public bool HasError { get; set; }
         public string? Error { get; set; }
-        public decimal InitialAmount { get; set; } = 0; 
     }
 }
