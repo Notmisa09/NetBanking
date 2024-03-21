@@ -35,8 +35,6 @@ namespace NetBanking.Infrastructure.Persistence.Interceptor
                         entry.Property(a => a.CreatedById).CurrentValue = "Default";
                     else
                         entry.Property(a => a.CreatedById).CurrentValue = userViewModel.FirstName + userViewModel.LastName;
-
-
                 }
                 if (entry.State == EntityState.Modified)
                 {

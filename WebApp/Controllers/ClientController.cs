@@ -1,13 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using NetBanking.Core.Application.Dtos.Account;
+using NetBanking.Core.Application.Interfaces.Services;
+using NetBanking.Core.Application.Helpers;
+
 
 namespace WebApp.Controllers
 {
     public class ClientController : Controller
     {
-        public IActionResult Home()
+        private readonly IClientService _clientService;
+        public ClientController(IClientService clientService) 
+        { 
+            _clientService = clientService;
+        }
+        public async Task<IActionResult> Home()
         {
-            
-            return View();
+            var vm = await _clientService.GetAllProductsByClientAsync();
+            return View(vm);
+        }
+
+        public async Task<IActionResult> Beneficiaries()
+        {
+            var vm = await _clientService.GetAllBeneficiariesByClientAsync();
+            return View(vm);
         }
     }
 }
