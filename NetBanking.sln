@@ -11,17 +11,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApp", "WebApp", "{237695BE-C540-4B44-8306-B06B355F4DF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetBanking.Core.Application", "NetBanking.Core.Application\NetBanking.Core.Application.csproj", "{0F068FC6-F175-4763-8B87-16A0608D413F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetBanking.Core.Application", "NetBanking.Core.Application\NetBanking.Core.Application.csproj", "{0F068FC6-F175-4763-8B87-16A0608D413F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetBanking.Core.Domain", "NetBanking.Core.Domain\NetBanking.Core.Domain.csproj", "{FCDAE00E-0CA3-4940-B69F-2188BD56FC84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetBanking.Core.Domain", "NetBanking.Core.Domain\NetBanking.Core.Domain.csproj", "{FCDAE00E-0CA3-4940-B69F-2188BD56FC84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetBanking.Infrastructure.Identity", "NetBanking.Infrastructure.Identity\NetBanking.Infrastructure.Identity.csproj", "{73A0AEC3-4474-483C-8CE8-DC51488D730C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetBanking.Infrastructure.Identity", "NetBanking.Infrastructure.Identity\NetBanking.Infrastructure.Identity.csproj", "{73A0AEC3-4474-483C-8CE8-DC51488D730C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetBanking.Infrastructure.Persistence", "NetBanking.Infrastructure.Persistence\NetBanking.Infrastructure.Persistence.csproj", "{C9F277A4-9149-44F5-9115-92657640D2B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetBanking.Infrastructure.Persistence", "NetBanking.Infrastructure.Persistence\NetBanking.Infrastructure.Persistence.csproj", "{C9F277A4-9149-44F5-9115-92657640D2B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetBanking.Infrastructure.Shared", "NetBanking.Infrastructure.Shared\NetBanking.Infrastructure.Shared.csproj", "{FF4B4237-9335-4B2F-8FB5-7D2698718249}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetBanking.Infrastructure.Shared", "NetBanking.Infrastructure.Shared\NetBanking.Infrastructure.Shared.csproj", "{FF4B4237-9335-4B2F-8FB5-7D2698718249}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{B63FA4D9-8A6A-4BC5-B403-18977294CCC8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{6F5947CA-8A2E-4323-93C6-2AD7BD103FB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +49,10 @@ Global
 		{FF4B4237-9335-4B2F-8FB5-7D2698718249}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF4B4237-9335-4B2F-8FB5-7D2698718249}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF4B4237-9335-4B2F-8FB5-7D2698718249}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B63FA4D9-8A6A-4BC5-B403-18977294CCC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B63FA4D9-8A6A-4BC5-B403-18977294CCC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B63FA4D9-8A6A-4BC5-B403-18977294CCC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B63FA4D9-8A6A-4BC5-B403-18977294CCC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F5947CA-8A2E-4323-93C6-2AD7BD103FB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F5947CA-8A2E-4323-93C6-2AD7BD103FB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F5947CA-8A2E-4323-93C6-2AD7BD103FB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F5947CA-8A2E-4323-93C6-2AD7BD103FB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,7 +66,7 @@ Global
 		{73A0AEC3-4474-483C-8CE8-DC51488D730C} = {63BB602B-DCF7-467B-BDA0-53F90F1919FB}
 		{C9F277A4-9149-44F5-9115-92657640D2B8} = {63BB602B-DCF7-467B-BDA0-53F90F1919FB}
 		{FF4B4237-9335-4B2F-8FB5-7D2698718249} = {63BB602B-DCF7-467B-BDA0-53F90F1919FB}
-		{B63FA4D9-8A6A-4BC5-B403-18977294CCC8} = {237695BE-C540-4B44-8306-B06B355F4DF1}
+		{6F5947CA-8A2E-4323-93C6-2AD7BD103FB0} = {237695BE-C540-4B44-8306-B06B355F4DF1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E485EE0B-5C70-46D0-9B2C-C2A309AEA832}

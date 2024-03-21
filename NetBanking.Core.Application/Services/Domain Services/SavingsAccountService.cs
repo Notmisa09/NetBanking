@@ -14,12 +14,14 @@ namespace NetBanking.Core.Application.Services.Domain_Services
     {
         private readonly IMapper _mapper;
         private readonly ISavingsAccountRepository _repository;
+        private readonly IAccountService _accountService;
 
         public SavingsAccountService(
             
             IMapper mapper,
             ISavingsAccountRepository repository) : base(repository, mapper)
         {
+            _accountService = accountService;
             _mapper = mapper;
             _repository = repository;
         }

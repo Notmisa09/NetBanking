@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using NetBanking.Core.Application.Dtos.Account;
+﻿using Microsoft.AspNetCore.Mvc;
 using NetBanking.Core.Application.Interfaces.Services;
-using NetBanking.Core.Application.Helpers;
-using NetBanking.Core.Application.ViewModels.Users;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
-using NetBanking.Core.Application.ViewModels.Transaction;
 
 namespace WebApp.Controllers
 {
