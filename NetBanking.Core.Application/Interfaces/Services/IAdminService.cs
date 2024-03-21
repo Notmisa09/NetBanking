@@ -8,5 +8,7 @@ namespace NetBanking.Core.Application.Interfaces.Services
         Task<string> ChangeAccountStatus(ActiveUserViewModel vm);
         Task<List<UserViewModel>> GetAllAsync();
         Task<DashboardViewModel> GetDashboard();
+        Task<SaveUserViewModel> GetByIdWithAmountAsync(string UserId);
+        //Task<string> ChangeAccountStatus(UserViewModel vm);
     }
 }
