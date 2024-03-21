@@ -97,14 +97,14 @@ namespace NetBanking.Core.Application.Services
             return vmDashBoard;
         }
 
-        public async Task<SaveUserViewModel> GetByIdWithAmountAsync(string UserId)
-        {
-            var user = await _accountService.GetByIdAsync(UserId);
-            //var savingsAccount = await _savingsAccountService.GetByOwnerIdAsync(user.Id);
-            //var savingsAccountVm = savingsAccount.Find(x => x.IsMain == true && x.UserId == UserId);
-            SaveUserViewModel vm = _mapper.Map<SaveUserViewModel>(user);
-            vm.InitialAmount = 0;
-            return vm;
-        }
+        //public async Task<SaveUserViewModel> GetByIdWithAmountAsync(string UserId)
+        //{
+        //    var user = await _accountService.GetByIdAsync(UserId);
+        //    //var savingsAccount = await _savingsAccountService.GetByOwnerIdAsync(user.Id);
+        //    //var savingsAccountVm = savingsAccount.Find(x => x.IsMain == true && x.UserId == UserId);
+        //    SaveUserViewModel vm = _mapper.Map<SaveUserViewModel>(user);
+        //    vm.InitialAmount = 0;
+        //    return vm;
+        //}
     }
 }
