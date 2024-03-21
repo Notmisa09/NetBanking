@@ -5,7 +5,7 @@ namespace NetBanking.Core.Application.Helpers
 {
     public static class CodeGeneratorHelper
     {
-        public static string GenerateCode(string ProductCode, BaseProduct productType)
+        public static string GenerateCode(string ProductCode,  Type productType)
         {
             var prefix = GeneretePrefix(productType);
             Random rand = new Random();
@@ -20,7 +20,7 @@ namespace NetBanking.Core.Application.Helpers
             return FullCode;
         }
 
-        public static string GeneretePrefix(BaseProduct ProductType)
+        public static string GeneretePrefix(Type ProductType)
         {
             Random rand = new Random();
             if (ProductType is SavingsAccount)

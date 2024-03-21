@@ -15,12 +15,5 @@ namespace NetBanking.Infrastructure.Persistence.Repositories
             _context = context;
             _entities = _context.Set<CreditCard>();
         }
-
-        public override async Task<CreditCard> AddAsync(CreditCard entity)
-        {
-            var code = CodeGeneratorHelper.GenerateCode(entity.Id, entity);
-            entity.Id = code;
-            return await base.AddAsync(entity);
-        }
     }
 }

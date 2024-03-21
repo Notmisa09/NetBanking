@@ -69,24 +69,24 @@
                             <input asp-for="PhoneNumber" class="form-control" />
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
-
+                       
                         @if (editMode == false)
                         {
                             <div class="mb-3">
                                 <label asp-for="Role" class="form-label">Choose the user role</label>
-                                <select asp-for="Role" class="form-select">
+                                <select asp-for="Role" class="form-select" id="userRole">
+                                   <option value="#">Choose an </option> 
                                     <option value="@RolesEnum.Client.ToString()">Client</option>
                                     <option value="@RolesEnum.Admin.ToString()">Admin</option>
                                 </select>
                             </div>
                         }
 
-                        @if(Model.Role == @RolesEnum.Client.ToString()){
-                            <div class="mb-3">
-                                <label class="form-label">Initial Amount</label>
-                                <input class="form-control" />
-                            </div>
-                        }
+                        <div id="initialAmountDiv" class="mb-3" style="display: none;">
+                            <label asp-for="InitialAmount" class="form-label">Initial Amount</label>
+                            <input asp-for="InitialAmount" class="form-control" />
+                        </div>
+
 
                         <div class="mb-3">
                             <label asp-for="Password" class="form-label">Contraseña: </label>
@@ -107,5 +107,18 @@
             </div>
         </div>
     </div>
-
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#userRole').change(function () {
+            var selectedRole = $(this).val();
+            if (selectedRole === "Client") {
+                $('#initialAmountDiv').show();
+            } else {
+                $('#initialAmountDiv').hide();
+            }
+        });
+    });
+</script>
