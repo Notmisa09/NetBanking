@@ -44,6 +44,26 @@ namespace NetBanking.Infrastructure.Identity.Services
             return dtoaccount;
         }
 
+        //GETBYID
+        public async Task<DtoAccounts> GetByEmail(string Email)
+        {
+            var user = await _userManager.FindByEmailAsync(Email);
+            DtoAccounts dtoaccount = new()
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Id = user.Id,
+                UserName = user.UserName,
+                ImageURL = user.ImageURL,
+                IdCard = user.IdCard,
+                IsActive = user.IsActive,
+                PhoneNumber = user.PhoneNumber,
+            };
+            return dtoaccount;
+        }
+
+
         //DELETE USER
         public async Task Remove(DtoAccounts account)
         {

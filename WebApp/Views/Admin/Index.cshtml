@@ -43,6 +43,7 @@
                                     }
                                 </td>
                                 <td>
+                                    <a class="btn btn-info" name="IdUser" value="@user.Id" asp-controller="Admin" asp-action="ChangeStatus">Activate User</a>
                                     <a class="btn btn-warning" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="Edit"><i class="fa-solid fa-pencil fa-sm" style="color: #19191a;"></i></a>
                                     <a class="btn btn-danger" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="Remove"><i class="fa-regular fa-trash-can"></i></a>
                                 </td>

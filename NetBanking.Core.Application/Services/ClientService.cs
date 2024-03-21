@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using NetBanking.Core.Application.Dtos.Account;
-using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services;
-using NetBanking.Core.Application.ViewModels.Users;
 using NetBanking.Core.Application.Helpers;
 using Microsoft.AspNetCore.Http;
 using NetBanking.Core.Application.ViewModels.Client;

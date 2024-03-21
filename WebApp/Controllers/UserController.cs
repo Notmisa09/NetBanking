@@ -81,10 +81,6 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(SaveUserViewModel vm)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(vm);
-            }
             var origin = Request.Headers["origin"];
             ServiceResult response = await _userService.RegisterAsync(vm, origin, RolesEnum.Client.ToString());
             if (!response.HasError)
@@ -119,6 +115,16 @@ namespace WebApp.Controllers
                 return View(vm);
             }
             return RedirectToRoute(new { controller="User", action="Index" });
+        }
+
+
+        //LOGOUT
+        [HttpPost]
+        public async Task<IActionResult> LogOut(LoginViewModel vm)
+        {
+            await _userService.SingOutAsync();
+            HttpContext.Session.Remove("user");
+            return RedirectToRoute(new { controller = "User", action = "Index" });
         }
 
 

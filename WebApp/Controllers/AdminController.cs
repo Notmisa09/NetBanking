@@ -35,10 +35,27 @@ namespace WebApp.Controllers
             return View(new SaveUserViewModel());
         }
 
+        //LOGOUT
+        public async Task<IActionResult> LogOut()
+        {
+            await _userService.SingOutAsync();
+            HttpContext.Session.Remove("user");
+            return RedirectToRoute(new { controller = "User", action = "Index" });
+        }
+
+
+        //CHANGE USER STATUS
+        public async Task<IActionResult> ChangeStatus(ActiveUserViewModel vm, string IdUser)
+        {
+            await _adminService.ChangeAccountStatus(vm);
+            return RedirectToRoute(new { controller = "User", action = "Index" });
+        }
+
+
         //EDIT USER
         public async Task<IActionResult> Edit(string Id)
         {
-            return View("Register", await _userService.GetByIdAsync(Id));
+            return View("Register", await _adminService.GetByIdWithAmountAsync(Id));
         }
 
         [HttpPost]

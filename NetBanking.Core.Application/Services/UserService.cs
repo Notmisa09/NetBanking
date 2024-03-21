@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.Dtos.Error;
+using NetBanking.Core.Application.Enums;
 using NetBanking.Core.Application.Interfaces.Services;
+using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
+using NetBanking.Core.Application.ViewModels.SavingsAccount;
 using NetBanking.Core.Application.ViewModels.Users;
 
 namespace NetBanking.Core.Application.Services
@@ -10,11 +13,15 @@ namespace NetBanking.Core.Application.Services
     {
         private readonly IMapper _mapper;
         private readonly IAccountService _accountService;
+        private readonly ISavingsAccountService _savingsAccountService;
 
-        public UserService(IMapper mapper, IAccountService accountService)
+        public UserService(IMapper mapper, IAccountService accountService,
+            ISavingsAccountService savingsAccountService)
         {
+            _savingsAccountService = savingsAccountService;
             _accountService = accountService;
             _mapper = mapper;
+            _savingsAccounts = savingsAccounts;
         }
 
         public async Task<AuthenticationResponse> LoginAsync(LoginViewModel vm)
@@ -27,6 +34,17 @@ namespace NetBanking.Core.Application.Services
         public async Task<ServiceResult> UpdateAsync(SaveUserViewModel vm)
         {
             var user = _mapper.Map<RegisterRequest>(vm);
+
+            if (vm.Role == RolesEnum.Client.ToString())
+            {
+                var savingsAccount = await _savingsAccountService.GetByOwnerIdAsync(user.Id);
+                var savingsAccountVm = savingsAccount.Find(x => x.IsMain == true && x.UserId == user.Id);
+
+                savingsAccountVm.Amount += vm.InitialAmount;
+                SaveSavingsAccountViewModel savingsAccountRequest = _mapper.Map<SaveSavingsAccountViewModel>(savingsAccountVm);
+                await _savingsAccountService.UpdateAsync(savingsAccountRequest, savingsAccountRequest.Id);
+            }
+
             var response = await _accountService.UpdateUserAsync(user);
             return response;
         }
@@ -39,7 +57,9 @@ namespace NetBanking.Core.Application.Services
         public async Task<ServiceResult> RegisterAsync(SaveUserViewModel vm, string origin, string userRole)
         {
             RegisterRequest resgisterRequest = _mapper.Map<RegisterRequest>(vm);
-            return await _accountService.RegisterUserAsync(resgisterRequest, origin, userRole);
+            var result = await _accountService.RegisterUserAsync(resgisterRequest, origin, userRole);
+            await _savingsAccounts.SaveUserWIthMainAccount(vm);
+            return result;
         }
 
         public async Task<string> ConfirmEmailAsync(string UserId, string token)
