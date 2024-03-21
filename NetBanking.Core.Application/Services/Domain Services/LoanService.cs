@@ -34,7 +34,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             return _mapper.Map<List<LoanViewModel>>(list);
         }
 
-        public async Task<string> Delete(string Id)
+        public override async Task<string> Delete(string Id)
         {
             var loan = await _repository.GeEntityByIDAsync(Id);
 

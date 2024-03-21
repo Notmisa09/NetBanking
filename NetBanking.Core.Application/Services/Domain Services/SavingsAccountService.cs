@@ -50,7 +50,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             await _repository.AddAsync(savingAccount);
         }
 
-        public async Task<string> Delete(string Id)
+        public override async Task<string> Delete(string Id)
         {
             var savingsAccount = await _repository.GeEntityByIDAsync(Id);
 

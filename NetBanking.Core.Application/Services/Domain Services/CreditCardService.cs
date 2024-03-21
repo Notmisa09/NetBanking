@@ -28,7 +28,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             return _mapper.Map<List<CreditCardViewModel>>(list);
         }
 
-        public async Task CreateCardWithUser(SaveUserViewModel vm)
+        public  async Task CreateCardWithUser(SaveUserViewModel vm)
         {
             var genereatedCode = CodeGeneratorHelper.GenerateCode(vm.Id, typeof(CreditCard));
             CreditCard card = new CreditCard()
@@ -41,6 +41,21 @@ namespace NetBanking.Core.Application.Services.Domain_Services
                 Id = genereatedCode
             };
             await _repository.AddAsync(card);
+        }
+
+        public override async Task<string> Delete(string Id)
+        {
+            var creditCard = await _repository.GeEntityByIDAsync(Id);
+
+            if (creditCard.Debt >= 0)
+            {
+                return $"Este usuario tiene una deuda pendiente de {creditCard.Debt}.";
+            }
+            else
+            {
+                await _repository.DeleteAsync(creditCard);
+                return "Se ha borrado la tarjeta de credito";
+            }
         }
     }
 }

@@ -12,7 +12,6 @@ namespace NetBanking.Core.Application.Interfaces.Services.Domain_Services
 {
     public interface ILoanService : IGenericService<SaveLoanViewModel, LoanViewModel, Loan>
     {
-        Task<string> Delete(string Id);
         public Task<List<LoanViewModel>> GetByOwnerIdAsync(string Id);
     }
 }
