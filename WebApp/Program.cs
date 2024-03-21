@@ -10,7 +10,7 @@ using NetBanking.Infrastructure.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 builder.Services.AddTransient<ValidateUserSession, ValidateUserSession>();
 builder.Services.AddScoped<LoginAuthorize>();
@@ -45,13 +45,13 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-    // Configure the HTTP request pipeline.
-    if (!app.Environment.IsDevelopment())
-    {
-        app.UseExceptionHandler("/User/Error");
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-        app.UseHsts();
-    }
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/User/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
 app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();

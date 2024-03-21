@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using NetBanking.Core.Application.Dtos.Account;
+﻿using Microsoft.AspNetCore.Mvc;
 using NetBanking.Core.Application.Interfaces.Services;
-using NetBanking.Core.Application.Helpers;
-using NetBanking.Core.Application.ViewModels.Users;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
-
 
 namespace WebApp.Controllers
 {
@@ -31,10 +26,25 @@ namespace WebApp.Controllers
             return View(vm);
         }
 
-        public async Task<IActionResult> CreditCardRequest(SaveUserViewModel vm)
+        //public async Task<IActionResult> ExpressPay()
+        //{
+        //    ExpressPayViewModel expressPay = new()
+        //    {
+        //        AllProducts = await _clientService.GetAllProductsByClientAsync()
+        //    };
+        //    return View(expressPay);
+        //}
+
+        /*[HttpPost]
+        public async Task<IActionResult> ExpressPay(ExpressPayViewModel svm)
+        {
+            
+        }*/
+
+        /*public async Task<IActionResult> CreditCardRequest(SaveUserViewModel vm)
         {
             await _creditCardService.CreateCardWithUser(vm);
             return RedirectToRoute(new {controller="Client", action="Index"});
-        }
+        }*/
     }
 }
