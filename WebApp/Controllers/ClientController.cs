@@ -3,15 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Helpers;
-
+using NetBanking.Core.Application.ViewModels.Users;
+using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
+using NetBanking.Core.Application.ViewModels.Transaction;
 
 namespace WebApp.Controllers
 {
     public class ClientController : Controller
     {
         private readonly IClientService _clientService;
-        public ClientController(IClientService clientService) 
-        { 
+        private readonly ICreditCardService _creditCardService;
+        public ClientController(IClientService clientService, 
+            ICreditCardService creditCardService) 
+        {
+            _creditCardService = creditCardService;
             _clientService = clientService;
         }
         public async Task<IActionResult> Home()
@@ -25,11 +30,25 @@ namespace WebApp.Controllers
             var vm = await _clientService.GetAllBeneficiariesByClientAsync();
             return View(vm);
         }
+        public async Task<IActionResult> ExpressPay()
+        {
+            ExpressPayViewModel expressPay = new()
+            {
+                AllProducts = await _clientService.GetAllProductsByClientAsync()
+            };
+            return View(expressPay);
+        }
 
-        //public async Task<IActionResult> CreditCardRequest(SaveUserViewModel vm)
-        //{
-        //    await _creditCardService.CreateCardWithUser(vm);
-        //    return RedirectToRoute(new {controller="Client", action="Index"});
-        //}
+        /*[HttpPost]
+        public async Task<IActionResult> ExpressPay(ExpressPayViewModel svm)
+        {
+            
+        }*/
+
+        /*public async Task<IActionResult> CreditCardRequest(SaveUserViewModel vm)
+        {
+            await _creditCardService.CreateCardWithUser(vm);
+            return RedirectToRoute(new {controller="Client", action="Index"});
+        }*/
     }
 }

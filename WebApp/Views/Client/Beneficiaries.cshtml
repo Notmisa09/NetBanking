@@ -1,0 +1,32 @@
+﻿@using NetBanking.Core.Application.ViewModels.Beneficiary;
+@model List<BeneficiaryViewModel>;
+
+@if(Model.Count != 0)
+{
+    <table>
+        <thead>
+        <td>
+            Id del Beneficiario
+        </td>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.BeneficiaryId
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h1>
+        No hay Beneficiarios Registrados
+    </h1>
+}
+
+
+

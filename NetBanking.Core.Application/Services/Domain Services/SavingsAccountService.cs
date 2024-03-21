@@ -14,14 +14,12 @@ namespace NetBanking.Core.Application.Services.Domain_Services
     {
         private readonly IMapper _mapper;
         private readonly ISavingsAccountRepository _repository;
-        private readonly IAccountService _accountService;
 
         public SavingsAccountService(
-            IAccountService accountService,
+            
             IMapper mapper,
             ISavingsAccountRepository repository) : base(repository, mapper)
         {
-            _accountService = accountService;
             _mapper = mapper;
             _repository = repository;
         }
@@ -32,7 +30,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             return _mapper.Map<List<SavingsAccountViewModel>>(list);
         }
 
-        public async Task SaveUserWIthMainAccount(SaveUserViewModel vm)
+        /*public async Task SaveUserWIthMainAccount(SaveUserViewModel vm)
         {
             string productcode = string.Empty;
             var userinfo = await _accountService.GetByEmail(vm.Email);
@@ -47,9 +45,9 @@ namespace NetBanking.Core.Application.Services.Domain_Services
                 Id = "19819191"
             };
             await _repository.AddAsync(savingAccount);
-        }
+        }*/
 
-        public async Task<string> Delete(string Id)
+        /*public async Task<string> Delete(string Id)
         {
             var savingsAccount = await _repository.GeEntityByIDAsync(Id);
 
@@ -76,6 +74,6 @@ namespace NetBanking.Core.Application.Services.Domain_Services
 
             await _repository.DeleteAsync(savingsAccount);
             return "Se ha borrado la cuenta";
-        }
+        }*/
     }
 }

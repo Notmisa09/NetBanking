@@ -7,7 +7,7 @@ namespace NetBanking.Core.Application.ViewModels.Transaction
         public string? Id { get; set; }
         public string EmissorProductId { get; set; }
         public string ReceiverProductId { get; set; }
-        public decimal Cantity { get; set; }
+        public decimal Amount { get; set; }
         public TransactionType Type { get; set; }
         public bool HasError { get; set; }
         public string? Error { get; set; }
