@@ -12,7 +12,7 @@ namespace NetBanking.Core.Application.ViewModels.Users
 
         [DataType(DataType.Upload)]
         public IFormFile? formFile { get; set; }
-        public string Role {  get; set; }
+        public string? Role {  get; set; }
         public string? ImageURL { get; set; }
 
         [Required(ErrorMessage = "Please enter a First Name")]

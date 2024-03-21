@@ -90,8 +90,8 @@ namespace NetBanking.Core.Application.Services
             vmDashBoard.AllTransaction = transactions.Count();
             vmDashBoard.AllPaymentsNumber = transactions.GroupBy(x => x.Type).Count();
             vmDashBoard.AllPayments = transactions.GroupBy(x => x.Cantity).Sum(group => group.Count());
-            vmDashBoard.ActiveClients = user.GroupBy(x => x.IsActive == true).Count();
-            vmDashBoard.InactiveClients = user.GroupBy(x => x.IsActive == false).Count();
+            vmDashBoard.ActiveClients = user.Where(x => x.Roles.Contains("Client") && x.IsActive == true).Count();
+            vmDashBoard.InactiveClients = user.Where(x => x.Roles.Contains("Client") && x.IsActive == false).Count();
             vmDashBoard.AssignedProduct = totalCount;
 
             return vmDashBoard;

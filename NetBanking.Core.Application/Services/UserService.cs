@@ -21,6 +21,7 @@ namespace NetBanking.Core.Application.Services
             _savingsAccountService = savingsAccountService;
             _accountService = accountService;
             _mapper = mapper;
+            _savingsAccounts = savingsAccounts;
         }
 
         public async Task<AuthenticationResponse> LoginAsync(LoginViewModel vm)
@@ -56,7 +57,9 @@ namespace NetBanking.Core.Application.Services
         public async Task<ServiceResult> RegisterAsync(SaveUserViewModel vm, string origin, string userRole)
         {
             RegisterRequest resgisterRequest = _mapper.Map<RegisterRequest>(vm);
-            return await _accountService.RegisterUserAsync(resgisterRequest, origin, userRole);
+            var result = await _accountService.RegisterUserAsync(resgisterRequest, origin, userRole);
+            await _savingsAccounts.SaveUserWIthMainAccount(vm);
+            return result;
         }
 
         public async Task<string> ConfirmEmailAsync(string UserId, string token)
