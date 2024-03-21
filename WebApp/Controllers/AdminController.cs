@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NetBanking.Core.Application.Dtos.Error;
+using NetBanking.Core.Application.Enums;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.ViewModels.Users;
 
@@ -29,11 +30,26 @@ namespace WebApp.Controllers
             return View(await _adminService.GetDashboard());
         }
 
-        //REGISTER USER
+        //REGISTER USERS FROM ADMIN
         public IActionResult Register()
         {
             return View(new SaveUserViewModel());
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(SaveUserViewModel vm)
+        {
+            var origin = Request.Headers["origin"];
+            ServiceResult response = await _userService.RegisterAsync(vm, origin, vm.Role);
+            if (!response.HasError)
+            {
+                vm.Error = response.Error;
+                vm.HasError = response.HasError;
+                return View(vm);
+            }
+            return RedirectToAction("Index");
+        }
+
 
         //LOGOUT
         public async Task<IActionResult> LogOut()
