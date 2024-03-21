@@ -15,11 +15,15 @@ namespace NetBanking.Core.Application.Services.Domain_Services
         private readonly IMapper _mapper;
         private readonly ISavingsAccountRepository _repository;
         private readonly IAccountService _accountService;
+        private readonly ISavingsAccountService _savingsAccountService;
+
         public SavingsAccountService(
             IAccountService accountService,
             IMapper mapper,
-            ISavingsAccountRepository repository) : base(repository, mapper)
+            ISavingsAccountRepository repository,
+            ISavingsAccountService savingsAccountService) : base(repository, mapper)
         {
+            _savingsAccountService = savingsAccountService;
             _accountService = accountService;
             _mapper = mapper;
             _repository = repository;
@@ -46,6 +50,35 @@ namespace NetBanking.Core.Application.Services.Domain_Services
                 Id = "19819191"
             };
             await _repository.AddAsync(savingAccount);
+        }
+
+        public async Task<string> Delete(string Id)
+        {
+            var savingsAccount = await _repository.GeEntityByIDAsync(Id);
+
+            if (savingsAccount.IsMain == true)
+            {
+                return "La cuenta principal no puede ser eliminada.";
+            }
+
+            else if (savingsAccount.IsMain == false && savingsAccount.Amount >= 0)
+            {
+                var user = await _accountService.GetByIdAsync(savingsAccount.UserId);
+
+                var savingsAccountPrincipal = await _savingsAccountService.GetByOwnerIdAsync(user.Id);
+                var savingsAccountVm = savingsAccountPrincipal.Find(x => x.IsMain == true && x.UserId == savingsAccount.Id);
+
+                savingsAccountVm.Amount += savingsAccount.Amount;
+                SaveSavingsAccountViewModel savingsAccountRequest = _mapper.Map<SaveSavingsAccountViewModel>(savingsAccountVm);
+                await _savingsAccountService.UpdateAsync(savingsAccountRequest, savingsAccountRequest.Id);
+
+                await _repository.DeleteAsync(savingsAccount);
+
+                return "Se ha borrado la cuenta. Se ha promovido el dinero a la cuenta de ahorro principal.";
+            }
+
+            await _repository.DeleteAsync(savingsAccount);
+            return "Se ha borrado la cuenta";
         }
     }
 }
