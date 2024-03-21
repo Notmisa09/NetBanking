@@ -26,10 +26,10 @@ namespace WebApp.Controllers
             return View(vm);
         }
 
-        public async Task<IActionResult> CreditCardRequest(SaveUserViewModel vm)
-        {
-            await _creditCardService.CreateCardWithUser(vm);
-            return RedirectToRoute(new {controller="Client", action="Index"});
-        }
+        //public async Task<IActionResult> CreditCardRequest(SaveUserViewModel vm)
+        //{
+        //    await _creditCardService.CreateCardWithUser(vm);
+        //    return RedirectToRoute(new {controller="Client", action="Index"});
+        //}
     }
 }
