@@ -29,5 +29,19 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             var list = await _repository.FindAllAsync(x => x.UserId == Id);
             return _mapper.Map<List<CreditCardViewModel>>(list);
         }
+        public async Task<string> Delete(string Id)
+        {
+            var creditCard = await _repository.GeEntityByIDAsync(Id);
+
+            if (creditCard.Debt >= 0)
+            {
+                return $"Este usuario tiene una deuda pendiente de {creditCard.Debt}.";
+            }
+            else
+            {
+                await _repository.DeleteAsync(creditCard);
+                return "Se ha borrado la tarjeta de credito";
+            }
+        }
     }
 }

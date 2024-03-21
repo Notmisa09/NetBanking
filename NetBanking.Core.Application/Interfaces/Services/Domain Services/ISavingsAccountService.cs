@@ -8,5 +8,6 @@ namespace NetBanking.Core.Application.Interfaces.Services.Domain_Services
     {
         Task SaveUserWIthMainAccount(SaveUserViewModel vm);
         public Task<List<SavingsAccountViewModel>> GetByOwnerIdAsync(string Id);
+        Task<string> Delete(string Id);
     }
 }
