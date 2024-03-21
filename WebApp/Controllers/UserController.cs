@@ -6,6 +6,7 @@ using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.ViewModels.Users;
 
+
 namespace WebApp.Controllers
 {
     public class UserController : Controller
@@ -36,7 +37,15 @@ namespace WebApp.Controllers
             if (userVm != null && userVm.HasError != true)
             {
                 HttpContext.Session.Set<AuthenticationResponse>("user", userVm);
-                return RedirectToRoute(new { controller = "Home", action = "Index" });
+                if (userVm.Roles.Contains(RolesEnum.Client.ToString()))
+                {
+                    return RedirectToRoute(new { controller = "Client", action = "Home" });
+                }
+                else if (userVm.Roles.Contains(RolesEnum.Admin.ToString()))
+                {
+                    return RedirectToRoute(new { controller = "Admin", action = "Index" });
+                }
+                
             }
             else
             {
@@ -44,6 +53,7 @@ namespace WebApp.Controllers
                 vm.Error = userVm.Error;
                 return View(vm);
             }
+            return View(vm);
         }
 
         //CONFIRM EMAIL

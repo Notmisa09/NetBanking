@@ -17,6 +17,11 @@ namespace NetBanking.Core.Application
             services.AddTransient(typeof(IGenericService<,,>), typeof(GenericService<,,>));
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<IClientService, ClientService>();
+
+            services.AddTransient<IBeneficiaryService, BeneficiaryService>();
+            services.AddTransient<ICreditCardService, CreditCardService>();
+            services.AddTransient<ILoanService, LoanService>();
             services.AddTransient<ISavingsAccountService, SavingsAccountService>();
             services.AddTransient<ITransactionService, TransactionService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

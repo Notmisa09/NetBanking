@@ -2,6 +2,7 @@
 {
     public class DashboardViewModel
     {
+        public string? Id { get; set; }
         public int AllTransaction { get; set; }
         public decimal AllPayments { get; set; }
         public int AllPaymentsNumber { get; set; }

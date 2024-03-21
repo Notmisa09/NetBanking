@@ -1,26 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using NetBanking.Core.Application.Helpers;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using NetBanking.Core.Application.Dtos.Account;
-using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
-using NetBanking.Core.Application.ViewModels.Users;
+using NetBanking.Core.Application.Interfaces.Services;
+using NetBanking.Core.Application.Helpers;
+
 
 namespace WebApp.Controllers
 {
     public class ClientController : Controller
     {
-        private readonly HttpContextAccessor _contextAccessor;
-        private readonly AuthenticationResponse user;
-        private readonly ICreditCardService _creditCardService;
-        public ClientController (HttpContextAccessor contextAccessor, 
-                                  ICreditCardService creditCardService)
+        private readonly IClientService _clientService;
+        public ClientController(IClientService clientService) 
+        { 
+            _clientService = clientService;
+        }
+        public async Task<IActionResult> Home()
         {
-            user = _contextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
-            _creditCardService = creditCardService;
+            var vm = await _clientService.GetAllProductsByClientAsync();
+            return View(vm);
         }
 
-        public ActionResult Index()
+        public async Task<IActionResult> Beneficiaries()
         {
-            return View();
+            var vm = await _clientService.GetAllBeneficiariesByClientAsync();
+            return View(vm);
         }
 
         public async Task<IActionResult> CreditCardRequest(SaveUserViewModel vm)

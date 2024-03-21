@@ -4,6 +4,7 @@ namespace NetBanking.Core.Application.ViewModels.Beneficiary
 {
     public class BeneficiaryViewModel
     {
+        public string Id { get; set; }
         public string AccountId { get; set; }
         public SaveUserViewModel AccountUser { get; set; }
         public string BeneficiaryId { get; set; }
