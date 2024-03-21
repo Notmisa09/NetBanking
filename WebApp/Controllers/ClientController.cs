@@ -3,15 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Helpers;
-using NetBanking.Core.Application.ViewModels.Transaction;
+using NetBanking.Core.Application.ViewModels.Users;
+using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
 
 namespace WebApp.Controllers
 {
     public class ClientController : Controller
     {
         private readonly IClientService _clientService;
-        public ClientController(IClientService clientService) 
-        { 
+        private readonly ICreditCardService _creditCardService;
+        public ClientController(IClientService clientService, 
+            ICreditCardService creditCardService) 
+        {
+            _creditCardService = creditCardService;
             _clientService = clientService;
         }
         public async Task<IActionResult> Home()

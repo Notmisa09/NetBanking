@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using NetBanking.Core.Application.Interfaces.Repositories;
+using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
 using NetBanking.Core.Application.ViewModels.Beneficiary;
 using NetBanking.Core.Application.ViewModels.Loan;
+using NetBanking.Core.Application.ViewModels.SavingsAccount;
 using NetBanking.Core.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -30,6 +32,21 @@ namespace NetBanking.Core.Application.Services.Domain_Services
         {
             var list = await _repository.FindAllAsync(x => x.UserId == Id);
             return _mapper.Map<List<LoanViewModel>>(list);
+        }
+
+        public async Task<string> Delete(string Id)
+        {
+            var loan = await _repository.GeEntityByIDAsync(Id);
+
+            if (loan.Debt >= 0)
+            {
+                return $"Este usuario tiene una deuda pendiente de {loan.Debt}.";
+            }
+            else
+            {
+                await _repository.DeleteAsync(loan);
+                return "Se ha borrado el prestamo";
+            }
         }
     }
 }
