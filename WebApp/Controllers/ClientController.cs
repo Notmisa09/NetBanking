@@ -5,6 +5,7 @@ using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.ViewModels.Users;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
+using NetBanking.Core.Application.ViewModels.Transaction;
 
 namespace WebApp.Controllers
 {
@@ -38,11 +39,11 @@ namespace WebApp.Controllers
             return View(expressPay);
         }
 
-        [HttpPost]
+        /*[HttpPost]
         public async Task<IActionResult> ExpressPay(ExpressPayViewModel svm)
         {
             
-        }
+        }*/
 
         /*public async Task<IActionResult> CreditCardRequest(SaveUserViewModel vm)
         {
