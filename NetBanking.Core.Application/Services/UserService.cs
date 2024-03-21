@@ -58,7 +58,7 @@ namespace NetBanking.Core.Application.Services
             RegisterRequest resgisterRequest = _mapper.Map<RegisterRequest>(vm);
             if(userRole == RolesEnum.Client.ToString())
             {
-                await _savingsAccounts.SaveUserWIthMainAccount(vm);
+                await _savingsAccountService.SaveUserWIthMainAccount(vm);
             }
             var result = await _accountService.RegisterUserAsync(resgisterRequest, origin, userRole);
             return result;
