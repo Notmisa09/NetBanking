@@ -21,7 +21,6 @@ namespace NetBanking.Core.Application.Services
             _savingsAccountService = savingsAccountService;
             _accountService = accountService;
             _mapper = mapper;
-            _savingsAccounts = savingsAccounts;
         }
 
         public async Task<AuthenticationResponse> LoginAsync(LoginViewModel vm)
@@ -86,6 +85,7 @@ namespace NetBanking.Core.Application.Services
         {
             var user = await _accountService.GetByIdAsync(UserId);
             SaveUserViewModel vm = _mapper.Map<SaveUserViewModel>(user);
+            vm.InitialAmount = 0;
             return vm;
         }
 
