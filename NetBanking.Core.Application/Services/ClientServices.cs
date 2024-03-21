@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using NetBanking.Core.Application.Dtos.Account;
-using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services;
-using NetBanking.Core.Application.ViewModels.Users;
 using NetBanking.Core.Application.Helpers;
 using Microsoft.AspNetCore.Http;
 using NetBanking.Core.Application.ViewModels.Client;
@@ -28,8 +26,8 @@ namespace NetBanking.Core.Application.Services
         private readonly ITransactionService _transactionService;
 
         public ClientServices(
-            IAccountService accountService, 
-            IMapper mapper, 
+            IAccountService accountService,
+            IMapper mapper,
             IHttpContextAccessor httpContextAccessor,
             ISavingsAccountService savingsAccountService,
             ICreditCardService creditCardService,
@@ -47,7 +45,7 @@ namespace NetBanking.Core.Application.Services
             _loanService = loanService;
             _savingsAccountService = savingsAccountService;
         }
-        
+
         public async Task<GetAllProductsByClientViewModel> GetAllProductsByClientAsync()
         {
             var userId = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user").Id;
@@ -57,7 +55,7 @@ namespace NetBanking.Core.Application.Services
                 CreditCards = await _creditCardService.GetByOwnerIdAsync(userId),
                 Loans = await _loanService.GetByOwnerIdAsync(userId)
             };
-            
+
             return vm;
         }
 
@@ -69,7 +67,7 @@ namespace NetBanking.Core.Application.Services
 
         public async Task RealizeTransaction(SaveTransactionViewModel svm)
         {
-            if(svm.Type == Domain.Enums.TransactionType.ExpressPay)
+            if (svm.Type == Domain.Enums.TransactionType.ExpressPay)
             {
                 var emissorProduct = await GetProductByIdAsync(svm.EmissorProductId);
                 var receiverProduct = await GetProductByIdAsync(svm.ReceiverProductId);
@@ -80,7 +78,7 @@ namespace NetBanking.Core.Application.Services
 
                     #region Determina a donde enviar la actualización del emissorProduct
                     //Asumiendo que las targetas de credito comienzan con 3 digitos entre 100 y 299
-                    if (100 >= Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) && Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) < 300)
+                    if (100 >= Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) && Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) <= 299)
                     {
                         await _creditCardService.UpdateAsync(_mapper.Map<SaveCreditCardViewModel>(emissorProduct), emissorProduct.Id);
                     }
@@ -90,7 +88,7 @@ namespace NetBanking.Core.Application.Services
                         await _savingsAccountService.UpdateAsync(_mapper.Map<SaveSavingsAccountViewModel>(emissorProduct), emissorProduct.Id);
                     }
                     //Asumiendo que los préstamos comienzan con 3 digitos entre 600 y 999
-                    else if (300 >= Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) && Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) <= 599)
+                    else if (600 >= Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) && Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) <= 999)
                     {
                         await _loanService.UpdateAsync(_mapper.Map<SaveLoanViewModel>(emissorProduct), emissorProduct.Id);
                     }
@@ -98,7 +96,7 @@ namespace NetBanking.Core.Application.Services
 
                     #region Determina a donde enviar la actualización del receiverProduct
                     //Asumiendo que las targetas de credito comienzan con 3 digitos entre 100 y 299
-                    if (100 >= Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) && Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) < 300)
+                    if (100 >= Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) && Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) <= 299)
                     {
                         await _creditCardService.UpdateAsync(_mapper.Map<SaveCreditCardViewModel>(receiverProduct), receiverProduct.Id);
                     }
@@ -108,7 +106,7 @@ namespace NetBanking.Core.Application.Services
                         await _savingsAccountService.UpdateAsync(_mapper.Map<SaveSavingsAccountViewModel>(receiverProduct), receiverProduct.Id);
                     }
                     //Asumiendo que los préstamos comienzan con 3 digitos entre 600 y 999
-                    else if (300 >= Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) && Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) <= 599)
+                    else if (600 >= Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) && Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) <= 999)
                     {
                         await _loanService.UpdateAsync(_mapper.Map<SaveLoanViewModel>(receiverProduct), receiverProduct.Id);
                     }
@@ -121,21 +119,21 @@ namespace NetBanking.Core.Application.Services
         public async Task<BaseProduct> GetProductByIdAsync(string Id)
         {
             BaseProduct product = null;
-            //Asumiendo que las targetas de credito comienzan con 3 digitos entre 100 y 299
-            if (100 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) < 300)
-            {
-                product = await _creditCardService.GetByIdAsync(Id);
-            }
-            //Asumiendo que las cuentas de ahorro comienzan con 3 digitos entre 300 y 599
-            else if (300 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
-            {
-                product = _savingsAccountService.GetByIdAsync(Id);
-            }
-            //Asumiendo que los préstamos comienzan con 3 digitos entre 600 y 999
-            else if (300 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
-            {
-                product = _loanService.GetByIdAsync(Id);
-            }
+            ////Asumiendo que las targetas de credito comienzan con 3 digitos entre 100 y 299
+            //if (100 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) < 300)
+            //{
+            //    product = await _creditCardService.GetByIdAsync(Id);
+            //}
+            ////Asumiendo que las cuentas de ahorro comienzan con 3 digitos entre 300 y 599
+            //else if (300 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
+            //{
+            //    product = _savingsAccountService.GetByIdAsync(Id);
+            //}
+            ////Asumiendo que los préstamos comienzan con 3 digitos entre 600 y 999
+            //else if (300 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
+            //{
+            //    product = _loanService.GetByIdAsync(Id);
+            //}
             return product;
         }
 

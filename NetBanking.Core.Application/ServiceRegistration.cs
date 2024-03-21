@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetBanking.Core.Application.Interfaces.Services;
+using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
 using NetBanking.Core.Application.Services;
 using NetBanking.Core.Application.Services.Domain_Services;
 using System.Reflection;
@@ -16,6 +17,7 @@ namespace NetBanking.Core.Application
             services.AddTransient(typeof(IGenericService<,,>), typeof(GenericService<,,>));
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<ISavingsAccountService, SavingsAccountService>();
             services.AddTransient<ITransactionService, TransactionService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

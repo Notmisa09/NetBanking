@@ -44,30 +44,30 @@ namespace NetBanking.Core.Application.Services
             return userlist;
         }
 
-        //public async Task<string> ChangeAccountStatus(ActiveUserViewModel vm)
-        //{
-        //    if (vm.IdUser == _userViewModel.Id)
-        //    {
-        //        return "No puedes desactivar tu propia cuenta.";
-        //    }
-        //    else
-        //    {
-        //        var user = await _accountService.GetByIdAsync(vm.IdUser);
-        //        if (user == null)
-        //        {
-        //            user.IsActive = vm.ChangeStatus;
+        public async Task<string> ChangeAccountStatus(ActiveUserViewModel vm)
+        {
+            if (vm.IdUser == _userViewModel.Id)
+            {
+                return "No puedes desactivar tu propia cuenta.";
+            }
+            else
+            {
+                var user = await _accountService.GetByIdAsync(vm.IdUser);
+                if (user == null)
+                {
+                    user.IsActive = vm.ChangeStatus;
 
-        //            var userVm = _mapper.Map<RegisterRequest>(user);
-        //            await _accountService.UpdateUserAsync(userVm);
+                    var userVm = _mapper.Map<RegisterRequest>(user);
+                    await _accountService.UpdateUserAsync(userVm);
 
-        //            return "Se ha cambiado el estado de la cuenta";
-        //        }
-        //        else
-        //        {
-        //            return "No se encontro el usuario.";
-        //        }
-        //    }
-        //}
+                    return "Se ha cambiado el estado de la cuenta";
+                }
+                else
+                {
+                    return "No se encontro el usuario.";
+                }
+            }
+        }
 
         public async Task<DashboardViewModel> GetDashboard()
         {
@@ -88,8 +88,8 @@ namespace NetBanking.Core.Application.Services
             vmDashBoard.AllTransaction = transactions.Count();
             vmDashBoard.AllPaymentsNumber = transactions.GroupBy(x => x.Type).Count();
             vmDashBoard.AllPayments = transactions.GroupBy(x => x.Cantity).Sum(group => group.Count());
-            vmDashBoard.ActiveClients = user.GroupBy(x => x.IsActive == true).Count();
-            vmDashBoard.InactiveClients = user.GroupBy(x => x.IsActive == false).Count();
+            vmDashBoard.ActiveClients = user.Where(x => x.Roles.Contains("Client") && x.IsActive == true).Count();
+            vmDashBoard.InactiveClients = user.Where(x => x.Roles.Contains("Client") && x.IsActive == false).Count();
             vmDashBoard.AssignedProduct = totalCount;
 
             return vmDashBoard;
