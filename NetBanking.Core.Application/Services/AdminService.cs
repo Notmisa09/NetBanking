@@ -4,6 +4,7 @@ using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services;
+using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
 using NetBanking.Core.Application.ViewModels.Dashboard;
 using NetBanking.Core.Application.ViewModels.Users;
 
@@ -20,14 +21,14 @@ namespace NetBanking.Core.Application.Services
         private readonly ICreditCardRepository _creditCardRepository;
         private readonly ILoanRepository _loanRepository;
         private readonly ISavingsAccountRepository _savingsAccountRepository;
-
+        private readonly ISavingsAccountService _savingsAccountService;
 
         public AdminService(IAccountService accountService, IMapper mapper,
             ITransactionRepository trasactionRepository, ICreditCardRepository creditCardRepository,
             ILoanRepository loanRepository, ISavingsAccountRepository savingsAccountRepository,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor, ISavingsAccountService savingsAccountService)
         {
-
+            _savingsAccountService = savingsAccountService;
             _accountService = accountService;
             _mapper = mapper;
             _userViewModel = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
@@ -40,6 +41,7 @@ namespace NetBanking.Core.Application.Services
         public async Task<List<UserViewModel>> GetAllAsync()
         {
             var user = await _accountService.GetAllUsers();
+            user.Where(x => x.Id != _userViewModel.Id).ToList();
             var userlist = _mapper.Map<List<UserViewModel>>(user);
             return userlist;
         }
@@ -93,6 +95,16 @@ namespace NetBanking.Core.Application.Services
             vmDashBoard.AssignedProduct = totalCount;
 
             return vmDashBoard;
+        }
+
+        public async Task<SaveUserViewModel> GetByIdWithAmountAsync(string UserId)
+        {
+            var user = await _accountService.GetByIdAsync(UserId);
+            //var savingsAccount = await _savingsAccountService.GetByOwnerIdAsync(user.Id);
+            //var savingsAccountVm = savingsAccount.Find(x => x.IsMain == true && x.UserId == UserId);
+            SaveUserViewModel vm = _mapper.Map<SaveUserViewModel>(user);
+            vm.InitialAmount = 0;
+            return vm;
         }
     }
 }

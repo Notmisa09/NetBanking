@@ -122,17 +122,17 @@ namespace NetBanking.Core.Application.Services
             ////Asumiendo que las targetas de credito comienzan con 3 digitos entre 100 y 299
             //if (100 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) < 300)
             //{
-            //    product = await _creditCardService.GetByIdAsync(Id);
+            //    product = await _creditCardService.GetByIdWithAmountAsync(Id);
             //}
             ////Asumiendo que las cuentas de ahorro comienzan con 3 digitos entre 300 y 599
             //else if (300 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
             //{
-            //    product = _savingsAccountService.GetByIdAsync(Id);
+            //    product = _savingsAccountService.GetByIdWithAmountAsync(Id);
             //}
             ////Asumiendo que los préstamos comienzan con 3 digitos entre 600 y 999
             //else if (300 >= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
             //{
-            //    product = _loanService.GetByIdAsync(Id);
+            //    product = _loanService.GetByIdWithAmountAsync(Id);
             //}
             return product;
         }

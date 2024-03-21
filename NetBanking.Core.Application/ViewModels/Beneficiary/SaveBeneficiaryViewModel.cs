@@ -4,6 +4,7 @@ namespace NetBanking.Core.Application.ViewModels.Beneficiary
 {
     public class SaveBeneficiaryViewModel
     {
+        public string? Id { get; set; }
         public string AccountId { get; set; }
 
         [Required(ErrorMessage = "Hace falta la ceunta beneficiaria")]
