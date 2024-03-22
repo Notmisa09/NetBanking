@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using NetBanking.Core.Application.Dtos.Account;
+﻿using Microsoft.AspNetCore.Mvc;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Helpers;
+using NetBanking.Core.Application.ViewModels.CreditCard;
+using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
+using NetBanking.Core.Domain.Entities;
+using NetBanking.Core.Application.Dtos.Account;
+using NetBanking.Core.Application.ViewModels.Users;
 
 
 namespace WebApp.Controllers
@@ -10,9 +13,21 @@ namespace WebApp.Controllers
     public class ClientController : Controller
     {
         private readonly IClientService _clientService;
-        public ClientController(IClientService clientService) 
+        private readonly ICreditCardService _creditCardService;
+        private readonly IUserService _userService;
+        private readonly IHttpContextAccessor _contextaccessor;
+        private readonly AuthenticationResponse user;
+        public ClientController(IClientService clientService,
+                                ICreditCardService creditCardService,
+                                IHttpContextAccessor contextaccessor,
+                                IUserService userService) 
         { 
+            _creditCardService = creditCardService;
             _clientService = clientService;
+            _contextaccessor = contextaccessor;
+            _userService = userService;
+            user = _contextaccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+
         }
         public async Task<IActionResult> Home()
         {
@@ -26,10 +41,17 @@ namespace WebApp.Controllers
             return View(vm);
         }
 
-        //public async Task<IActionResult> CreditCardRequest(SaveUserViewModel vm)
-        //{
-        //    await _creditCardService.CreateCardWithUser(vm);
-        //    return RedirectToRoute(new {controller="Client", action="Index"});
-        //}
+        //CREDITCARD
+        public async Task<IActionResult> CreditCard()
+        {
+            return View(await _userService.GetByIdAsync(user.Id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreditCard(SaveUserViewModel vm)
+        {
+            await _creditCardService.CreateCardWithUser(vm);
+            return RedirectToRoute(new { controller ="Client" ,  action="Index" });
+        }
     }
 }

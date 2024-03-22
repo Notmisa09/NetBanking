@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using NetBanking.Core.Application.Dtos.Account;
+using NetBanking.Core.Application.Dtos.Error;
 using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
@@ -20,28 +21,46 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             _mapper = mapper;
             _repository = repository;
         }
+
         public async Task<List<CreditCardViewModel>> GetByOwnerIdAsync(string Id)
         {
             var list = await _repository.FindAllAsync(x => x.UserId == Id);
             return _mapper.Map<List<CreditCardViewModel>>(list);
         }
 
-
-        public  async Task CreateCardWithUser(SaveUserViewModel vm)
+        public async Task CreateCardWithUser(SaveUserViewModel vm)
         {
-            var genereatedCode = CodeGeneratorHelper.GenerateCode(vm.Id, typeof(CreditCard));
+            var code = string.Empty;
+            string generatedCode = string.Empty;
+            CreditCardViewModel existingCreditCard;
+
+            for (int i = 0; i <= 2; i++)
+            {
+                do
+                {
+                    generatedCode = CodeGeneratorHelper.GenerateCode(code, typeof(CreditCard));
+                    existingCreditCard = await GetByIdAsync(generatedCode);
+
+                    if (existingCreditCard == null)
+                    {
+                        break;
+                    }
+
+                } while (existingCreditCard != null);
+            }
+
             CreditCard card = new CreditCard()
             {
-                Amount = 15.0000m,
+                Amount = 150000m,
                 UserId = vm.Id,
-                CreatedById = user.Id,
+                CreatedById = "Default",
                 Debt = 0,
                 CreatedDate = DateTime.UtcNow,
-                Id = genereatedCode
+                Id = generatedCode
             };
             await _repository.AddAsync(card);
-
         }
+
 
         public override async Task<string> Delete(string Id)
         {

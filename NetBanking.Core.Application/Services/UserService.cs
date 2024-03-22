@@ -2,6 +2,7 @@
 using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.Dtos.Error;
 using NetBanking.Core.Application.Enums;
+using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
 using NetBanking.Core.Application.ViewModels.SavingsAccount;
@@ -56,11 +57,15 @@ namespace NetBanking.Core.Application.Services
         public async Task<ServiceResult> RegisterAsync(SaveUserViewModel vm, string origin, string userRole)
         {
             RegisterRequest resgisterRequest = _mapper.Map<RegisterRequest>(vm);
+            if(vm.ImageURL != null)
+            {
+                UploadImage.UploadFile(vm.formFile, vm.Id, "User");
+            }
+            var result = await _accountService.RegisterUserAsync(resgisterRequest, origin, userRole);
             if (userRole == RolesEnum.Client.ToString())
             {
                 await _savingsAccountService.SaveUserWIthMainAccount(vm);
             }
-            var result = await _accountService.RegisterUserAsync(resgisterRequest, origin, userRole);
             return result;
         }
 
