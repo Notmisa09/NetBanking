@@ -35,10 +35,29 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             return _mapper.Map<List<SavingsAccountViewModel>>(list);
         }
 
-        /*public async Task SaveUserWIthMainAccount(SaveUserViewModel vm)
+        public async Task SaveUserWIthAccount(SaveUserViewModel vm)
         {
             string productcode = string.Empty;
             var userinfo = await _accountService.GetByEmail(vm.Email);
+            var code = CodeGeneratorHelper.GenerateCode(productcode , typeof(CreditCard));
+
+            SavingsAccount savingAccount = new()
+            {
+                Amount = vm.InitialAmount,
+                IsMain = false,
+                UserId = userinfo.Id,
+                CreatedDate = DateTime.Now,
+                CreatedById = "Default",
+                Id = code
+            };
+            await _repository.AddAsync(savingAccount);
+        }
+
+        public async Task SaveUserWIthMainAccount(SaveUserViewModel vm)
+        {
+            string productcode = string.Empty;
+            var userinfo = await _accountService.GetByEmail(vm.Email);
+            var code = CodeGeneratorHelper.GenerateCode(productcode, typeof(CreditCard));
 
             SavingsAccount savingAccount = new()
             {
@@ -47,10 +66,11 @@ namespace NetBanking.Core.Application.Services.Domain_Services
                 UserId = userinfo.Id,
                 CreatedDate = DateTime.Now,
                 CreatedById = "Default",
-                Id = "19819191"
+                Id = code
             };
             await _repository.AddAsync(savingAccount);
-        }*/
+        }
+
         public override async Task<string> Delete(string Id)
         {
             var savingsAccount = await _repository.GeEntityByIDAsync(Id);

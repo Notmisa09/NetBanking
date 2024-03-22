@@ -18,6 +18,7 @@
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
+                            <th>Image</th>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Email</th>
@@ -31,6 +32,7 @@
                         @foreach (var user in Model)
                         {
                             <tr>
+                                <td><img id="profileimage" src="@user.ImageURL" /></td>
                                 <td>@user.FirstName</td>
                                 <td>@user.LastName</td>
                                 <td>@user.Email</td>
@@ -55,3 +57,4 @@
         </div>
     </div>
 </div>
+
