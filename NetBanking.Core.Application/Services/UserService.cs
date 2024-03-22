@@ -53,7 +53,7 @@ namespace NetBanking.Core.Application.Services
             await _accountService.SingOutAsync();
         }
 
-        public async Task<ServiceResult> RegisterAsync(SaveUserViewModel vm, string origin, string userRole)
+        /*public async Task<ServiceResult> RegisterAsync(SaveUserViewModel vm, string origin, string userRole)
         {
             RegisterRequest resgisterRequest = _mapper.Map<RegisterRequest>(vm);
             if(userRole == RolesEnum.Client.ToString())
@@ -62,7 +62,7 @@ namespace NetBanking.Core.Application.Services
             }
             var result = await _accountService.RegisterUserAsync(resgisterRequest, origin, userRole);
             return result;
-        }
+        }*/
 
         public async Task<string> ConfirmEmailAsync(string UserId, string token)
         {

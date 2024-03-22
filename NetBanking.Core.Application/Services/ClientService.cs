@@ -71,15 +71,15 @@ namespace NetBanking.Core.Application.Services
             var receiverProduct = await GetProductByIdAsync(svm.ReceiverProductId);
             if (emissorProduct != null && receiverProduct != null)
             {
-                emissorProduct.Amount -= svm.Cantity;
-                receiverProduct.Amount += svm.Cantity;
+                emissorProduct.Amount -= svm.Amount;
+                receiverProduct.Amount += svm.Amount;
 
                 #region Determina a donde enviar la actualización del emissorProduct
                 //Asumiendo que las targetas de credito comienzan con 3 digitos entre 100 y 299
                 if (100 >= Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) && Convert.ToInt32(svm.EmissorProductId.Substring(0, 3)) <= 299)
                 {
                     var creditCard = await _creditCardService.GetByIdAsync(emissorProduct.Id);
-                    creditCard.Debt += svm.Cantity;
+                    creditCard.Debt += svm.Amount;
                     await _creditCardService.UpdateAsync(_mapper.Map<SaveCreditCardViewModel>(creditCard), creditCard.Id);
                 }
                 //Asumiendo que las cuentas de ahorro comienzan con 3 digitos entre 300 y 599
@@ -96,7 +96,7 @@ namespace NetBanking.Core.Application.Services
                 if (100 >= Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) && Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3)) <= 299)
                 {
                     var creditCard = await _creditCardService.GetByIdAsync(receiverProduct.Id);
-                    creditCard.Debt -= svm.Cantity;
+                    creditCard.Debt -= svm.Amount;
                     await _creditCardService.UpdateAsync(_mapper.Map<SaveCreditCardViewModel>(creditCard), creditCard.Id);
                 }
                 //Asumiendo que las cuentas de ahorro comienzan con 3 digitos entre 300 y 599
@@ -111,6 +111,14 @@ namespace NetBanking.Core.Application.Services
             }
             await _transactionService.AddAsync(svm);
         }
+
+        /*public async Task<bool> VerifyProductExistence(string Id)
+        {
+            var savingsAccount = await _savingsAccountService.FindAllAsync(x => x.Id == Id);
+            var creditAccount = await _creditCardService.FindAllAsync(x => x.Id == Id);
+            var loan
+            if ()
+        }*/
 
         public async Task<BaseProduct> GetProductByIdAsync(string Id)
         {
@@ -139,6 +147,5 @@ namespace NetBanking.Core.Application.Services
             return product;
         }
 
-        //Falta hacer la interfaz
     }
 }

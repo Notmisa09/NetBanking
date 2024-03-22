@@ -78,7 +78,7 @@ namespace WebApp.Controllers
             return View(new SaveUserViewModel());
         }
 
-        [HttpPost]
+        /*[HttpPost]
         public async Task<IActionResult> Register(SaveUserViewModel vm)
         {
             var origin = Request.Headers["origin"];
@@ -90,7 +90,7 @@ namespace WebApp.Controllers
                 return View(vm);
             }
             return RedirectToAction("Index");
-        }
+        }*/
 
 
         // FORGOT PASSWORD
