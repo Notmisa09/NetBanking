@@ -78,19 +78,19 @@ namespace WebApp.Controllers
             return View(new SaveUserViewModel());
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Register(SaveUserViewModel vm)
-        //{
-        //    var origin = Request.Headers["origin"];
-        //    ServiceResult response = await _userService.RegisterAsync(vm, origin, RolesEnum.Client.ToString());
-        //    if (!response.HasError)
-        //    {
-        //        vm.Error = response.Error;
-        //        vm.HasError = response.HasError;
-        //        return View(vm);
-        //    }
-        //    return RedirectToAction("Index", response);
-        //}
+        [HttpPost]
+        public async Task<IActionResult> Register(SaveUserViewModel vm)
+        {
+            var origin = Request.Headers["origin"];
+            ServiceResult response = await _userService.RegisterAsync(vm, origin, RolesEnum.Client.ToString());
+            if (!response.HasError)
+            {
+                vm.Error = response.Error;
+                vm.HasError = response.HasError;
+                return View(vm);
+            }
+            return RedirectToAction("Index", response);
+        }
 
 
         // FORGOT PASSWORD
