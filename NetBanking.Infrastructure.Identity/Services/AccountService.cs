@@ -110,7 +110,7 @@ namespace NetBanking.Infrastructure.Identity.Services
             if (user == null)
             {
                 response.HasError = true;
-                response.Error = $"No accounts registered under Email{request.Email}";
+                response.Error = $"No accounts registered under Email {request.Email}";
                 return response;
             }
 
@@ -246,6 +246,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 return response;
             }
 
+            response.Error = "Favor confirmar la cuenta.";
             return response;
         }
 
