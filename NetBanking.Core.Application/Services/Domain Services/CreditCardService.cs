@@ -12,13 +12,11 @@ namespace NetBanking.Core.Application.Services.Domain_Services
 {
     public class CreditCardService : GenericService<SaveCreditCardViewModel, CreditCardViewModel, CreditCard>, ICreditCardService
     {
-        private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMapper _mapper;
         private readonly ICreditCardRepository _repository;
         private readonly AuthenticationResponse user;
-        public CreditCardService(ICreditCardRepository repository, IMapper mapper, IHttpContextAccessor contextAccessor) : base(repository, mapper)
+        public CreditCardService(ICreditCardRepository repository, IMapper mapper) : base(repository, mapper)
         {
-            user = _contextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
             _mapper = mapper;
             _repository = repository;
         }
@@ -27,6 +25,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             var list = await _repository.FindAllAsync(x => x.UserId == Id);
             return _mapper.Map<List<CreditCardViewModel>>(list);
         }
+
 
         public  async Task CreateCardWithUser(SaveUserViewModel vm)
         {
@@ -41,6 +40,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
                 Id = genereatedCode
             };
             await _repository.AddAsync(card);
+
         }
 
         public override async Task<string> Delete(string Id)

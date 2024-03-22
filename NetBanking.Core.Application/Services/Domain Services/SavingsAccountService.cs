@@ -20,7 +20,9 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             
             IMapper mapper,
             ISavingsAccountRepository repository,
-            ISavingsAccountService savingsAccountService) : base(repository, mapper)
+            IAccountService accountService
+            ) : base(repository, mapper)
+
         {
             _accountService = accountService;
             _mapper = mapper;
@@ -49,8 +51,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             };
             await _repository.AddAsync(savingAccount);
         }*/
-
-        public async Task<string> Delete(string Id)
+        public override async Task<string> Delete(string Id)
         {
             var savingsAccount = await _repository.GeEntityByIDAsync(Id);
 
@@ -77,6 +78,6 @@ namespace NetBanking.Core.Application.Services.Domain_Services
 
             await _repository.DeleteAsync(savingsAccount);
             return "Se ha borrado la cuenta";
-        }*/
+        }
     }
 }

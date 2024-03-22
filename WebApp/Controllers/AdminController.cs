@@ -71,7 +71,7 @@ namespace WebApp.Controllers
         //EDIT USER
         public async Task<IActionResult> Edit(string Id)
         {
-            return View("Register", await _adminService.GetByIdWithAmountAsync(Id));
+            return View("Register", await _userService.GetByIdAsync(Id));
         }
 
         [HttpPost]
