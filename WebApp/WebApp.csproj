@@ -30,4 +30,8 @@
     <ProjectReference Include="..\NetBanking.Infrastructure.Shared\NetBanking.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Login\" />
+  </ItemGroup>
+
 </Project>
