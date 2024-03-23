@@ -6,6 +6,7 @@ namespace NetBanking.Core.Application.Interfaces.Services.Domain_Services
 {
     public interface ISavingsAccountService : IGenericService<SaveSavingsAccountViewModel, SavingsAccountViewModel, SavingsAccount>
     {
+        Task SaveUserWIthAccount(SaveUserViewModel vm);
         Task SaveUserWIthMainAccount(SaveUserViewModel vm);
         public Task<List<SavingsAccountViewModel>> GetByOwnerIdAsync(string Id);
     }

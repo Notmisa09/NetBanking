@@ -39,7 +39,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
         {
             string productcode = string.Empty;
             var userinfo = await _accountService.GetByEmail(vm.Email);
-            var code = CodeGeneratorHelper.GenerateCode(productcode , typeof(CreditCard));
+            var code = CodeGeneratorHelper.GenerateCode(typeof(CreditCard));
 
             SavingsAccount savingAccount = new()
             {
@@ -57,7 +57,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
         {
             string productcode = string.Empty;
             var userinfo = await _accountService.GetByEmail(vm.Email);
-            var code = CodeGeneratorHelper.GenerateCode(productcode, typeof(CreditCard));
+            var code = CodeGeneratorHelper.GenerateCode(typeof(CreditCard));
 
             SavingsAccount savingAccount = new()
             {

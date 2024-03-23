@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using NetBanking.Core.Application.Dtos.Account;
-using NetBanking.Core.Application.Dtos.Error;
 using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
@@ -38,7 +36,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             {
                 do
                 {
-                    generatedCode = CodeGeneratorHelper.GenerateCode(code, typeof(CreditCard));
+                    generatedCode = CodeGeneratorHelper.GenerateCode( typeof(CreditCard));
                     existingCreditCard = await GetByIdAsync(generatedCode);
 
                     if (existingCreditCard == null)

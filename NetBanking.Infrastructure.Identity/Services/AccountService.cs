@@ -228,6 +228,7 @@ namespace NetBanking.Infrastructure.Identity.Services
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
+
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, UserRoles);

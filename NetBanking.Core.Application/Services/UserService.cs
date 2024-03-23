@@ -56,11 +56,11 @@ namespace NetBanking.Core.Application.Services
 
         public async Task<ServiceResult> RegisterAsync(SaveUserViewModel vm, string origin, string userRole)
         {
-            RegisterRequest resgisterRequest = _mapper.Map<RegisterRequest>(vm);
-            if(vm.ImageURL != null)
+            if (vm.formFile != null)
             {
-                UploadImage.UploadFile(vm.formFile, vm.Id, "User");
+                vm.ImageURL = UploadImage.UploadFile(vm.formFile, vm.IdCard, "User");
             }
+            RegisterRequest resgisterRequest = _mapper.Map<RegisterRequest>(vm);
             var result = await _accountService.RegisterUserAsync(resgisterRequest, origin, userRole);
             if (userRole == RolesEnum.Client.ToString())
             {

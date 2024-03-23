@@ -24,10 +24,10 @@ namespace NetBanking.Core.Application.Helpers
 
             //get file extension
             Guid guid = Guid.NewGuid();
-            FileInfo fileInfo = new(file.FileName);
-            string fileName = guid + fileInfo.Extension;
+            FileInfo fileinfo = new(file.FileName);
+            string filename = guid + fileinfo.Extension;
 
-            string fileNameWithPath = Path.Combine(path, fileName);
+            string fileNameWithPath = Path.Combine(path, filename);
 
             using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
             {
@@ -45,7 +45,7 @@ namespace NetBanking.Core.Application.Helpers
                     System.IO.File.Delete(completeImageOldPath);
                 }
             }
-            return $"{basePath}/{fileName}";
+            return $"{basePath}/{filename}";
         }
     }
 }
