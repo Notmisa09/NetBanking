@@ -5,18 +5,18 @@ namespace NetBanking.Core.Application.Helpers
 {
     public static class CodeGeneratorHelper
     {
-        public static string GenerateCode(string ProductCode,  Type productType)
+        public static string GenerateCode( Type productType)
         {
             var prefix = GeneretePrefix(productType);
             Random rand = new Random();
             StringBuilder builder = new StringBuilder();
 
-            for (int i = 0; i <= 7; i++)
+            for (int i = 0; i <= 5; i++)
             {
                 string randomNumber = rand.Next(1, 10).ToString();
                 builder.Append(randomNumber);
             }
-            string FullCode = prefix + builder.ToString() + ProductCode;
+            string FullCode = prefix + builder.ToString();
             return FullCode;
         }
 

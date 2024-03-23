@@ -1,17 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using NetBanking.Core.Application.Interfaces.Repositories;
-using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
-using NetBanking.Core.Application.ViewModels.Beneficiary;
 using NetBanking.Core.Application.ViewModels.Loan;
-using NetBanking.Core.Application.ViewModels.SavingsAccount;
 using NetBanking.Core.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetBanking.Core.Application.Services.Domain_Services
 {
