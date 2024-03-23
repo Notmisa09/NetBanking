@@ -22,6 +22,12 @@ namespace WebApp.Controllers
         //INDEX
         public IActionResult Index()
         {
+            if (string.IsNullOrEmpty(TempData["Success"]?.ToString()))
+            {
+                LoginViewModel vm = new();
+                vm.Error = TempData["Success"]?.ToString();
+                return View(vm);
+            }
             return View(new LoginViewModel());
         }
 
@@ -53,6 +59,7 @@ namespace WebApp.Controllers
                 vm.Error = userVm.Error;
                 return View(vm);
             }
+
             return View(vm);
         }
 
@@ -89,7 +96,8 @@ namespace WebApp.Controllers
                 vm.HasError = response.HasError;
                 return View(vm);
             }
-            return RedirectToAction("Index", response);
+            TempData["Success"] = response.Error;
+            return RedirectToAction("Index");
         }
 
 
