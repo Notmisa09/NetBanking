@@ -5,7 +5,7 @@ namespace NetBanking.Core.Application.Interfaces.Services
 {
     public interface IAdminService
     {
-        Task<string> ChangeAccountStatus(ActiveUserViewModel vm);
+        Task<string> ChangeAccountStatus(string Id);
         Task<List<UserViewModel>> GetAllAsync();
         Task<DashboardViewModel> GetDashboard();
         //Task<SaveUserViewModel> GetByIdWithAmountAsync(string UserId);

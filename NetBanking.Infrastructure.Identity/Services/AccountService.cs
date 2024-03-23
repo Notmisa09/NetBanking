@@ -155,12 +155,12 @@ namespace NetBanking.Infrastructure.Identity.Services
         public async Task<ServiceResult> UpdateUserAsync(RegisterRequest request)
         {
             ServiceResult response = new();
-            var userget = await _userManager.FindByEmailAsync(request.Id);
+            var userget = await _userManager.FindByIdAsync(request.Id);
             {
                 userget.Id = request.Id;
                 userget.PhoneNumber = request.PhoneNumber;
                 userget.UserName = request.UserName;
-                userget.UserName = request.FirstName;
+                userget.FirstName = request.FirstName;
                 userget.LastName = request.LastName;
                 userget.Email = request.Email;
                 userget.IsActive = request.IsActive;
@@ -172,13 +172,13 @@ namespace NetBanking.Infrastructure.Identity.Services
                 var Token = await _userManager.GeneratePasswordResetTokenAsync(userget);
                 await _userManager.ResetPasswordAsync(userget, Token, request.Password);
             }
-            if(request.ImageURL == null)
+            if(request.ImageURL != null)
             {
-                userget.ImageURL = UploadImage.UploadFile(request.formFile, request.Id, "User");
+                userget.ImageURL = UploadImage.UploadFile(request.formFile, request.Id, "User", true);
             }
             else
             {
-                userget.ImageURL = UploadImage.UploadFile(request.formFile, request.Id, "User", true, request.ImageURL);
+                userget.ImageURL = UploadImage.UploadFile(request.formFile, request.Id, "User", false, request.ImageURL);
             }
             var result = await _userManager.UpdateAsync(userget);
             if (!result.Succeeded)

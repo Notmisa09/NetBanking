@@ -10,7 +10,7 @@
 }
 
 <!DOCTYPE html>
-<html data-bs-theme="dark" lang="en">
+<html  lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -39,9 +39,6 @@
                         }
                         else if (user.Roles.Contains(RolesEnum.Admin.ToString()))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Home">Home</a>
-                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="DashBoard">DashBoard</a>
                             </li>
