@@ -46,19 +46,25 @@ namespace NetBanking.Core.Application.Services
             return userlist;
         }
 
-        public async Task<string> ChangeAccountStatus(ActiveUserViewModel vm)
+        public async Task<string> ChangeAccountStatus(string Id)
         {
-            if (vm.IdUser == _userViewModel.Id)
+            if (Id == _userViewModel.Id)
             {
                 return "No puedes desactivar tu propia cuenta.";
             }
             else
             {
-                var user = await _accountService.GetByIdAsync(vm.IdUser);
-                if (user == null)
+                var user = await _accountService.GetByIdAsync(Id);
+                if (user != null)
                 {
-                    user.IsActive = vm.ChangeStatus;
-
+                    if(user.IsActive == true)
+                    {
+                        user.IsActive = false;
+                    }
+                    else
+                    {
+                        user.IsActive = true;
+                    }
                     var userVm = _mapper.Map<RegisterRequest>(user);
                     await _accountService.UpdateUserAsync(userVm);
 

@@ -18,7 +18,6 @@ namespace WebApp.Controllers
             _userService = userService;
         }
 
-
         //INDEX
         public IActionResult Index()
         {
@@ -43,7 +42,7 @@ namespace WebApp.Controllers
                 }
                 else if (userVm.Roles.Contains(RolesEnum.Admin.ToString()))
                 {
-                    return RedirectToRoute(new { controller = "Admin", action = "Index" });
+                    return RedirectToRoute(new { controller = "Admin", action = "DashBoard" });
                 }
                 
             }
@@ -92,7 +91,6 @@ namespace WebApp.Controllers
             return RedirectToAction("Index");
         }
 
-
         // FORGOT PASSWORD
         public IActionResult ForgotPassword()
         {
@@ -117,7 +115,7 @@ namespace WebApp.Controllers
             return RedirectToRoute(new { controller="User", action="Index" });
         }
 
-
+       
         //LOGOUT
         [HttpPost]
         public async Task<IActionResult> LogOut(LoginViewModel vm)
@@ -134,6 +132,7 @@ namespace WebApp.Controllers
             return View(new ResetPasswordViewModel { Token = Token });
         }
 
+       
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel vm)
         {

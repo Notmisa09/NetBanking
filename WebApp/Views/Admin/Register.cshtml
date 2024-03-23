@@ -2,6 +2,7 @@
 @using NetBanking.Core.Application.ViewModels.Users;
 @using NetBanking.Core.Application.Helpers;
 @using NetBanking.Core.Application.Enums;
+@inject IHttpContextAccessor  httpContext;
 @model SaveUserViewModel
 
 @{
@@ -69,23 +70,33 @@
                             <input asp-for="PhoneNumber" class="form-control" />
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
-                       
+
                         @if (editMode == false)
                         {
                             <div class="mb-3">
                                 <label asp-for="Role" class="form-label">Choose the user role</label>
-                                <select asp-for="Role" class="form-select" id="userRole">
-                                   <option value="#">Choose an </option> 
+                                <select asp-for="Role" class="form-select" id="userRoleSelect">
+                                    <option value="#">Choose an option</option>
                                     <option value="@RolesEnum.Client.ToString()">Client</option>
                                     <option value="@RolesEnum.Admin.ToString()">Admin</option>
                                 </select>
                             </div>
                         }
 
-                        <div id="initialAmountDiv" class="mb-3" style="display: none;">
-                            <label asp-for="InitialAmount" class="form-label">Initial Amount</label>
-                            <input asp-for="InitialAmount" class="form-control" />
-                        </div>
+                        @if (Model.Role == RolesEnum.Client.ToString())
+                        {
+                            <div id="initialAmountDiv" class="mb-3">
+                                <label asp-for="InitialAmount" class="form-label">Initial Amount</label>
+                                <input asp-for="InitialAmount" class="form-control" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div id="initialAmountDiv" class="mb-3" style="display: none;">
+                                <label asp-for="InitialAmount" class="form-label">Initial Amount</label>
+                                <input asp-for="InitialAmount" class="form-control" />
+                            </div>
+                        }
 
 
                         <div class="mb-3">

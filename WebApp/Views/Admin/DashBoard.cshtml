@@ -10,13 +10,26 @@
 </head>
 
 <div class="container-fluid">
-    <div class="col-4 offset-1">
-        <div class="card bg-light">
-            <div class="card-body">
-                <h5 class="text-dark">Active users right now:</h5>
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-users fa-2x text-info mr-2"></i> <!-- Icono de usuarios -->
-                    <h3 class="card-text text-dark">@Model.ActiveClients</h3> <!-- Número de usuarios -->
+    <div class="row offset-2">
+        <div class="col-md-3">
+            <div class="card blue-border cardstatistics bg-light">
+                <div class="card-body">
+                    <h5 class="text-secondary">Active users:</h5>
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-user-check fa-lg" style="color: #34ef63;"></i> <!-- Icono de usuarios -->
+                        <h3 class="card-text fw-bolder text-dark ms-2">@Model.ActiveClients</h3> <!-- Número de usuarios -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card red-border cardstatistics bg-light">
+                <div class="card-body">
+                    <h5 class="text-secondary">Inactive users:</h5>
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-skull fa-lg" style="color: #e04e3e;"></i>
+                        <h3 class="card-text fw-bolder text-dark ms-2">@Model.InactiveClients</h3>
+                    </div>
                 </div>
             </div>
         </div>
@@ -39,4 +52,39 @@
         transform: translateY(-5px);
         box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
     }
+
+    .blue-border {
+        border-color: cyan
+    }
+
+    .blue-border {
+        box-shadow: 0 0 20px rgba(137, 196, 244)
+    }
+
+    .blue-border {
+        border: 1px solid cyan
+    }
+
+
+    .blue-border {
+        border-color: cyan;
+    }
+
+    .red-border {
+        border-color: darkred;
+    }
+
+    .red-border {
+        box-shadow: 0 0 20px rgba(137, 0, 0, 1)
+    }
+
+    .red-border {
+        border-color: darkred;
+    }
+
+
+    .red-border {
+        border-color: darkred;
+    }
+
 </style>

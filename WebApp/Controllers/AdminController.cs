@@ -60,9 +60,9 @@ namespace WebApp.Controllers
 
 
         //CHANGE USER STATUS
-        public async Task<IActionResult> ChangeStatus(ActiveUserViewModel vm, string IdUser)
+        public async Task<IActionResult> ChangeStatus(string Id)
         {
-            await _adminService.ChangeAccountStatus(vm);
+            await _adminService.ChangeAccountStatus(Id);
             return RedirectToRoute(new { controller = "User", action = "Index" });
         }
 
@@ -78,14 +78,14 @@ namespace WebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(vm);
+                return View("Register",vm);
             };
             ServiceResult response = await _userService.UpdateAsync(vm);
             if (response.HasError)
             {
                 vm.Error = response.Error;
                 vm.HasError = response.HasError;
-                return View(vm);
+                return View("Register",vm);
             }
             return RedirectToRoute(new { controller = "Admin", action = "Index" });
         }
