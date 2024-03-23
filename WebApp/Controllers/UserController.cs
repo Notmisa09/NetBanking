@@ -89,7 +89,7 @@ namespace WebApp.Controllers
                 vm.HasError = response.HasError;
                 return View(vm);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", response);
         }
 
 
