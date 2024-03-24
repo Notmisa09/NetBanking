@@ -10,7 +10,7 @@ using NetBanking.Infrastructure.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddSession();
 builder.Services.AddTransient<ValidateUserSession, ValidateUserSession>();
 builder.Services.AddScoped<LoginAuthorize>();

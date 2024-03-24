@@ -2,6 +2,6 @@
 {
     public class CreditCard : BaseProduct
     {
-        public decimal Debt { get; set; }
+        public decimal Limit { get; set; }
     }
 }

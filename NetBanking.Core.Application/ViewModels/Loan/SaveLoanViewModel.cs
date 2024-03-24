@@ -8,5 +8,7 @@
         public decimal Debt { get; set; }
         public bool HasError { get; set; }
         public string? Error { get; set; }
+        public string CreatedById { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

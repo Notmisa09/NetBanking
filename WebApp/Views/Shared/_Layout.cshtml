@@ -2,6 +2,9 @@
 @using NetBanking.Core.Application.Helpers;
 @using Microsoft.AspNetCore.Http
 @using NetBanking.Core.Application.Enums;
+@using NetBanking.Core.Application.Enums;
+@using NetBanking.Core.Domain.Enums;
+
 @inject IHttpContextAccessor httpContext;
 
 @{
@@ -55,9 +58,6 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Home">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="CreditCard">CreditCard</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Beneficiaries">Beneficiaries</a>
                             </li>
                             <li class="nav-item dropdown">
@@ -65,11 +65,11 @@
                                     Pays
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" asp-controller="Client" asp-action="ExpressPay">Express</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Client" asp-action="CreditCardPay">Credit Card</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Client" asp-action="LoanPay">Loan</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Client" asp-action="InitializeTransaction" asp-route-TypeOfTransaction="@TransactionType.ExpressPay.ToString()">Express</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Client" asp-action="InitializeTransaction" asp-route-TypeOfTransaction="@TransactionType.CreditCardPay.ToString()">Credit Card</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Client" asp-action="InitializeTransaction" asp-route-TypeOfTransaction="@TransactionType.LoanPay.ToString()">Loan</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">Beneficiaries</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Client" asp-action="InitializeTransaction" asp-route-TypeOfTransaction="@TransactionType.BeneficiaryPay.ToString()">Beneficiaries</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item">

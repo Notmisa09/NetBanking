@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
 using NetBanking.Core.Application.ViewModels.Loan;
@@ -18,6 +19,22 @@ namespace NetBanking.Core.Application.Services.Domain_Services
         {
             _mapper = mapper;
             _repository = repository;
+        }
+
+        public override async Task<SaveLoanViewModel> AddAsync(SaveLoanViewModel vm)
+        {
+            Loan entity = _mapper.Map<Loan>(vm);
+            string candidateId = "";
+            do
+            {
+                candidateId = CodeGeneratorHelper.GenerateCode(typeof(Loan));
+            }
+            while ((await _repository.FindAllAsync(x => x.Id == candidateId)).Count != 0);
+            vm.Id = candidateId;
+            entity = await _repository.AddAsync(entity);
+
+            SaveLoanViewModel svm = _mapper.Map<SaveLoanViewModel>(entity);
+            return svm;
         }
 
         public async Task<List<LoanViewModel>> GetByOwnerIdAsync(string Id)
