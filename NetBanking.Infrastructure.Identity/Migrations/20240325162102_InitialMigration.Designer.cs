@@ -12,7 +12,7 @@ using NetBanking.Infrastructure.Persistence.Contexts;
 namespace NetBanking.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20240321182215_InitialMigration")]
+    [Migration("20240325162102_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
