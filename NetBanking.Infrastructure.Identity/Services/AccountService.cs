@@ -40,6 +40,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 IdCard = user.IdCard,
                 IsActive = user.IsActive,
                 PhoneNumber = user.PhoneNumber,
+                Password = user.PasswordHash
             };
             return dtoaccount;
         }

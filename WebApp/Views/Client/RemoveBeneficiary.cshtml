@@ -12,10 +12,10 @@
 }
 
 
-<div class="col-4 offset-4 mb-3" >
+<div class="col-4 offset-4 mb-3">
     <div class="card box-shadow shadow-sm ">
         <div class="card-body">
-            <h4>~Are you sure you want to delete this user? ~</h4>
+            <h4>~ Are you sure you want to delete this beneficiary? ~</h4>
         </div>
     </div>
 </div>
@@ -37,13 +37,12 @@
                     <hr />
                     <p class="text-secondary mb-1">Full Name : @Model.FirstName</p>
                     <p class="text-muted font-size-sm">Last Name : @Model.LastName</p>
-                    <p class="text-muted font-size-sm">Identification @Model.IdCard</p>
                     <p class="text-muted font-size-sm">Phone Number : @Model.PhoneNumber</p>
                 </div>
             </div>
             <div>
-                <form asp-controller="Admin" asp-action="RemoveTrue" method="post" >
-                    
+                <form asp-controller="Admin" asp-action="RemoveTrue" method="post">
+
                     <button name="Id" value="@Model.Id" type="submit" class="btn btn-outline-danger float-end ms-1"><i class="fa-solid fa-trash-can"></i></button>
                     <a class="btn btn-outline-info float-end" asp-controller="Admin" asp-action="Index"><i class="fa-solid fa-circle-arrow-left"></i></a>
                 </form>
@@ -61,10 +60,11 @@
         border-radius: 50%;
     }
 
-    #card{
-        border-radius:6px;
+    #card {
+        border-radius: 6px;
     }
-       .card {
+
+    .card {
         border-radius: 20px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
