@@ -1,4 +1,5 @@
 ﻿@using NetBanking.Core.Application.ViewModels.Transaction;
+@using NetBanking.Core.Domain.Enums;
 @model RealizeTransaction;
 
 <h1>Credit Card Pay</h1>
@@ -8,6 +9,7 @@
 }
 
 <form asp-action="InitializeTransaction" method="post">
+
     <label class="form-label" asp-for="@Model.SaveTransactionViewModel.ReceiverProductId">Elija la tarjeta de credito que desee pagar</label>
     <select class="form-select" asp-for="@Model.SaveTransactionViewModel.ReceiverProductId">
         @foreach (var item in Model.AllProducts.CreditCards)

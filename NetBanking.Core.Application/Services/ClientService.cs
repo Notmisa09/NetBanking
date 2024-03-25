@@ -11,6 +11,7 @@ using NetBanking.Core.Domain.Entities;
 using NetBanking.Core.Application.ViewModels.CreditCard;
 using NetBanking.Core.Application.ViewModels.SavingsAccount;
 using NetBanking.Core.Application.ViewModels.Loan;
+using NetBanking.Core.Domain.Enums;
 
 namespace NetBanking.Core.Application.Services
 {
@@ -24,6 +25,7 @@ namespace NetBanking.Core.Application.Services
         private readonly ILoanService _loanService;
         private readonly IBeneficiaryService _beneficiaryService;
         private readonly ITransactionService _transactionService;
+        private AuthenticationResponse user;
 
         public ClientService(
             IAccountService accountService,
@@ -33,8 +35,7 @@ namespace NetBanking.Core.Application.Services
             ICreditCardService creditCardService,
             ILoanService loanService,
             IBeneficiaryService beneficiaryService,
-            ITransactionService transactionService
-            )
+            ITransactionService transactionService)
         {
             _accountService = accountService;
             _beneficiaryService = beneficiaryService;
@@ -44,16 +45,16 @@ namespace NetBanking.Core.Application.Services
             _httpContextAccessor = httpContextAccessor;
             _loanService = loanService;
             _savingsAccountService = savingsAccountService;
+            user = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
         }
 
         public async Task<GetAllProductsByClientViewModel> GetAllProductsByClientAsync()
         {
-            var userId = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user").Id;
             GetAllProductsByClientViewModel vm = new()
             {
-                SavingsAccounts = await _savingsAccountService.GetByOwnerIdAsync(userId),
-                CreditCards = await _creditCardService.GetByOwnerIdAsync(userId),
-                Loans = await _loanService.GetByOwnerIdAsync(userId)
+                SavingsAccounts = await _savingsAccountService.GetByOwnerIdAsync(user.Id),
+                CreditCards = await _creditCardService.GetByOwnerIdAsync(user.Id),
+                Loans = await _loanService.GetByOwnerIdAsync(user.Id)
             };
 
             return vm;
@@ -61,8 +62,7 @@ namespace NetBanking.Core.Application.Services
 
         public async Task<List<BeneficiaryViewModel>> GetAllBeneficiariesByClientAsync()
         {
-            var userId = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user").Id;
-            return await _beneficiaryService.GetByOwnerIdAsync(userId);
+            return await _beneficiaryService.GetByOwnerIdAsync(user.Id);
         }
 
         public async Task<TransactionStatusViewModel> RealizeTransaction(SaveTransactionViewModel svm)
@@ -70,7 +70,7 @@ namespace NetBanking.Core.Application.Services
             var emissorProduct = await GetProductByIdAsync(svm.EmissorProductId);
             var receiverProduct = await GetProductByIdAsync(svm.ReceiverProductId);
 
-            if (emissorProduct != null && receiverProduct != null)
+            if (emissorProduct.Id != null && receiverProduct.Id != null)
             {
 
                 #region Determina a donde enviar la actualización del emissorProduct
@@ -176,7 +176,7 @@ namespace NetBanking.Core.Application.Services
         {
             var emissorProduct = await GetProductByIdAsync(svm.EmissorProductId);
             var receiverProduct = await GetProductByIdAsync(svm.ReceiverProductId);
-            if (receiverProduct.Id == null)
+            if (receiverProduct == null)
             {
                 return new TransactionStatusViewModel()
                 {
@@ -196,9 +196,11 @@ namespace NetBanking.Core.Application.Services
             {
                 #region Posibles errores al realizar transacción
 
-                int Identificator = Convert.ToInt32(svm.EmissorProductId.Substring(0, 3));
+                int emissorIdentificator = Convert.ToInt32(svm.EmissorProductId.Substring(0, 3));
+                int receiverIdentificator = Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3));
 
-                if (100 <= Identificator && Identificator <= 299) //Tarjetas de credito comienzan con 3 digitos entre 100 y 299
+
+                if (100 <= emissorIdentificator && emissorIdentificator <= 299) //Tarjetas de credito comienzan con 3 digitos entre 100 y 299
                 {
                     var creditCard = await _creditCardService.GetByIdAsync(emissorProduct.Id);
 
@@ -212,7 +214,7 @@ namespace NetBanking.Core.Application.Services
                     }
                 }
 
-                else if (300 <= Identificator && Identificator <= 599) //Cuentas de ahorro comienzan con 3 digitos entre 300 y 599
+                else if (300 <= emissorIdentificator && emissorIdentificator <= 599) //Cuentas de ahorro comienzan con 3 digitos entre 300 y 599
                 {
                     var savingAccount = await _savingsAccountService.GetByIdAsync(emissorProduct.Id);
 
@@ -225,9 +227,18 @@ namespace NetBanking.Core.Application.Services
                         };
                     }
                 }
+
+                if(100 <= receiverIdentificator && receiverIdentificator <= 299 && svm.Type != TransactionType.CreditCardPay)
+                {
+                    return new TransactionStatusViewModel()
+                    {
+                        HasError = true,
+                        Error = "A las tarjetas de crédito no se les deposita dinero"
+                    };
+                }
                 #endregion
             }
-            else if (emissorProduct.Id == receiverProduct.Id)
+            if (emissorProduct.Id == receiverProduct.Id)
             {
                 return new TransactionStatusViewModel()
                 {
@@ -259,47 +270,58 @@ namespace NetBanking.Core.Application.Services
         public async Task<BaseProduct> GetProductByIdAsync(string Id)
         {
             BaseProduct product = new BaseProduct();
-            if (Id.Length > 3)
+            if(Id != null)
             {
-                //Asumiendo que las tarjetas de credito comienzan con 3 digitos entre 100 y 299
-                if (100 <= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 299)
+                if (Id.Length > 3)
                 {
-                    var entity = await _creditCardService.GetByIdAsync(Id);
-                    if (entity != null)
+                    //Asumiendo que las tarjetas de credito comienzan con 3 digitos entre 100 y 299
+                    if (100 <= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 299)
                     {
-                        product.Amount = entity.Amount;
-                        product.Id = entity.Id;
-                        product.UserId = entity.UserId;
-                        product.CreatedById = entity.CreatedById;
-                        product.CreatedDate = entity.CreatedDate;
-                    }
+                        var entity = await _creditCardService.GetByIdAsync(Id);
+                        if (entity != null)
+                        {
+                            product.Amount = entity.Amount;
+                            product.Id = entity.Id;
+                            product.UserId = entity.UserId;
+                            product.CreatedById = entity.CreatedById;
+                            product.CreatedDate = entity.CreatedDate;
+                        }
 
-                }
-                //Asumiendo que las cuentas de ahorro comienzan con 3 digitos entre 300 y 599
-                else if (300 <= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
-                {
-                    var entity = await _savingsAccountService.GetByIdAsync(Id);
-                    if (entity != null)
+                    }
+                    //Asumiendo que las cuentas de ahorro comienzan con 3 digitos entre 300 y 599
+                    else if (300 <= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 599)
                     {
-                        product.Amount = entity.Amount;
-                        product.Id = entity.Id;
-                        product.UserId = entity.UserId;
-                        product.CreatedById = entity.CreatedById;
-                        product.CreatedDate = entity.CreatedDate;
+                        var entity = await _savingsAccountService.GetByIdAsync(Id);
+                        if (entity != null)
+                        {
+                            product.Amount = entity.Amount;
+                            product.Id = entity.Id;
+                            product.UserId = entity.UserId;
+                            product.CreatedById = entity.CreatedById;
+                            product.CreatedDate = entity.CreatedDate;
+                        }
+                    }
+                    //Asumiendo que los préstamos comienzan con 3 digitos entre 600 y 999
+                    else if (600 <= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 999)
+                    {
+                        var entity = await _loanService.GetByIdAsync(Id);
+                        if (entity != null)
+                        {
+                            product.Amount = entity.Amount;
+                            product.Id = entity.Id;
+                            product.UserId = entity.UserId;
+                            product.CreatedById = entity.CreatedById;
+                            product.CreatedDate = entity.CreatedDate;
+                        }
+                    }
+                    else
+                    {
+                        product = null;
                     }
                 }
-                //Asumiendo que los préstamos comienzan con 3 digitos entre 600 y 999
-                else if (600 <= Convert.ToInt32(Id.Substring(0, 3)) && Convert.ToInt32(Id.Substring(0, 3)) <= 999)
+                else
                 {
-                    var entity = await _loanService.GetByIdAsync(Id);
-                    if (entity != null)
-                    {
-                        product.Amount = entity.Amount;
-                        product.Id = entity.Id;
-                        product.UserId = entity.UserId;
-                        product.CreatedById = entity.CreatedById;
-                        product.CreatedDate = entity.CreatedDate;
-                    }
+                    product = null;
                 }
             }
             else
@@ -309,5 +331,40 @@ namespace NetBanking.Core.Application.Services
             return product;
         }
 
+        public async Task<SaveBeneficiaryViewModel> AddBeneficiary(SaveBeneficiaryViewModel svm)
+        {
+            if (await ProductExists(svm.BeneficiaryAccountId))
+            {
+                var existence = await _beneficiaryService.FindAllAsync(x => x.UserId == user.Id && x.BeneficiaryAccountId == svm.BeneficiaryAccountId);
+                if (existence.Count > 0)
+                {
+                    svm.HasError = true;
+                    svm.Error = "Este beneficiario ya está registrado.";
+                }
+                else
+                {
+                    svm = await _beneficiaryService.AddAsync(svm);
+                }
+            }
+            else
+            {
+                svm.HasError = true;
+                svm.Error = "Este producto no existe";
+            }
+            return svm;
+        }
+
+        public async Task DeleteBeneficiary(string Id)
+        {
+            if (await ProductExists(Id))
+            {
+                var list = await _beneficiaryService.FindAllAsync(x => x.UserId == user.Id && x.BeneficiaryAccountId == Id);
+                var beneficiary = list.First();
+                if (beneficiary != null)
+                {
+                    await _beneficiaryService.Delete(beneficiary.Id);
+                }
+            }
+        }
     }
 }

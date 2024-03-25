@@ -7,6 +7,6 @@
         LoanPay,
         BeneficiaryPay,
         CashAdvance,
-        SimpleTransaction
+        BetweenAccountsTransaction
     }
 }
