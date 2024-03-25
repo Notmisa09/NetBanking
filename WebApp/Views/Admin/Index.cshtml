@@ -9,6 +9,7 @@
     <script src="https://kit.fontawesome.com/7302c44b99.js" crossorigin="anonymous"></script>
 </head>
 
+
 <div class="container-fluid">
     <div>
 
@@ -52,9 +53,13 @@
                                     }
                                 </td>
                                 <td>
-                                    <a class="btn btn-info" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ChangeStatus">Activate User</a>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#myModal">
+                                        <i class="fa-solid fa-pen-nib"></i>
+                                    </button>
                                     <a class="btn btn-warning" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="Edit"><i class="fa-solid fa-pencil fa-sm" style="color: #19191a;"></i></a>
                                     <a class="btn btn-danger" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="Remove"><i class="fa-regular fa-trash-can"></i></a>
+                                    <a class="btn btn-info" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ChangeStatus">Activate User</a>
                                 </td>
                             </tr>
                         }
@@ -64,7 +69,6 @@
         </div>
     </div>
 </div>
-
 
 <style>
     #profileimage {

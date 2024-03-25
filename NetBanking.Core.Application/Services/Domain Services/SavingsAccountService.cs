@@ -53,6 +53,11 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             await _repository.AddAsync(savingAccount);
         }
 
+        public override Task<SaveSavingsAccountViewModel> AddAsync(SaveSavingsAccountViewModel vm)
+        {
+            return base.AddAsync(vm);
+        }
+
         public async Task SaveUserWIthMainAccount(SaveUserViewModel vm)
         {
             string productcode = string.Empty;
@@ -70,6 +75,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             };
             await _repository.AddAsync(savingAccount);
         }
+
         public override async Task<string> Delete(string Id)
         {
             var savingsAccount = await _repository.GeEntityByIDAsync(Id);

@@ -34,17 +34,18 @@ namespace NetBanking.Core.Application.Services
         public async Task<ServiceResult> UpdateAsync(SaveUserViewModel vm)
         {
             var user = _mapper.Map<RegisterRequest>(vm);
+            if(vm.InitialAmount != 0)
+            {
+                if (vm.Role == RolesEnum.Client.ToString())
+                {
+                    var savingsAccount = await _savingsAccountService.GetByOwnerIdAsync(user.Id);
+                    var savingsAccountVm = savingsAccount.Find(x => x.IsMain == true && x.UserId == user.Id);
 
-            //if (vm.Role == RolesEnum.Client.ToString())
-            //{
-            //    var savingsAccount = await _savingsAccountService.GetByOwnerIdAsync(user.Id);
-            //    var savingsAccountVm = savingsAccount.Find(x => x.IsMain == true && x.UserId == user.Id);
-
-            //    savingsAccountVm.Amount += vm.InitialAmount;
-            //    SaveSavingsAccountViewModel savingsAccountRequest = _mapper.Map<SaveSavingsAccountViewModel>(savingsAccountVm);
-            //    await _savingsAccountService.UpdateAsync(savingsAccountRequest, savingsAccountRequest.Id);
-            //}
-
+                    savingsAccountVm.Amount += vm.InitialAmount;
+                    SaveSavingsAccountViewModel savingsAccountRequest = _mapper.Map<SaveSavingsAccountViewModel>(savingsAccountVm);
+                    await _savingsAccountService.UpdateAsync(savingsAccountRequest, savingsAccountRequest.Id);
+                }
+            }
             var response = await _accountService.UpdateUserAsync(user);
             return response;
         }
