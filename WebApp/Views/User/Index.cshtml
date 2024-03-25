@@ -44,7 +44,7 @@
             });
             Toast.fire({
                 icon: "success",
-                title: "@Model.Error"
+                title: "Cuenta registrada éxitosamente!"
             });
         </script>
     }
@@ -78,7 +78,9 @@
                             <a asp-controller="User" asp-action="Register" style="color: #fff">Sing Up</a>
                         </div>
                         <div class="w-50 text-md-right">
-                            <a asp-controller="User" asp-action="ForgotPassword" style="color: #fff"><img src="~/Iconos/bloqueado.png" style="width: 25px; height: 25px; margin-right: 7px;"/> Forgot Password</a>
+                            <a id="forgotPasswordButton" style="color: #fff; cursor: pointer;">
+                                <img src="~/Iconos/bloqueado.png" style="width: 25px; height: 25px; margin-right: 7px;" /> Forgot Password
+                            </a>
                         </div>
                     </div>
                 </form>
@@ -145,5 +147,35 @@
                 input.classList.remove('focused');
             });
         });
+    });
+
+
+    const forgotPasswordButton = document.getElementById('forgotPasswordButton');
+
+    forgotPasswordButton.addEventListener('click', async () => {
+        const { value: email } = await Swal.fire({
+            title: "¿Do you forgot your password?",
+            input: "email",
+            inputLabel: "Your email address",
+            inputPlaceholder: "Enter your email address",
+            showCancelButton: true,
+            confirmButtonText: "Submit"
+        });
+
+        if (email) {
+            const response = await fetch('/User/ForgotPassword', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(email) 
+            });
+
+            if (response.ok) {
+                Swal.fire('Email sent successfully!');
+            } else {
+                Swal.fire('Email not found.');
+            }
+        }
     });
 </script>

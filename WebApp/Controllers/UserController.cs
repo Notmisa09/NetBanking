@@ -4,6 +4,7 @@ using NetBanking.Core.Application.Dtos.Error;
 using NetBanking.Core.Application.Enums;
 using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Services;
+using NetBanking.Core.Application.Singelton;
 using NetBanking.Core.Application.ViewModels.Users;
 
 
@@ -25,7 +26,8 @@ namespace WebApp.Controllers
             if (string.IsNullOrEmpty(TempData["Success"]?.ToString()))
             {
                 LoginViewModel vm = new();
-                vm.Error = TempData["Success"]?.ToString();
+                vm.Error = StringStorage.Instance.GetStoredString();
+                StringStorage.Instance.SetStoredString("");
                 return View(vm);
             }
             return View(new LoginViewModel());
@@ -96,7 +98,7 @@ namespace WebApp.Controllers
                 vm.HasError = response.HasError;
                 return View(vm);
             }
-            TempData["Success"] = response.Error;
+            StringStorage.Instance.SetStoredString(response.Error);
             return RedirectToAction("Index");
         }
 
@@ -108,8 +110,10 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ForgotPassword(ForgorPasswordViewModel vm)
+        public async Task<IActionResult> ForgotPassword([FromBody] string email)
         {
+            ForgorPasswordViewModel vm = new();
+            vm.Email = email;
             if (!ModelState.IsValid)
             {
                 return View(vm);
@@ -120,7 +124,7 @@ namespace WebApp.Controllers
             {
                 vm.Error = response.Error;
                 vm.HasError = response.HasError;
-                return View(vm);
+                return View("Index", vm);
             }
             return RedirectToRoute(new { controller="User", action="Index" });
         }
