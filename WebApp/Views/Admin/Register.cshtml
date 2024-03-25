@@ -91,22 +91,33 @@
                             </div>
                         }
 
-                        <div id="initialAmountDiv" class="mb-3" style="display: none;">
-                            <label asp-for="InitialAmount" class="form-label">Initial Amount</label>
-                            <input asp-for="InitialAmount" class="form-control" />
-                        </div>
+                        @if(editMode == true)
+                        {
+                            <div class="mb-3">
+                                <label asp-for="Password" class="form-label">Contraseña: </label>
+                                <input asp-for="Password" type="password" placeholder="Type in here only if you are willing to change your password" class="form-control" />
+                                <span asp-validation-for="Password"  class="text-danger"></span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div id="initialAmountDiv" class="mb-3" style="display: none;">
+                                <label asp-for="InitialAmount" class="form-label">Initial Amount</label>
+                                <input asp-for="InitialAmount" class="form-control" />
+                            </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Password" class="form-label">Contraseña: </label>
-                            <input asp-for="Password" class="form-control" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
+                            <div class="mb-3">
+                                <label asp-for="Password" class="form-label">Contraseña: </label>
+                                <input asp-for="Password" type="password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
 
-                        <div class="mb-3">
-                            <label asp-for="ConfirmPassword" class="form-label">Confirmar contraseña: </label>
-                            <input asp-for="ConfirmPassword" class="form-control" />
-                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                        </div>
+                            <div class="mb-3">
+                                <label asp-for="ConfirmPassword" class="form-label">Confirmar contraseña: </label>
+                                <input asp-for="ConfirmPassword" class="form-control" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        }
 
                         <button type="submit" class="btn btn-primary">Guardar</button>
                         <a asp-controller="Admin" asp-action="Index" class="btn btn-warning">Volver atrás</a>
