@@ -1,0 +1,12 @@
+﻿@using NetBanking.Core.Application.ViewModels.Beneficiary;
+@model SaveBeneficiaryViewModel
+@if (Model.HasError)
+{
+    <h1>@Model.Error</h1>
+}
+<form asp-action="AddBeneficiary" method="post">
+    <input asp-for="UserId" value="@Model.UserId" hidden />
+    <label asp-for="BeneficiaryAccountId">Cuenta beneficiaria</label>
+    <input asp-for="BeneficiaryAccountId" />
+    <button type="submit">Send</button>
+</form>

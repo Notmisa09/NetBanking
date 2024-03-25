@@ -2,36 +2,37 @@
 @using NetBanking.Core.Domain.Enums;
 @model RealizeTransaction;
 
-<h1>Loan Pay</h1>
+<h1>Cash Advance</h1>
 @if (Model.TransactionStatus.HasError)
 {
     <h1>@Model.TransactionStatus.Error</h1>
 }
 
 <form asp-action="InitializeTransaction" method="post">
-    <label class="form-label" asp-for="@Model.SaveTransactionViewModel.ReceiverProductId">Elija el prestamo que desee pagar</label>
-    <select class="form-select" asp-for="@Model.SaveTransactionViewModel.ReceiverProductId">
-        @foreach (var item in Model.AllProducts.Loans)
+
+    <label class="form-label" asp-for="@Model.SaveTransactionViewModel.EmissorProductId">Elija la tarjeta de crédito:</label>
+    <select class="form-select" asp-for="@Model.SaveTransactionViewModel.EmissorProductId">
+        @foreach (var item in Model.AllProducts.CreditCards)
         {
             <option value="@item.Id" selected="@{
 if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasError)
 {
-                @Model.SaveTransactionViewModel.EmissorProductId
+                        @Model.SaveTransactionViewModel.EmissorProductId
 }
-}">Loan: @item.Id</option>
+}"> Credit Card: @item.Id</option>
         }
     </select>
 
     <br />
 
-    <label class="form-label" asp-for="@Model.SaveTransactionViewModel.EmissorProductId">Elija desde qué cuenta va a pagar</label>
-    <select class="form-select" asp-for="@Model.SaveTransactionViewModel.EmissorProductId">
+    <label class="form-label" asp-for="@Model.SaveTransactionViewModel.ReceiverProductId">Elija la cuenta de ahorro</label>
+    <select class="form-select" asp-for="@Model.SaveTransactionViewModel.ReceiverProductId">
         @foreach (var item in Model.AllProducts.SavingsAccounts)
         {
             <option value="@item.Id" selected="@{
 if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasError)
 {
-                    @Model.SaveTransactionViewModel.EmissorProductId
+                        @Model.SaveTransactionViewModel.ReceiverProductId
 }
 }">Savings account: @item.Id</option>
         }
@@ -40,7 +41,7 @@ if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasEr
             <option value="@item.Id" selected="@{
 if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasError)
 {
-                    @Model.SaveTransactionViewModel.EmissorProductId
+                        @Model.SaveTransactionViewModel.EmissorProductId
 }
 }">Credit card: @item.Id</option>
         }
@@ -52,11 +53,10 @@ if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasEr
     <input type="number" asp-for="@Model.SaveTransactionViewModel.Amount" placeholder="@{
 if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasError)
 {
-                @Model.SaveTransactionViewModel.Amount
+                    @Model.SaveTransactionViewModel.Amount
 }
 }" />
     <br />
 
     <input type="submit" />
 </form>
-

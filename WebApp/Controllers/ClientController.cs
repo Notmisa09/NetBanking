@@ -9,6 +9,8 @@ using NetBanking.Core.Application.ViewModels.Users;
 using Newtonsoft.Json;
 using NetBanking.Core.Domain.Enums;
 using NetBanking.Core.Application.ViewModels.Transaction;
+using NetBanking.Core.Application.ViewModels.Beneficiary;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace WebApp.Controllers
 {
@@ -34,6 +36,7 @@ namespace WebApp.Controllers
             _beneficiaryService = beneficiaryService;
             _userService = userService;
             _contextaccessor = contextAccessor;
+            user = _contextaccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
         }
         public async Task<IActionResult> Home()
         {
@@ -46,13 +49,44 @@ namespace WebApp.Controllers
             var vm = await _clientService.GetAllBeneficiariesByClientAsync();
             return View(vm);
         }
+
+        public async Task<IActionResult> AddBeneficiary()
+        {
+            var svm = new SaveBeneficiaryViewModel();
+            svm.UserId = user.Id;
+            return View(svm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddBeneficiary(SaveBeneficiaryViewModel svm)
+        {
+            if (!ModelState.IsValid && ModelState["BeneficiaryId"].ValidationState == ModelValidationState.Valid)
+            {
+                return View(svm);
+            }
+            var result = await _clientService.AddBeneficiary(svm);
+            if (result.HasError)
+            {
+                return View(result);
+            }
+            else
+            {
+                return View("Beneficiaries");
+            }
+        }
+
+        public async Task<IActionResult> DeleteBeneficiary(string Id)
+        {
+            await _clientService.DeleteBeneficiary(Id);
+            return View("Beneficiaries");
+        }
+
         public async Task<IActionResult> InitializeTransaction(string TypeOfTransaction)
         {
-            var currentUser = HttpContext.Session.Get<AuthenticationResponse>("user");
             RealizeTransaction TransactionRequest = new()
             {
                 AllProducts = await _clientService.GetAllProductsByClientAsync(),
-                Beneficiaries = await _beneficiaryService.GetByOwnerIdAsync(currentUser.Id)
+                Beneficiaries = await _beneficiaryService.GetByOwnerIdAsync(user.Id)
             };
             return View(TypeOfTransaction, TransactionRequest);
         }
@@ -64,11 +98,11 @@ namespace WebApp.Controllers
             {
                 Transaction = svm.SaveTransactionViewModel
             };
+            vm.Transaction.Type = svm.SaveTransactionViewModel.Type;
             string serializedVm = JsonConvert.SerializeObject(vm);
             TempData["confirmTransactionVM"] = serializedVm;
             return RedirectToAction("VerifyTransaction");
         }
-
 
         public async Task<IActionResult> VerifyTransaction()
         {
@@ -84,34 +118,29 @@ namespace WebApp.Controllers
                     AllProducts = await _clientService.GetAllProductsByClientAsync(),
                     SaveTransactionViewModel = vm.Transaction
                 };
+                transaction.SaveTransactionViewModel.Type = vm.Transaction.Type;
                 transaction.TransactionStatus.HasError = result.HasError;
                 transaction.TransactionStatus.Error = result.Error;
 
                 serializedVm = JsonConvert.SerializeObject(transaction);
                 TempData["confirmTransactionVM"] = serializedVm;
-                switch (vm.Transaction.Type)
-                {
-                    case TransactionType.ExpressPay:
-                        return View(TransactionType.ExpressPay.ToString(), transaction);
-
-                    case TransactionType.LoanPay:
-                        return View(TransactionType.LoanPay.ToString(), transaction);
-
-                    case TransactionType.BeneficiaryPay:
-                        transaction.Beneficiaries = await _beneficiaryService.GetByOwnerIdAsync(HttpContext.Session.Get<AuthenticationResponse>("user").Id);
-                        return View(TransactionType.BeneficiaryPay.ToString(), transaction);
-
-                    case TransactionType.CreditCardPay:
-                        return View(TransactionType.CreditCardPay.ToString(), transaction);
-                }
+                return View(vm.Transaction.Type.ToString(), transaction);
             }
             var prod = await _clientService.GetProductByIdAsync(vm.Transaction.ReceiverProductId);
             var titular = await _accountService.GetByIdAsync(prod.UserId);
             SaveTransactionViewModel Transaction = vm.Transaction;
+
             serializedVm = JsonConvert.SerializeObject(Transaction);
             TempData["executeTransaction"] = serializedVm;
-            ViewBag.Name = titular.FirstName + " " + titular.LastName;
-            return View("VerifyTransaction");
+            if(vm.Transaction.Type == TransactionType.ExpressPay || vm.Transaction.Type == TransactionType.BeneficiaryPay)
+            {
+                ViewBag.Name = titular.FirstName + " " + titular.LastName;
+                return View("VerifyTransaction");
+            }
+            else
+            {
+                return RedirectToAction("ExecuteTransaction");
+            }
         }
 
         public async Task<IActionResult> ExecuteTransaction()
