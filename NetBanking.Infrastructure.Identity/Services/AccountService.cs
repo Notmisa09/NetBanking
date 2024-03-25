@@ -93,6 +93,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 userDto.FirstName = user.FirstName;
                 userDto.LastName = user.LastName;
                 userDto.IsActive = user.IsActive;
+                userDto.IdCard = user.IdCard;
                 userDto.Email = user.Email;
                 userDto.Id = user.Id;
                 userDto.Roles = _userManager.GetRolesAsync(user).Result.ToList();
@@ -174,7 +175,7 @@ namespace NetBanking.Infrastructure.Identity.Services
             }
             if(request.ImageURL != null)
             {
-                userget.ImageURL = UploadImage.UploadFile(request.formFile, request.Id, "User", true);
+                userget.ImageURL = UploadImage.UploadFile(request.formFile, request.Id, "User", true, request.ImageURL);
             }
             else
             {
@@ -253,7 +254,6 @@ namespace NetBanking.Infrastructure.Identity.Services
 
 
         //CONFIRMACCOUNT
-
         public async Task<string> ConfirmAccountAsync(string userId, string token)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -275,7 +275,6 @@ namespace NetBanking.Infrastructure.Identity.Services
         }
 
         //FORGOTPASSWORD
-
         public async Task<ServiceResult> ForgotPassswordAsync(ForgotPasswordRequest request, string origin)
         {
             ServiceResult response = new()
@@ -333,11 +332,9 @@ namespace NetBanking.Infrastructure.Identity.Services
             }
 
             return response;
-
         }
 
         //SINGOUT
-
         public async Task SingOutAsync()
         {
             await _signInManager.SignOutAsync();
@@ -346,7 +343,6 @@ namespace NetBanking.Infrastructure.Identity.Services
         #region PrivateMethods
 
         //SENDFORGOTPASSWORDURI
-
         private async Task<string> SendForgotPasswordUri(AppUser user, string origin)
         {
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
