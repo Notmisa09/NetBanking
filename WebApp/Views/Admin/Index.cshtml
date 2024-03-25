@@ -75,60 +75,62 @@
             {
 
                 <tbody class="table-border-bottom-0">
-                <tr>
-                    <td>
-                        @foreach (var role in @user.Roles)
-                        {
-                            @if (role == RolesEnum.Client.ToString())
+                    <tr>
+                        <td>
+                            @foreach (var role in @user.Roles)
                             {
-                                <i class="me-3"><img src="~/Iconos/letra-c.png" style="width: 25px; height: 25px;" /></i>
-                                <span class="fw-medium">Cliente</span>
+                                @if (role == RolesEnum.Client.ToString())
+                                {
+                                    <i class="me-3"><img src="~/Iconos/letra-c.png" style="width: 25px; height: 25px;" /></i>
+                                    <span class="fw-medium">Cliente</span>
+                                }
+                                @if (role == RolesEnum.Admin.ToString())
+                                {
+                                    <i class="me-3"><img src="~/Iconos/Angular_full_color_logo.svg.png" style="width: 25px; height: 25px;" /></i>
+                                    <span class="fw-medium">Administrador</span>
+                                }
+                                @role[0]
                             }
-                            @if (role == RolesEnum.Admin.ToString())
-                            {
-                                <i class="me-3"><img src="~/Iconos/Angular_full_color_logo.svg.png" style="width: 25px; height: 25px;" /></i>
-                                <span class="fw-medium">Administrador</span>
-                            }
-                            @role[0]
-                        }
-                    </td>
-                    <td>@user.FirstName @user.LastName</td>
-                    <td>
-                        <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                            <li >
+                        </td>
+                        <td>@user.FirstName @user.LastName</td>
+                        <td>
+                            <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                                <li>
                                     <img src="@user.ImageURL" class="rounded-circle" style="width: 35px; height: 35px;" />
-                            </li>
-                        </ul>
-                    </td>
-                    @if(user.IsActive == true)
-                    {
+                                </li>
+                            </ul>
+                        </td>
+                        @if (user.IsActive == true)
+                        {
                             <td><span class="badge bg-label-success me-1">Active</span></td>
-                    }
-                    @if (user.IsActive == false)
-                    {
+                        }
+                        @if (user.IsActive == false)
+                        {
                             <td><span class="badge bg-label-danger me-1">Inactive</span></td>
-                    }
-                    <td><span class="">@user.Email</span></td>
-                    <td>
-                        <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                        }
+                        <td><span class="">@user.Email</span></td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                     <img src="~/Iconos/mas.png" style="width: 20px; height: 20px;" />
-                            </button>
-                            <div class="dropdown-menu">
-                                @if (user.IsActive == false)
-                                {
+                                </button>
+                                <div class="dropdown-menu">
+                                    @if (user.IsActive == false)
+                                    {
                                         <a class="btn btn-info" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ChangeStatus"><img src="~/Iconos/cambiar.png" style="width: 25px; height: 25px; margin-right: 7px;" /> Active</a>
-                                }
-                                @if (user.IsActive == true)
-                                {
-                                        <a class="btn btn-info" asp-route-Id="@user.Id"  asp-controller="Admin" asp-action="ChangeStatus"><img src="~/Iconos/apagar.png" style="width: 25px; height: 25px; margin-right: 7px;" /> Inactive</a>
-                                }
+                                    }
+                                    @if (user.IsActive == true)
+                                    {
+                                        <a class="btn btn-info" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ChangeStatus"><img src="~/Iconos/apagar.png" style="width: 25px; height: 25px; margin-right: 7px;" /> Inactive</a>
+                                    }
                                     <a class="btn btn-warning" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="Edit"> <img src="~/Iconos/editar (2).png" style="width: 25px; height: 25px; margin-right: 7px;" /> Edit</a>
-                            </div>                                                                                                                                                              
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
+                                    <a class="btn btn-warning" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ProductAdd"> <img src="~/Iconos/editar (2).png" style="width: 25px; height: 25px; margin-right: 7px;" /> Products</a>
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
             }
         </table>
     </div>

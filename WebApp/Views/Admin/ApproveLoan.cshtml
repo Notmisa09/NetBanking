@@ -1,8 +1,8 @@
 ﻿@using NetBanking.Core.Application.Dtos.Account
-@using NetBanking.Core.Application.ViewModels.CreditCard;
+@using NetBanking.Core.Application.ViewModels.Loan;
 @using NetBanking.Core.Application.Helpers;
 @using NetBanking.Core.Application.Enums;
-@model SaveCreditCardViewModel;
+@model SaveLoanViewModel;
 
 @{
     ViewData["Title"] = "Registro";
@@ -31,7 +31,7 @@
                             });
                         </script>
                     }
-                    <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="SaveCreditCard">
+                    <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="SaveLoan">
 
                         <div class="mb-3">
                             <label asp-for="Limit" class="form-label text-dark">Please establish the limit of the credit card: </label>
@@ -40,17 +40,13 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary">Registrarse</button>
-                        <a asp-controller="ProductAdd" asp-action="Index" class="btn btn-warning">Volver atras</a>
+                        <a asp-controller="Admin" asp-action="Index" class="btn btn-warning">Volver atras</a>
                     </form>
 
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
 
 <style>
@@ -59,3 +55,8 @@
         background: linear-gradient(45deg, #012169 0%, #00709e 60%, #00c1d5 100%);
     }
 </style>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}

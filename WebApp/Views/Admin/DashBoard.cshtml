@@ -38,87 +38,56 @@
 
 
 <div class="container card mt-4">
-    <div class="col-12 offset-3">
+    <div class="col-8 offset-2">
         <div class="card-body">
             <div class="row align-content-center">
-                <div class="col-6 mt-2 mb-2">
-                    <canvas id="ActiveClients"></canvas>
-                </div>
-                <div class="col-6 mt-2 mb-2">
-                    <canvas id="InactiveClients"></canvas>
-                </div>
-                <div class="col-6 mt-2">
-                    <canvas id="AllPaymentsNumber"></canvas>
+                <div class="mt-2 mb-2">
+                    <canvas id="combinedChart"></canvas>
                 </div>
             </div>
         </div>
-     </div>
+    </div>
 </div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    const clientes = document.getElementById('ActiveClients');
-    const transacciones = document.getElementById('InactiveClients');
-    const pagos = document.getElementById('AllPaymentsNumber');
+    const ctx = document.getElementById('combinedChart').getContext('2d');
 
     const data = {
         labels: [
             'Active Clients',
             'Inactive Clients',
-            'Assigned Products'
+            'Assigned Products',
+            'All Payments',
+            'All Payments Number'
         ],
         datasets: [{
             label: 'Data Overview',
             data: [
     @Model.ActiveClients,
+    @Model.InactiveClients,
+    @Model.AssignedProduct,
     @Model.AllPayments,
-    @Model.AssignedProduct
-                    ],
+    @Model.AllPaymentsNumber
+                ],
             backgroundColor: [
                 'rgb(255, 99, 132)',
                 'rgb(75, 192, 192)',
-                'rgb(255, 205, 86)'
+                'rgb(255, 205, 86)',
+                'rgb(201, 203, 207)',
+                'rgb(54, 162, 235)'
             ]
         }]
     };
 
-    const configActiveClients = {
+    const config = {
         type: 'polarArea',
-        data: {
-            labels: ['Active Clients', 'Inactive Clients'],
-            datasets: [{
-                label: 'Active Clients',
-                data: [@Model.ActiveClients, @Model.InactiveClients],
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(75, 192, 192)'
-                ]
-            }]
-        },
+        data: data,
         options: {}
     };
 
-    const configAllPaymentsNumber = {
-        type: 'polarArea',
-        data: {
-            labels: ['All Payments', 'All Payments Number'],
-            datasets: [{
-                label: 'All Payments',
-                data: [@Model.AllPayments, @Model.AllPaymentsNumber],
-                backgroundColor: [
-                    'rgb(255, 205, 86)',
-                    'rgb(201, 203, 207)'
-                ]
-            }]
-        },
-        options: {}
-    };
-
-    var activeClientsChart = new Chart(clientes, configActiveClients);
-    var inactiveClientsChart = new Chart(transacciones, config);
-    var allPaymentsNumberChart = new Chart(pagos, configAllPaymentsNumber);
+    var combinedChart = new Chart(ctx, config);
 </script>
 
 

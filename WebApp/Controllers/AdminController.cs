@@ -4,6 +4,7 @@ using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
 using NetBanking.Core.Application.Singelton;
 using NetBanking.Core.Application.ViewModels.CreditCard;
+using NetBanking.Core.Application.ViewModels.Loan;
 using NetBanking.Core.Application.ViewModels.Users;
 
 namespace WebApp.Controllers
@@ -14,8 +15,10 @@ namespace WebApp.Controllers
         private readonly IUserService _userService;
         private readonly ISavingsAccountService _savingAccountService;
         private readonly ICreditCardService _creditCardService;
+        private readonly ILoanService _loanService;
 
-        public AdminController(IAdminService adminService, 
+        public AdminController( IAdminService adminService,
+                                ILoanService loanService,
                                 IUserService userService,
                                 ISavingsAccountService savingAccountService,
                                 ICreditCardService creditCardService)
@@ -24,6 +27,7 @@ namespace WebApp.Controllers
             _userService = userService;
             _creditCardService = creditCardService;
             _savingAccountService = savingAccountService;
+            _loanService = loanService; 
         }
 
         //INDEX
@@ -38,20 +42,38 @@ namespace WebApp.Controllers
             return View(await _adminService.GetAllAsync());
         }
 
-        //CREDITCARDCONFIRM
-        public IActionResult AproveCreditCard(string Id)
+        //LOAN
+        public IActionResult ApproveLoan(string Id)
         {
             TempData["Id"] = Id;
-            return View(new SaveCreditCardViewModel());
+            return View(new SaveLoanViewModel());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SaveLoan(SaveLoanViewModel vm)
+        {
+            vm.UserId = TempData["Id"].ToString();
+            await _loanService.AddAsync(vm);
+            return RedirectToRoute(new { controller = "Admin", action = "Index" });
+        }
+
+
+        //CREDITCARD
         [HttpPost]
         public async Task<IActionResult> SaveCreditCard(SaveCreditCardViewModel vm)
         {
             vm.UserId = TempData["Id"].ToString();
             await _creditCardService.AddAsync(vm);
             return RedirectToRoute(new { controller = "Admin", action = "Index" });
+        }
 
+        //ACCOUTNT
+        [HttpPost]
+        public async Task<IActionResult> ProductAddSavingAccount(string Id)
+        {
+            var user = await _userService.GetByIdAsync(Id);
+            await _savingAccountService.SaveUserWIthAccount(user);
+            return RedirectToRoute(new { controller = "ProductAdd", action = "Index" });
         }
 
         //DASHBORAD
@@ -79,7 +101,6 @@ namespace WebApp.Controllers
             }
             return RedirectToAction("Index");
         }
-
 
         //LOGOUT
         public async Task<IActionResult> LogOut()
@@ -110,31 +131,22 @@ namespace WebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("Register",vm);
+                return View("Register", vm);
             };
             ServiceResult response = await _userService.UpdateAsync(vm);
             if (response.HasError)
             {
                 vm.Error = response.Error;
                 vm.HasError = response.HasError;
-                return View("Register",vm);
+                return View("Register", vm);
             }
             return RedirectToRoute(new { controller = "Admin", action = "Index" });
         }
-
 
         //PRODUCT ADD
         public async Task<IActionResult> ProductAdd(string Id)
         {
             return View(await _userService.GetByIdAsync(Id));
-        } 
-
-        [HttpPost]
-        public async Task<IActionResult> ProductAddSavingAccount(string Id)
-        {
-            var user = await _userService.GetByIdAsync(Id);
-            await _savingAccountService.SaveUserWIthAccount(user);
-            return RedirectToRoute(new { controller = "ProductAdd", action = "Index" });
         }
     }
 }
