@@ -153,19 +153,6 @@ namespace WebApp.Controllers
             return RedirectToAction("Home");
         }
 
-        //CREDITCARD
-        public async Task<IActionResult> CreditCard()
-        {
-            return View(await _userService.GetByIdAsync(user.Id));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreditCard(SaveUserViewModel vm)
-        {
-            await _creditCardService.CreateCardWithUser(vm);
-            return RedirectToRoute(new { controller = "Client", action = "Index" });
-        }
-
         //DELETE BENEFICIARY
         public async Task<IActionResult> RemoveBeneficiary(string Id)
         {

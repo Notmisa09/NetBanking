@@ -71,7 +71,7 @@ namespace NetBanking.Infrastructure.Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("Amount")
+                    b.Property<decimal>("Limit")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CreatedById")
@@ -110,7 +110,7 @@ namespace NetBanking.Infrastructure.Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("Amount")
+                    b.Property<decimal>("Limit")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CreatedById")
@@ -149,7 +149,7 @@ namespace NetBanking.Infrastructure.Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("Amount")
+                    b.Property<decimal>("Limit")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CreatedById")

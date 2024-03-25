@@ -66,7 +66,7 @@ namespace NetBanking.Core.Application.Services
                         user.IsActive = true;
                     }
                     var userVm = _mapper.Map<RegisterRequest>(user);
-                    await _accountService.UpdateUserAsync(userVm);
+                    await _accountService.ChangeUserStatus(userVm);
 
                     return "Se ha cambiado el estado de la cuenta";
                 }
