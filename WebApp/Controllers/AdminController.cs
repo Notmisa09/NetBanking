@@ -2,6 +2,7 @@
 using NetBanking.Core.Application.Dtos.Error;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
+using NetBanking.Core.Application.Singelton;
 using NetBanking.Core.Application.ViewModels.Users;
 
 namespace WebApp.Controllers
@@ -27,6 +28,12 @@ namespace WebApp.Controllers
         //INDEX
         public async Task<IActionResult> Index()
         {
+            if (!string.IsNullOrEmpty(StringStorage.Instance.GetStoredString()))
+            {
+                ViewBag.Error = StringStorage.Instance.GetStoredString();
+                StringStorage.Instance.SetStoredString("");
+            }
+
             return View(await _adminService.GetAllAsync());
         }
 
@@ -69,7 +76,8 @@ namespace WebApp.Controllers
         //CHANGE USER STATUS
         public async Task<IActionResult> ChangeStatus(string Id)
         {
-            await _adminService.ChangeAccountStatus(Id);
+            var error = await _adminService.ChangeAccountStatus(Id);
+            StringStorage.Instance.SetStoredString(error);
             return RedirectToRoute(new { controller = "Admin", action = "Index" });
         }
 

@@ -13,70 +13,48 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
           rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="sweetalert2.min.css">
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+    <script src="sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="sweetalert2/dist/sweetalert2.min.js"></script>
 </head>
 
-@* <div class="container-fluid">
-    <div>
-
-        <a class="btn btn-primary" asp-controller="Admin" asp-action="Register">New User <img src="~/Iconos/agregar-usuario.png" style="width: 30px; height: 30px;" /></a>
-        <div class="card mt-4">
-            <div class="card-body">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Identification</th>
-                            <th>Is Active</th>
-                            <th>Roles</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var user in Model)
-                        {
-                            <tr>
-                                <td><img id="profileimage" src="@(!string.IsNullOrEmpty(user.ImageURL) ? user.ImageURL : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTnB8SJzsxM_KKbFNf-er2X-WiEdHMHXuz6w&usqp=CAU")" /></td>
-                                <td>@user.FirstName</td>
-                                <td>@user.LastName</td>
-                                <td>@user.Email</td>
-                                <td>@user.IdCard</td>
-                                @if(user.IsActive == true)
-                                {
-                                    <td>Active</td>
-                                }
-                                else
-                                {
-                                    <td>Inactive</td>
-                                }
-                                <td>
-                                    @foreach (var role in @user.Roles)
-                                    {
-                                       @role[0]
-                                    }
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#myModal">
-                                        <i class="fa-solid fa-pen-nib"></i>
-                                    </button>
-                                    <a class="btn btn-warning" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="Edit"><i class="fa-solid fa-pencil fa-sm" style="color: #19191a;"></i></a>
-                                    <a class="btn btn-danger" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="Remove"><i class="fa-regular fa-trash-can"></i></a>
-                                    <a class="btn btn-info" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ChangeStatus">Activate User</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div> *@
 
 
 <a class="btn btn-primary" asp-controller="Admin" asp-action="Register">New User <img src="~/Iconos/agregar-usuario.png" style="width: 30px; height: 30px; margin-left: 7px;" /></a>
+
+
+
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+@if (ViewBag.Error == "Se ha cambiado el estado de la cuenta")
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Trabajo éxitoso!',
+            text: '@ViewBag.Error',
+            showConfirmButton: true,
+            timer: 5000
+        });
+    </script>
+}
+@if (ViewBag.Error == "No puedes desactivar tu propia cuenta." || ViewBag.Error == "No se encontro el usuario.")
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: '@ViewBag.Error',
+            showConfirmButton: true,
+            timer: 5000
+        });
+    </script>
+}
 
 <!-- Basic Bootstrap Table -->
 <div class="card" style="margin-top: 50px;">
@@ -146,7 +124,6 @@
                                         <a class="btn btn-info" asp-route-Id="@user.Id"  asp-controller="Admin" asp-action="ChangeStatus"><img src="~/Iconos/apagar.png" style="width: 25px; height: 25px; margin-right: 7px;" /> Inactive</a>
                                 }
                                     <a class="btn btn-warning" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="Edit"> <img src="~/Iconos/editar (2).png" style="width: 25px; height: 25px; margin-right: 7px;" /> Edit</a>
-                                    <a class="btn btn-danger" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ProductAdd"><img src="~/Iconos/expediente.png" style="width: 25px; height: 25px; margin-right: 7px;" /> Delete</a>
                             </div>                                                                                                                                                              
                         </div>
                     </td>
