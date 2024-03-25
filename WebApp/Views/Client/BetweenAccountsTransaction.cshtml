@@ -9,6 +9,7 @@
 }
 
 <form asp-action="InitializeTransaction" method="post">
+    <input asp-for="@Model.SaveTransactionViewModel.Type" value="@Model.SaveTransactionViewModel.Type" hidden />
 
     <label class="form-label" asp-for="@Model.SaveTransactionViewModel.EmissorProductId">Elija la cuenta de salida:</label>
     <select class="form-select" asp-for="@Model.SaveTransactionViewModel.EmissorProductId">
