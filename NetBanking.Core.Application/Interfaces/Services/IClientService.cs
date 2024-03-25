@@ -15,6 +15,7 @@ namespace NetBanking.Core.Application.Interfaces.Services
         Task<TransactionStatusViewModel> TransactionValidation(SaveTransactionViewModel svm);
         Task<SaveBeneficiaryViewModel> AddBeneficiary(SaveBeneficiaryViewModel svm);
         Task DeleteBeneficiary(string Id);
+        Task<List<TransactionViewModel>> GetTransactionHistorial();
 
 
     }

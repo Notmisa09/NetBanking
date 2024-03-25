@@ -12,6 +12,7 @@ using NetBanking.Core.Application.ViewModels.CreditCard;
 using NetBanking.Core.Application.ViewModels.SavingsAccount;
 using NetBanking.Core.Application.ViewModels.Loan;
 using NetBanking.Core.Domain.Enums;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace NetBanking.Core.Application.Services
 {
@@ -77,10 +78,16 @@ namespace NetBanking.Core.Application.Services
 
                 int Identificator = Convert.ToInt32(svm.EmissorProductId.Substring(0, 3));
 
+
                 if (100 <= Identificator && Identificator <= 299) //Tarjetas de credito comienzan con 3 digitos entre 100 y 299
                 {
                     var creditCard = await _creditCardService.GetByIdAsync(emissorProduct.Id);
-                    creditCard.Amount += svm.Amount; //Se le suma a su deuda
+                    if (svm.Type == TransactionType.CashAdvance)
+                        creditCard.Amount = svm.Cantity + svm.Cantity * (decimal)(6.25 / 100);
+                    else
+                        creditCard.Amount += svm.Cantity; //Se le suma a su deuda
+                    
+
                     await _creditCardService.UpdateAsync(_mapper.Map<SaveCreditCardViewModel>(creditCard), creditCard.Id);
 
                 }
@@ -88,14 +95,14 @@ namespace NetBanking.Core.Application.Services
                 else if (300 <= Identificator && Identificator <= 599) //Cuentas de ahorro comienzan con 3 digitos entre 300 y 599
                 {
                     var savingAccount = await _savingsAccountService.GetByIdAsync(emissorProduct.Id);
-                    savingAccount.Amount -= svm.Amount; //Se le resta a su dinero
+                    savingAccount.Amount -= svm.Cantity; //Se le resta a su dinero
                     await _savingsAccountService.UpdateAsync(_mapper.Map<SaveSavingsAccountViewModel>(savingAccount), savingAccount.Id);
                 }
 
                 else if (600 <= Identificator && Identificator <= 999) //Prestamos comienzan con 3 digitos entre 600 y 999
                 {
                     var loan = await _loanService.GetByIdAsync(emissorProduct.Id);
-                    loan.Debt += svm.Amount;
+                    loan.Debt += svm.Cantity;
                     await _loanService.UpdateAsync(_mapper.Map<SaveLoanViewModel>(loan), loan.Id);
                 }
                 #endregion
@@ -108,20 +115,20 @@ namespace NetBanking.Core.Application.Services
                 if (100 <= Identificator && Identificator <= 299)  //Tarjetas de credito comienzan con 3 digitos entre 100 y 299
                 {
                     var creditCard = await _creditCardService.GetByIdAsync(receiverProduct.Id);
-                    if (creditCard.Amount - svm.Amount < 0)
+                    if (creditCard.Amount - svm.Cantity < 0)
                     {
-                        var sobra = svm.Amount - creditCard.Amount;
-                        svm.Amount = svm.Amount - sobra;
+                        var sobra = svm.Cantity - creditCard.Amount;
+                        svm.Cantity = svm.Cantity - sobra;
 
                         SaveTransactionViewModel retorno = new()
                         {
-                            Amount = sobra,
+                            Cantity = sobra,
                             EmissorProductId = receiverProduct.Id,
                             ReceiverProductId = emissorProduct.Id
                         };
                         await RealizeTransaction(retorno);
                     }
-                    creditCard.Amount -= svm.Amount; //Se le resta a su deuda
+                    creditCard.Amount -= svm.Cantity; //Se le resta a su deuda
                     await _creditCardService.UpdateAsync(_mapper.Map<SaveCreditCardViewModel>(creditCard), creditCard.Id);
 
                     //Registra la transacción
@@ -135,7 +142,7 @@ namespace NetBanking.Core.Application.Services
                 else if (300 <= Identificator && Identificator <= 599) //Cuentas de ahorro comienzan con 3 digitos entre 300 y 599
                 {
                     var savingAccount = await _savingsAccountService.GetByIdAsync(receiverProduct.Id);
-                    savingAccount.Amount += svm.Amount; //Se le suma a su dinero
+                    savingAccount.Amount += svm.Cantity; //Se le suma a su dinero
                     await _savingsAccountService.UpdateAsync(_mapper.Map<SaveSavingsAccountViewModel>(savingAccount), savingAccount.Id);
 
                     //Registra la transacción
@@ -145,20 +152,21 @@ namespace NetBanking.Core.Application.Services
                 {
                     var loan = await _loanService.GetByIdAsync(svm.ReceiverProductId);
 
-                    if (loan.Debt - svm.Amount < 0)
+                    if (loan.Amount - svm.Cantity < 0)
                     {
-                        var sobra = svm.Amount - loan.Debt;
-                        svm.Amount = svm.Amount - sobra;
+                        var sobra = svm.Cantity - loan.Amount;
+                        svm.Cantity = svm.Cantity - sobra;
 
                         SaveTransactionViewModel retorno = new()
                         {
-                            Amount = sobra,
+                            Cantity = sobra,
                             EmissorProductId = receiverProduct.Id,
-                            ReceiverProductId = emissorProduct.Id
+                            ReceiverProductId = emissorProduct.Id,
+                            Type = TransactionType.Leftover
                         };
                         await RealizeTransaction(retorno);
                     }
-                    loan.Debt -= svm.Amount; //Reduce la deuda
+                    loan.Debt -= svm.Cantity; //Reduce la deuda
                     await _loanService.UpdateAsync(_mapper.Map<SaveLoanViewModel>(loan), loan.Id);
                 }
                 #endregion
@@ -184,7 +192,7 @@ namespace NetBanking.Core.Application.Services
                     Error = "Cuenta destino inexistente."
                 };
             }
-            else if (svm.Amount < 1)
+            else if (svm.Cantity < 1)
             {
                 return new TransactionStatusViewModel()
                 {
@@ -204,7 +212,7 @@ namespace NetBanking.Core.Application.Services
                 {
                     var creditCard = await _creditCardService.GetByIdAsync(emissorProduct.Id);
 
-                    if (creditCard.Amount + svm.Amount > creditCard.Limit)
+                    if (creditCard.Amount + svm.Cantity > creditCard.Limit)
                     {
                         return new TransactionStatusViewModel()
                         {
@@ -218,7 +226,7 @@ namespace NetBanking.Core.Application.Services
                 {
                     var savingAccount = await _savingsAccountService.GetByIdAsync(emissorProduct.Id);
 
-                    if (savingAccount.Amount - svm.Amount < 0)
+                    if (savingAccount.Amount - svm.Cantity < 0)
                     {
                         return new TransactionStatusViewModel()
                         {
@@ -239,6 +247,14 @@ namespace NetBanking.Core.Application.Services
                 #endregion
             }
             if (emissorProduct.Id == receiverProduct.Id)
+            {
+                return new TransactionStatusViewModel()
+                {
+                    HasError = true,
+                    Error = "Transferencia inválida."
+                };
+            }
+            if(svm.Type == TransactionType.ExpressPay && emissorProduct.UserId == receiverProduct.UserId)
             {
                 return new TransactionStatusViewModel()
                 {
@@ -333,24 +349,48 @@ namespace NetBanking.Core.Application.Services
 
         public async Task<SaveBeneficiaryViewModel> AddBeneficiary(SaveBeneficiaryViewModel svm)
         {
-            if (await ProductExists(svm.BeneficiaryAccountId))
+            if(svm.BeneficiaryAccountId != null)
             {
-                var existence = await _beneficiaryService.FindAllAsync(x => x.UserId == user.Id && x.BeneficiaryAccountId == svm.BeneficiaryAccountId);
-                if (existence.Count > 0)
+                if(svm.BeneficiaryAccountId.Length >= 9)
                 {
-                    svm.HasError = true;
-                    svm.Error = "Este beneficiario ya está registrado.";
+                    int Identificator = Convert.ToInt32(svm.BeneficiaryAccountId.Substring(0, 3));
+
+                    if (!(300 <= Identificator && Identificator <= 599)) //Si no es una cuenta de ahorro
+                    {
+                        svm.HasError = true;
+                        svm.Error = "Producto inválido.";
+                    }
+                    else if (await ProductExists(svm.BeneficiaryAccountId))
+                    {
+                        var existence = await _beneficiaryService.FindAllAsync(x => x.UserId == user.Id && x.BeneficiaryAccountId == svm.BeneficiaryAccountId);
+                        if (existence.Count > 0)
+                        {
+                            svm.HasError = true;
+                            svm.Error = "Este beneficiario ya está registrado.";
+                        }
+                        else
+                        {
+                            svm = await _beneficiaryService.AddAsync(svm);
+                        }
+                    }
+                    else
+                    {
+                        svm.HasError = true;
+                        svm.Error = "Este producto no existe";
+                    }
                 }
                 else
                 {
-                    svm = await _beneficiaryService.AddAsync(svm);
+                    svm.HasError = true;
+                    svm.Error = "Este producto no existe";
                 }
             }
             else
             {
                 svm.HasError = true;
-                svm.Error = "Este producto no existe";
+                svm.Error = "Inserte una cuenta.";
             }
+
             return svm;
         }
 
@@ -366,5 +406,18 @@ namespace NetBanking.Core.Application.Services
                 }
             }
         }
+
+        public async Task<List<TransactionViewModel>> GetTransactionHistorial()
+        {
+            var list = await _transactionService.GetAllAsync();
+            var MyProducts = await GetAllProductsByClientAsync();
+
+            var filteredTransactions = list.Where(t => 
+                    MyProducts.SavingsAccounts.Any(p => p.Id == t.ReceiverProductId || p.Id == t.EmissorProductId) || 
+                    MyProducts.CreditCards.Any(p => p.Id == t.ReceiverProductId || p.Id == t.EmissorProductId) ||
+                    MyProducts.Loans.Any(p => p.Id == t.ReceiverProductId || p.Id == t.EmissorProductId)).ToList();
+            return filteredTransactions;
+        }
+
     }
 }
