@@ -12,7 +12,9 @@ namespace NetBanking.Infrastructure.Persistence.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
             //FLUENT API
+            
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasDefaultSchema("Identity");
 
@@ -35,7 +37,6 @@ namespace NetBanking.Infrastructure.Persistence.Contexts
             {
                 entity.ToTable(name: "UserLogins");
             });
-
         }
     }
 }

@@ -1,27 +1,47 @@
 ﻿@using NetBanking.Core.Application.ViewModels.Transaction;
-@model ExpressPayViewModel;
+@using NetBanking.Core.Domain.Enums;
+@model RealizeTransaction;
 
-<form asp-action="ExpressPay" method="post">
-    <label class="form-label" asp-for="@Model.SaveTransactionViewModel.EmissorProductId">Desde qué cuenta hago el pago</label>
+<h1>Express Pay</h1>
+@if (Model.TransactionStatus.HasError)
+{
+    <h1>@Model.TransactionStatus.Error</h1>
+}
+
+<form asp-action="InitializeTransaction" method="post">
+    <input asp-for="@Model.SaveTransactionViewModel.Type" value="@Model.SaveTransactionViewModel.Type" hidden />
+
+    <label class="form-label" asp-for="@Model.SaveTransactionViewModel.EmissorProductId">Elija la cuenta desde la que realizará el pago:</label>
     <select class="form-select" asp-for="@Model.SaveTransactionViewModel.EmissorProductId">
-        @foreach(var item in Model.AllProducts.SavingsAccounts)
+        @foreach (var item in Model.AllProducts.SavingsAccounts)
         {
-            <option value="@item.Id">Savings account: @item.Id</option>
-        }
-        @foreach (var item in Model.AllProducts.CreditCards)
-        {
-            <option value="@item.Id">Credit card: @item.Id</option>
+            <option value="@item.Id" selected="@{
+if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasError)
+{
+        @Model.SaveTransactionViewModel.EmissorProductId
+}
+}">Savings account: @item.Id</option>
         }
     </select>
 
     <br />
 
     <label class="form-label" asp-for="@Model.SaveTransactionViewModel.Amount">Cantidad</label>
-    <input type="number" asp-for="@Model.SaveTransactionViewModel.Amount" />
+    <input type="number" asp-for="@Model.SaveTransactionViewModel.Amount" placeholder="@{
+if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasError)
+{
+        @Model.SaveTransactionViewModel.Amount
+}
+}" />
     <br />
 
     <label class="form-label" asp-for="@Model.SaveTransactionViewModel.ReceiverProductId">Cuenta destino</label>
-    <input type="number" asp-for="@Model.SaveTransactionViewModel.ReceiverProductId" />
+    <input type="number" asp-for="@Model.SaveTransactionViewModel.ReceiverProductId" placeholder="@{
+if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasError)
+{
+        @Model.SaveTransactionViewModel.ReceiverProductId
+}
+}" />
     <br />
     <input type="submit" />
 </form>

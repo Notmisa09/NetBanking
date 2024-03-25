@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.ViewModels.Transaction;
@@ -16,6 +17,23 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             _repository = repository;
             _mapper = mapper;
         }
+
+        public override async Task<SaveTransactionViewModel> AddAsync(SaveTransactionViewModel vm)
+        {
+            Transaction entity = _mapper.Map<Transaction>(vm);
+            string candidateId = "";
+            do
+            {
+                candidateId = CodeGeneratorHelper.GenerateCode(typeof(Transaction));
+            }
+            while ((await _repository.FindAllAsync(x => x.Id == candidateId)).Count != 0);
+            entity.Id = candidateId;
+            entity = await _repository.AddAsync(entity);
+
+            SaveTransactionViewModel svm = _mapper.Map<SaveTransactionViewModel>(entity);
+            return svm;
+        }
+
         public Task<List<TransactionViewModel>> FindAllAsync(Expression<Func<Domain.Entities.Transaction, bool>> filter)
         {
             throw new NotImplementedException();

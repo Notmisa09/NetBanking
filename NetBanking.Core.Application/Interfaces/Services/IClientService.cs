@@ -10,6 +10,12 @@ namespace NetBanking.Core.Application.Interfaces.Services
         Task<List<BeneficiaryViewModel>> GetAllBeneficiariesByClientAsync();
         Task<GetAllProductsByClientViewModel> GetAllProductsByClientAsync();
         Task<BaseProduct> GetProductByIdAsync(string Id);
-        Task RealizeTransaction(SaveTransactionViewModel svm);
+        Task<TransactionStatusViewModel> RealizeTransaction(SaveTransactionViewModel svm);
+        Task<bool> ProductExists(string Id);
+        Task<TransactionStatusViewModel> TransactionValidation(SaveTransactionViewModel svm);
+        Task<SaveBeneficiaryViewModel> AddBeneficiary(SaveBeneficiaryViewModel svm);
+        Task DeleteBeneficiary(string Id);
+
+
     }
 }

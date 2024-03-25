@@ -1,12 +1,16 @@
 ﻿@using NetBanking.Core.Application.ViewModels.Beneficiary;
 @model List<BeneficiaryViewModel>;
 
-@if(Model.Count != 0)
+<a asp-action="AddBeneficiary">Add Beneficiary</a>
+@if (Model.Count != 0)
 {
     <table>
         <thead>
         <td>
-            Id del Beneficiario
+            Beneficiario
+        </td>
+        <td>
+            Cuenta
         </td>
         </thead>
         <tbody>
@@ -14,7 +18,10 @@
             {
                 <tr>
                     <td>
-                        @item.BeneficiaryId
+                        @item.BeneficiaryUser.FirstName @item.BeneficiaryUser.LastName
+                    </td>
+                    <td>
+                        @item.BeneficiaryAccountId
                     </td>
                 </tr>
             }
@@ -27,6 +34,4 @@ else
         No hay Beneficiarios Registrados
     </h1>
 }
-
-
 

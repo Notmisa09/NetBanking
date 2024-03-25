@@ -1,0 +1,64 @@
+﻿@using NetBanking.Core.Application.ViewModels.Transaction;
+@using NetBanking.Core.Domain.Enums;
+@model RealizeTransaction;
+
+<h1>Loan Pay</h1>
+@if (Model.TransactionStatus.HasError)
+{
+    <h1>@Model.TransactionStatus.Error</h1>
+}
+
+<form asp-action="InitializeTransaction" method="post">
+    <input asp-for="@Model.SaveTransactionViewModel.Type" value="@Model.SaveTransactionViewModel.Type" hidden />
+
+    <label class="form-label" asp-for="@Model.SaveTransactionViewModel.ReceiverProductId">Elija el prestamo que desee pagar</label>
+    <select class="form-select" asp-for="@Model.SaveTransactionViewModel.ReceiverProductId">
+        @foreach (var item in Model.AllProducts.Loans)
+        {
+            <option value="@item.Id" selected="@{
+if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasError)
+{
+                @Model.SaveTransactionViewModel.EmissorProductId
+}
+}">Loan: @item.Id</option>
+        }
+    </select>
+
+    <br />
+
+    <label class="form-label" asp-for="@Model.SaveTransactionViewModel.EmissorProductId">Elija desde qué cuenta va a pagar</label>
+    <select class="form-select" asp-for="@Model.SaveTransactionViewModel.EmissorProductId">
+        @foreach (var item in Model.AllProducts.SavingsAccounts)
+        {
+            <option value="@item.Id" selected="@{
+if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasError)
+{
+                    @Model.SaveTransactionViewModel.EmissorProductId
+}
+}">Savings account: @item.Id</option>
+        }
+        @foreach (var item in Model.AllProducts.CreditCards)
+        {
+            <option value="@item.Id" selected="@{
+if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasError)
+{
+                    @Model.SaveTransactionViewModel.EmissorProductId
+}
+}">Credit card: @item.Id</option>
+        }
+    </select>
+
+    <br />
+
+    <label class="form-label" asp-for="@Model.SaveTransactionViewModel.Amount">Cantidad</label>
+    <input type="number" asp-for="@Model.SaveTransactionViewModel.Amount" placeholder="@{
+if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasError)
+{
+                @Model.SaveTransactionViewModel.Amount
+}
+}" />
+    <br />
+
+    <input type="submit" />
+</form>
+

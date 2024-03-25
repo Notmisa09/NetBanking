@@ -91,12 +91,16 @@ namespace NetBanking.Core.Application.Mappings
                .ReverseMap();
             CreateMap<CreditCard, SaveCreditCardViewModel>()
                .ReverseMap();
+            CreateMap<SaveCreditCardViewModel, CreditCardViewModel>()
+                .ReverseMap();
             #endregion
 
             #region SavingsAccount
             CreateMap<SavingsAccount, SavingsAccountViewModel>()
                 .ReverseMap();
             CreateMap<SavingsAccount, SaveSavingsAccountViewModel>()
+               .ReverseMap();
+            CreateMap<SaveSavingsAccountViewModel, SavingsAccountViewModel>()
                .ReverseMap();
             #endregion
 

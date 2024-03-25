@@ -4,8 +4,9 @@ namespace NetBanking.Core.Domain.Entities
 {
     public class Beneficiary : IAuditableEntity
     {
-        public string AccountId { get; set; }
+        public string UserId { get; set; }
         public string BeneficiaryId { get; set; }
+        public string BeneficiaryAccountId { get; set; }
 
 
         //Auditable atributes

@@ -1,0 +1,6 @@
+﻿<h1>Confirm Transaction</h1>
+<h4>Are you sure you wanna make this transaction to: @ViewBag.Name</h4>
+<form asp-action="ExecuteTransaction" method="get">
+    <button type="submit">Confirmar</button>
+    <a class="btn btn-primary" asp-action="Home">Cancelar</a>
+</form>

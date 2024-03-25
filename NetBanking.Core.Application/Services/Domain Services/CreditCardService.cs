@@ -26,6 +26,22 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             return _mapper.Map<List<CreditCardViewModel>>(list);
         }
 
+        public override async Task<SaveCreditCardViewModel> AddAsync(SaveCreditCardViewModel vm)
+        {
+            CreditCard entity = _mapper.Map<CreditCard>(vm);
+            string candidateId = "";
+            do
+            {
+                candidateId = CodeGeneratorHelper.GenerateCode(typeof(CreditCard));
+            }
+            while ((await _repository.FindAllAsync(x => x.Id == candidateId)).Count != 0);
+            vm.Id = candidateId;
+            entity = await _repository.AddAsync(entity);
+
+            SaveCreditCardViewModel svm = _mapper.Map<SaveCreditCardViewModel>(entity);
+            return svm;
+        }
+
         public async Task CreateCardWithUser(SaveUserViewModel vm)
         {
             var code = string.Empty;
@@ -49,10 +65,10 @@ namespace NetBanking.Core.Application.Services.Domain_Services
 
             CreditCard card = new CreditCard()
             {
-                Amount = 150000m,
+                Limit = 150000m,
                 UserId = vm.Id,
                 CreatedById = "Default",
-                Debt = 0,
+                Amount = 0,
                 CreatedDate = DateTime.UtcNow,
                 Id = generatedCode
             };
@@ -64,9 +80,9 @@ namespace NetBanking.Core.Application.Services.Domain_Services
         {
             var creditCard = await _repository.GeEntityByIDAsync(Id);
 
-            if (creditCard.Debt >= 0)
+            if (creditCard.Amount >= 0)
             {
-                return $"Este usuario tiene una deuda pendiente de {creditCard.Debt}.";
+                return $"Este usuario tiene una deuda pendiente de {creditCard.Amount}.";
             }
             else
             {

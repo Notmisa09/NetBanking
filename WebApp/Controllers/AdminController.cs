@@ -63,7 +63,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> ChangeStatus(string Id)
         {
             await _adminService.ChangeAccountStatus(Id);
-            return RedirectToRoute(new { controller = "User", action = "Index" });
+            return RedirectToRoute(new { controller = "Admin", action = "Index" });
         }
 
 

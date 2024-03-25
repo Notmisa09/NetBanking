@@ -29,6 +29,22 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             _repository = repository;
         }
 
+        public override async Task<SaveSavingsAccountViewModel> AddAsync(SaveSavingsAccountViewModel vm)
+        {
+            SavingsAccount entity = _mapper.Map<SavingsAccount>(vm);
+            string candidateId = "";
+            do
+            {
+                candidateId = CodeGeneratorHelper.GenerateCode(typeof(SavingsAccount));
+            }
+            while ((await _repository.FindAllAsync(x => x.Id == candidateId)).Count != 0);
+            vm.Id = candidateId;
+            entity = await _repository.AddAsync(entity);
+
+            SaveSavingsAccountViewModel svm = _mapper.Map<SaveSavingsAccountViewModel>(entity);
+            return svm;
+        }
+
         public async Task<List<SavingsAccountViewModel>> GetByOwnerIdAsync(string Id)
         {
             var list = await _repository.FindAllAsync(x => x.UserId == Id);
@@ -53,6 +69,11 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             await _repository.AddAsync(savingAccount);
         }
 
+        public override Task<SaveSavingsAccountViewModel> AddAsync(SaveSavingsAccountViewModel vm)
+        {
+            return base.AddAsync(vm);
+        }
+
         public async Task SaveUserWIthMainAccount(SaveUserViewModel vm)
         {
             string productcode = string.Empty;
@@ -70,6 +91,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             };
             await _repository.AddAsync(savingAccount);
         }
+
         public override async Task<string> Delete(string Id)
         {
             var savingsAccount = await _repository.GeEntityByIDAsync(Id);
