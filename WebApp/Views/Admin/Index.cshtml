@@ -14,14 +14,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
           rel="stylesheet" />
 
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <link rel="stylesheet" href="sweetalert2.min.css">
-    <script src="sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="sweetalert2.min.css">
-    <script src="sweetalert2.all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-    <script src="sweetalert2/dist/sweetalert2.min.js"></script>
+
 </head>
 
 
@@ -113,29 +112,36 @@
                             <div class="dropdown">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                     <img src="~/Iconos/mas.png" style="width: 20px; height: 20px;" />
-                                </button>
-                                <div class="dropdown-menu">
-                                    @if (user.IsActive == false)
-                                    {
-                                        <a class="btn btn-info" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ChangeStatus"><img src="~/Iconos/cambiar.png" style="width: 25px; height: 25px; margin-right: 7px;" /> Active</a>
-                                    }
-                                    @if (user.IsActive == true)
-                                    {
-                                        <a class="btn btn-info" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ChangeStatus"><img src="~/Iconos/apagar.png" style="width: 25px; height: 25px; margin-right: 7px;" /> Inactive</a>
-                                    }
-                                    <a class="btn btn-warning" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="Edit"> <img src="~/Iconos/editar (2).png" style="width: 25px; height: 25px; margin-right: 7px;" /> Edit</a>
-                                    <a class="btn btn-warning" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ProductAdd"> <img src="~/Iconos/editar (2).png" style="width: 25px; height: 25px; margin-right: 7px;" /> Products</a>
+                            </button>
+                            <div class="dropdown-menu">
+                                @if (user.IsActive == false)
+                                {
+                                        <a class="btn btn-outline-info" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ChangeStatus"><img src="~/Iconos/cambiar.png" style="width: 25px; height: 25px; margin-right: 7px;" /> Active</a>
+                                }
+                                @if (user.IsActive == true)
+                                {
+                                        <a class="btn btn-outline-info" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ChangeStatus"><img src="~/Iconos/apagar.png" style="width: 25px; height: 25px; margin-right: 7px;" /> Inactive</a>
+                                }
+                                    <a class="btn btn-outline-warning" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="Edit"> <img src="~/Iconos/editar (2).png" style="width: 25px; height: 25px; margin-right: 7px;" /> Edit</a>
+                                    <a class="btn btn-outline-success asignarProductoBtn" data-route-id="@user.Id">
+                                        <img src="~/Iconos/icons8-asignación-entregado-48.png" style="width: 25px; height: 25px; margin-right: 7px;" /> Asignar producto
+                                    </a>
 
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
+                            </div>                                                                                                                                                              
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
             }
         </table>
     </div>
 </div>
+
+<input type="hidden" id="userIdInput">
 <!--/ Basic Bootstrap Table -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <style>
 
@@ -161,3 +167,46 @@
         box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
     }
 </style>
+
+<script>
+    $(document).ready(function () {
+        $(".asignarProductoBtn").click(function (event) {
+            event.preventDefault();
+
+            var userId = $(this).data('route-id'); // Obtener el ID del usuario
+            $("#userIdInput").val(userId); // Establecer el ID del usuario en el input oculto
+            $("#userIdVisibleInput").val(userId); // Establecer el ID del usuario en el input visible
+
+            Swal.fire({
+                title: "Create Product",
+                html:
+                    '<select id="productoSelect" class="swal2-select" style="margin-bottom: 10px;" required>' +
+                    '<option value="" disabled selected><b>Select a option</b></option>' +
+                    '<option value="CreditCard">Credit Card</option>' +
+                    '<option value="Loan">Loan</option>' +
+                    '<option value="SavingsAccount">Savings Account</option>' +
+                    '</select>' +
+                    '<input id="montoInput" class="swal2-input" style="width: 150px;" placeholder="Amount" type="text" value="0.00">',
+                focusConfirm: false,
+                showCancelButton: true,
+                cancelButtonText: 'Cancel',
+                preConfirm: () => {
+                    const monto = document.getElementById('montoInput').value;
+                    const producto = document.getElementById('productoSelect').value;
+                    return { monto: monto, producto: producto };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(`You selected: ${result.value.producto} Amount: ${result.value.monto}`);
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    console.log('Modal cerrado por el usuario');
+                }
+            });
+        });
+
+        $('#myModal').on('hidden.bs.modal', function () {
+            var userId = $("#userIdInput").val();
+            console.log("ID del usuario seleccionado: " + userId);
+        });
+    });
+</script>
