@@ -172,12 +172,12 @@ namespace WebApp.Controllers
             return View(await _beneficiaryService.GetByIdAsync(Id));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> RemoveeBeneficiaryTrue(string Id)
-        {
-            await _beneficiaryService.(vm);
-            return RedirectToRoute(new { controller = "Client", action = "Index" });
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> RemoveeBeneficiaryTrue(string Id)
+        //{
+        //    await _beneficiaryService.(vm);
+        //    return RedirectToRoute(new { controller = "Client", action = "Index" });
+        //}
 
 
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NetBanking.Core.Application.Dtos.Error;
 using NetBanking.Core.Application.Interfaces.Services;
+using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
 using NetBanking.Core.Application.ViewModels.Users;
 
 namespace WebApp.Controllers
@@ -9,12 +10,18 @@ namespace WebApp.Controllers
     {
         private readonly IAdminService _adminService;
         private readonly IUserService _userService;
+        private readonly ISavingsAccountService _savingAccountService;
+        private readonly ICreditCardService _creditCardService;
 
         public AdminController(IAdminService adminService, 
-                                IUserService userService)
+                                IUserService userService,
+                                ISavingsAccountService savingAccountService,
+                                ICreditCardService creditCardService)
         {
             _adminService = adminService;
             _userService = userService;
+            _creditCardService = creditCardService;
+            _savingAccountService = savingAccountService;
         }
 
         //INDEX
@@ -90,17 +97,27 @@ namespace WebApp.Controllers
             return RedirectToRoute(new { controller = "Admin", action = "Index" });
         }
 
-        //REMOVE USERS
-        public async Task<IActionResult> Remove(string Id)
+
+        //PRODUCT ADD
+        public async Task<IActionResult> ProductAdd(string Id)
         {
-            return View("Remove", await _userService.GetByIdAsync(Id));
+            return View(await _userService.GetByIdAsync(Id));
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoveTrue(string Id)
+        public async Task<IActionResult> ProductAddSavingAccount(string Id)
         {
-            await _userService.Remove(Id);
-            return RedirectToAction("Index");
+            var user = await _userService.GetByIdAsync(Id);
+            await _savingAccountService.SaveUserWIthAccount(user);
+            return RedirectToRoute(new { controller = "ProductAdd", action = "Index" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ProductAddCreditCard(string Id)
+        {
+            var user = await _userService.GetByIdAsync(Id);
+            await _creditCardService.CreateCardWithUser(user);
+            return RedirectToRoute(new { controller = "Client", action = "Index" });
         }
     }
 }
