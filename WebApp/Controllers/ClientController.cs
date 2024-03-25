@@ -86,8 +86,10 @@ namespace WebApp.Controllers
             RealizeTransaction TransactionRequest = new()
             {
                 AllProducts = await _clientService.GetAllProductsByClientAsync(),
-                Beneficiaries = await _beneficiaryService.GetByOwnerIdAsync(user.Id)
+                Beneficiaries = await _beneficiaryService.GetByOwnerIdAsync(user.Id),
+                SaveTransactionViewModel = new SaveTransactionViewModel()
             };
+            TransactionRequest.SaveTransactionViewModel.Type = (TransactionType) Enum.Parse(typeof(TransactionType), TypeOfTransaction);
             return View(TypeOfTransaction, TransactionRequest);
         }
 

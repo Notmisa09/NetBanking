@@ -9,6 +9,7 @@
 }
 
 <form asp-action="InitializeTransaction" method="post">
+    <input asp-for="@Model.SaveTransactionViewModel.Type" value="@Model.SaveTransactionViewModel.Type" hidden />
 
     <label class="form-label" asp-for="@Model.SaveTransactionViewModel.ReceiverProductId">Elija la tarjeta de credito que desee pagar</label>
     <select class="form-select" asp-for="@Model.SaveTransactionViewModel.ReceiverProductId">
