@@ -37,24 +37,16 @@ if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasEr
 }
 }">Savings account: @item.Id</option>
         }
-        @foreach (var item in Model.AllProducts.CreditCards)
-        {
-            <option value="@item.Id" selected="@{
-if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasError)
-{
-                        @Model.SaveTransactionViewModel.EmissorProductId
-}
-}">Credit card: @item.Id</option>
-        }
+        
     </select>
 
     <br />
 
-    <label class="form-label" asp-for="@Model.SaveTransactionViewModel.Amount">Cantidad</label>
-    <input type="number" asp-for="@Model.SaveTransactionViewModel.Amount" placeholder="@{
+    <label class="form-label" asp-for="@Model.SaveTransactionViewModel.Cantity">Cantidad</label>
+    <input type="number" asp-for="@Model.SaveTransactionViewModel.Cantity" placeholder="@{
 if(Model.SaveTransactionViewModel!= null && Model.SaveTransactionViewModel.HasError)
 {
-                    @Model.SaveTransactionViewModel.Amount
+                    @Model.SaveTransactionViewModel.Cantity
 }
 }" />
     <br />

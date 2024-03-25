@@ -84,6 +84,8 @@ namespace NetBanking.Core.Application.Mappings
                .ReverseMap();
             CreateMap<Loan, SaveLoanViewModel>()
                .ReverseMap();
+            CreateMap<SaveLoanViewModel, LoanViewModel>()
+                .ReverseMap();
             #endregion
 
             #region CreditCard

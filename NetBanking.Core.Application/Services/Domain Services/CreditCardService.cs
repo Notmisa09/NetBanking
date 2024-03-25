@@ -35,44 +35,11 @@ namespace NetBanking.Core.Application.Services.Domain_Services
                 candidateId = CodeGeneratorHelper.GenerateCode(typeof(CreditCard));
             }
             while ((await _repository.FindAllAsync(x => x.Id == candidateId)).Count != 0);
-            vm.Id = candidateId;
+            entity.Id = candidateId;
             entity = await _repository.AddAsync(entity);
 
             SaveCreditCardViewModel svm = _mapper.Map<SaveCreditCardViewModel>(entity);
             return svm;
-        }
-
-        public async Task CreateCardWithUser(SaveUserViewModel vm)
-        {
-            var code = string.Empty;
-            string generatedCode = string.Empty;
-            CreditCardViewModel existingCreditCard;
-
-            for (int i = 0; i <= 2; i++)
-            {
-                do
-                {
-                    generatedCode = CodeGeneratorHelper.GenerateCode( typeof(CreditCard));
-                    existingCreditCard = await GetByIdAsync(generatedCode);
-
-                    if (existingCreditCard == null)
-                    {
-                        break;
-                    }
-
-                } while (existingCreditCard != null);
-            }
-
-            CreditCard card = new CreditCard()
-            {
-                Limit = 150000m,
-                UserId = vm.Id,
-                CreatedById = "Default",
-                Amount = 0,
-                CreatedDate = DateTime.UtcNow,
-                Id = generatedCode
-            };
-            await _repository.AddAsync(card);
         }
 
 

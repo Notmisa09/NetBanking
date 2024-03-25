@@ -21,6 +21,7 @@ namespace WebApp.Controllers
         private readonly ICreditCardService _creditCardService;
         private readonly IAccountService _accountService;
         private readonly IBeneficiaryService _beneficiaryService;
+        private readonly ITransactionService _transactionService;
         private readonly IHttpContextAccessor _contextaccessor;
         private readonly AuthenticationResponse user;
         public ClientController(IClientService clientService,
@@ -28,7 +29,8 @@ namespace WebApp.Controllers
             IAccountService accountService,
             IBeneficiaryService beneficiaryService,
             IUserService userService,
-            IHttpContextAccessor contextAccessor)
+            IHttpContextAccessor contextAccessor,
+            ITransactionService transactionService)
         {
             _creditCardService = creditCardService;
             _clientService = clientService;
@@ -37,11 +39,20 @@ namespace WebApp.Controllers
             _userService = userService;
             _contextaccessor = contextAccessor;
             user = _contextaccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+            _transactionService = transactionService;
         }
         public async Task<IActionResult> Home()
         {
             var vm = await _clientService.GetAllProductsByClientAsync();
+
             return View(vm);
+        }
+
+        public async Task<IActionResult> TransactionHistorial()
+        {
+            var vm = await _clientService.GetTransactionHistorial();
+            var orderedList = vm.OrderByDescending(x => x.CreatedDate).ToList();
+            return View(orderedList);
         }
 
         public async Task<IActionResult> Beneficiaries()
@@ -60,7 +71,7 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddBeneficiary(SaveBeneficiaryViewModel svm)
         {
-            if (!ModelState.IsValid && ModelState["BeneficiaryId"].ValidationState == ModelValidationState.Valid)
+            if (!ModelState.IsValid && ModelState["BeneficiaryId"] != null)
             {
                 return View(svm);
             }
@@ -110,9 +121,9 @@ namespace WebApp.Controllers
         {
             string serializedVm = TempData["confirmTransactionVM"]?.ToString();
             VerifyTransactionViewModel vm = JsonConvert.DeserializeObject<VerifyTransactionViewModel>(serializedVm);
-            // Valido las cosas
             var result = await _clientService.TransactionValidation(vm.Transaction);
-            //Si todas las validaciones salen bien, pregunto si quiere hacer la transacción
+
+
             if (result.HasError)
             {
                 RealizeTransaction transaction = new()
@@ -128,14 +139,16 @@ namespace WebApp.Controllers
                 TempData["confirmTransactionVM"] = serializedVm;
                 return View(vm.Transaction.Type.ToString(), transaction);
             }
-            var prod = await _clientService.GetProductByIdAsync(vm.Transaction.ReceiverProductId);
-            var titular = await _accountService.GetByIdAsync(prod.UserId);
+            
             SaveTransactionViewModel Transaction = vm.Transaction;
-
             serializedVm = JsonConvert.SerializeObject(Transaction);
             TempData["executeTransaction"] = serializedVm;
+
+
             if(vm.Transaction.Type == TransactionType.ExpressPay || vm.Transaction.Type == TransactionType.BeneficiaryPay)
             {
+                var prod = await _clientService.GetProductByIdAsync(vm.Transaction.ReceiverProductId);
+                var titular = await _accountService.GetByIdAsync(prod.UserId);
                 ViewBag.Name = titular.FirstName + " " + titular.LastName;
                 return View("VerifyTransaction");
             }
@@ -151,19 +164,6 @@ namespace WebApp.Controllers
             SaveTransactionViewModel vm = JsonConvert.DeserializeObject<SaveTransactionViewModel>(serializedVm);
             var resultC = await _clientService.RealizeTransaction(vm);
             return RedirectToAction("Home");
-        }
-
-        //CREDITCARD
-        public async Task<IActionResult> CreditCard()
-        {
-            return View(await _userService.GetByIdAsync(user.Id));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreditCard(SaveUserViewModel vm)
-        {
-            await _creditCardService.CreateCardWithUser(vm);
-            return RedirectToRoute(new { controller = "Client", action = "Index" });
         }
 
         //DELETE BENEFICIARY
