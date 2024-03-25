@@ -42,14 +42,10 @@
                 </div>
             </div>
             <div>
-                <form asp-controller="Admin" asp-action="ProductAddSavingAccount" method="post">
-                    <button name="Id" value="@Model.Id" type="submit" class="btn btn-outline-success float-end ms-1"><i class="fa-solid fa-piggy-bank"></i></button>
-                </form>
-                <form asp-controller="Admin" asp-action="ProductAddCreditCard" method="post">
-                    <button type="submit" class="btn btn-outline-info float-end"><i class="fa-solid fa-credit-card"></i></button>
-                </form>
+                <button asp-route-id="@Model.Id" type="submit" class="btn btn-outline-success float-end ms-1"><i class="fa-solid fa-piggy-bank"></i></button>
+                <a asp-controller="Admin" asp-action="AproveCreditCard" asp-route-id="@Model.Id" class="btn btn-outline-info float-end"><i class="fa-solid fa-credit-card"></i></a>
             </div>
-        </div>
+        </div> 
     </div>
 </div>
 
