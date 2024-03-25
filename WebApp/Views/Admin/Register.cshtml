@@ -2,7 +2,7 @@
 @using NetBanking.Core.Application.ViewModels.Users;
 @using NetBanking.Core.Application.Helpers;
 @using NetBanking.Core.Application.Enums;
-@inject IHttpContextAccessor  httpContext;
+@inject IHttpContextAccessor httpContext;
 @model SaveUserViewModel
 
 @{
@@ -30,9 +30,17 @@
                     <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action=@(editMode ? "Edit":"Register")>
 
                         <div class="mb-3">
+                            <input asp-for="Id" class="form-control" type="hidden"/>
+                        </div>
+
+                        <div class="mb-3">
                             <label asp-for="formFile" class="form-label">Upload a profile picture (optional): </label>
                             <input asp-for="formFile" class="form-control" />
                             <span asp-validation-for="formFile" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <input asp-for="ImageURL" class="form-control" type="hidden" />
                         </div>
 
                         <div class="mb-3">
@@ -83,21 +91,10 @@
                             </div>
                         }
 
-                        @if (Model.Role == RolesEnum.Client.ToString())
-                        {
-                            <div id="initialAmountDiv" class="mb-3">
-                                <label asp-for="InitialAmount" class="form-label">Initial Amount</label>
-                                <input asp-for="InitialAmount" class="form-control" />
-                            </div>
-                        }
-                        else
-                        {
-                            <div id="initialAmountDiv" class="mb-3" style="display: none;">
-                                <label asp-for="InitialAmount" class="form-label">Initial Amount</label>
-                                <input asp-for="InitialAmount" class="form-control" />
-                            </div>
-                        }
-
+                        <div id="initialAmountDiv" class="mb-3" style="display: none;">
+                            <label asp-for="InitialAmount" class="form-label">Initial Amount</label>
+                            <input asp-for="InitialAmount" class="form-control" />
+                        </div>
 
                         <div class="mb-3">
                             <label asp-for="Password" class="form-label">Contraseña: </label>
@@ -112,7 +109,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary">Guardar</button>
-                        <a asp-controller="Admin" asp-action="Index" class="btn btn-warning">Volver atras</a>
+                        <a asp-controller="Admin" asp-action="Index" class="btn btn-warning">Volver atrás</a>
                     </form>
                 </div>
             </div>
@@ -123,9 +120,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('#userRole').change(function () {
+        $('#userRoleSelect').change(function () {
             var selectedRole = $(this).val();
-            if (selectedRole === "Client") {
+            if (selectedRole === "@RolesEnum.Client.ToString()") {
                 $('#initialAmountDiv').show();
             } else {
                 $('#initialAmountDiv').hide();
