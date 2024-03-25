@@ -54,7 +54,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
         public async Task SaveUserWIthAccount(SaveUserViewModel vm)
         {
             string productcode = string.Empty;
-            var userinfo = await _accountService.GetByEmail(vm.Email);
+            var userinfo = await _accountService.GetByIdAsync(vm.Email);
             var code = CodeGeneratorHelper.GenerateCode(typeof(CreditCard));
 
             SavingsAccount savingAccount = new()
