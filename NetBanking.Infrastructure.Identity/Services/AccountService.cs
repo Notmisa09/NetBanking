@@ -152,9 +152,25 @@ namespace NetBanking.Infrastructure.Identity.Services
             return response;
         }
 
+        //CHANGE USER STATUS
+        public async Task<ServiceResult> ChangeUserStatus(RegisterRequest request)
+        {
+            ServiceResult response = new();
+            var userget = await _userManager.FindByIdAsync(request.Id);
+            {
+                userget.IsActive = request.IsActive;
+            }
+            var result = await _userManager.UpdateAsync(userget);
+            if (!result.Succeeded)
+            {
+                response.HasError = true;
+                response.Error = $"There was an error while trying to update the user{userget.UserName}";
+            }
+            return response;
+        }
 
-        //EDITUSER
-        public async Task<ServiceResult> UpdateUserAsync(RegisterRequest request)
+            //EDITUSER
+            public async Task<ServiceResult> UpdateUserAsync(RegisterRequest request)
         {
             ServiceResult response = new();
             var userget = await _userManager.FindByIdAsync(request.Id);

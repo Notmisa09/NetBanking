@@ -3,6 +3,7 @@ using NetBanking.Core.Application.Dtos.Error;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
 using NetBanking.Core.Application.Singelton;
+using NetBanking.Core.Application.ViewModels.CreditCard;
 using NetBanking.Core.Application.ViewModels.Users;
 
 namespace WebApp.Controllers
@@ -35,6 +36,22 @@ namespace WebApp.Controllers
             }
 
             return View(await _adminService.GetAllAsync());
+        }
+
+        //CREDITCARDCONFIRM
+        public IActionResult AproveCreditCard(string Id)
+        {
+            TempData["Id"] = Id;
+            return View(new SaveCreditCardViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveCreditCard(SaveCreditCardViewModel vm)
+        {
+            vm.UserId = TempData["Id"].ToString();
+            await _creditCardService.AddAsync(vm);
+            return RedirectToRoute(new { controller = "Admin", action = "Index" });
+
         }
 
         //DASHBORAD
@@ -110,7 +127,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> ProductAdd(string Id)
         {
             return View(await _userService.GetByIdAsync(Id));
-        }
+        } 
 
         [HttpPost]
         public async Task<IActionResult> ProductAddSavingAccount(string Id)
@@ -118,14 +135,6 @@ namespace WebApp.Controllers
             var user = await _userService.GetByIdAsync(Id);
             await _savingAccountService.SaveUserWIthAccount(user);
             return RedirectToRoute(new { controller = "ProductAdd", action = "Index" });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ProductAddCreditCard(string Id)
-        {
-            var user = await _userService.GetByIdAsync(Id);
-            await _creditCardService.CreateCardWithUser(user);
-            return RedirectToRoute(new { controller = "Client", action = "Index" });
         }
     }
 }
