@@ -9,6 +9,7 @@
 }
 
 <form asp-action="InitializeTransaction" method="post">
+    <input asp-for="@Model.SaveTransactionViewModel.Type" value="@Model.SaveTransactionViewModel.Type" hidden />
     <label class="form-label" asp-for="@Model.SaveTransactionViewModel.ReceiverProductId">Elija el beneficiario a quien quiere pagar:</label>
     <select class="form-select" asp-for="@Model.SaveTransactionViewModel.ReceiverProductId">
         @foreach (var item in Model.Beneficiaries)
