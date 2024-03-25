@@ -10,7 +10,7 @@
 </head>
 
 <div class="container-fluid">
-    <div class="row offset-2">
+    <div class="row offset-4">
         <div class="col-md-3">
             <div class="card blue-border cardstatistics bg-light">
                 <div class="card-body">
@@ -37,10 +37,10 @@
 </div>
 
 
-<div class="container-fluid mt-4">
-    <div class="card">
-        <div class="card-body align-content-center">
-            <div class="row">
+<div class="container card mt-4">
+    <div class="col-12 offset-3">
+        <div class="card-body">
+            <div class="row align-content-center">
                 <div class="col-6 mt-2 mb-2">
                     <canvas id="ActiveClients"></canvas>
                 </div>
@@ -52,7 +52,7 @@
                 </div>
             </div>
         </div>
-    </div>
+     </div>
 </div>
 
 
@@ -72,10 +72,10 @@
         datasets: [{
             label: 'Data Overview',
             data: [
-                @Model.ActiveClients,
-                @Model.AllPayments,
-                @Model.AssignedProduct
-            ],
+    @Model.ActiveClients,
+    @Model.AllPayments,
+    @Model.AssignedProduct
+                    ],
             backgroundColor: [
                 'rgb(255, 99, 132)',
                 'rgb(75, 192, 192)',
@@ -123,7 +123,7 @@
 
 
 <style>
-    
+
 
     #card {
         border-radius: 6px;
