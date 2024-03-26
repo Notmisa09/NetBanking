@@ -6,6 +6,7 @@ using NetBanking.Core.Application.Singelton;
 using NetBanking.Core.Application.ViewModels.CreditCard;
 using NetBanking.Core.Application.ViewModels.Delete;
 using NetBanking.Core.Application.ViewModels.Loan;
+using NetBanking.Core.Application.ViewModels.SavingsAccount;
 using NetBanking.Core.Application.ViewModels.Users;
 
 namespace WebApp.Controllers
@@ -108,12 +109,45 @@ namespace WebApp.Controllers
         }
 
 
-        public async Task<IActionResult> deleteCreditCard(string Id)
+        public async Task<IActionResult> DeleteCreditCard(string Id)
         {
             DeleteStatus p = await _creditCardService.Delete(Id);
             StringStorage.Instance.SetStoredString(p.Error);
             return RedirectToRoute(new { controller = "Admin", action = "ViewProducts" });
         }
+
+
+
+        public async Task<IActionResult> DeleteLoan(string Id)
+        {
+            DeleteStatus p = await _loanService.Delete(Id);
+            StringStorage.Instance.SetStoredString(p.Error);
+            return RedirectToRoute(new { controller = "Admin", action = "ViewProducts" });
+        }
+
+        public async Task<IActionResult> DeleteSavingsAccount(string Id)
+        {
+            DeleteStatus p = await _savingAccountService.Delete(Id);
+            if (!p.HasError)
+            {
+                StringStorage.Instance.SetStoredString(p.Error);
+                return Json(new { success = true });
+            }
+            else
+            {
+                StringStorage.Instance.SetStoredString(p.Error);
+                return Json(new { success = false });
+            }
+        }
+
+        public async Task<IActionResult> AddAmountSavingsAccount(string Id, decimal amount)
+        {
+            SaveSavingsAccountViewModel vm = await _savingAccountService.GetByIdSaveViewModelAsync(Id);
+            vm.Amount += amount;
+            await _savingAccountService.UpdateAsync(vm, vm.Id);
+            return Json(new { success = true });
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Register(SaveUserViewModel vm)

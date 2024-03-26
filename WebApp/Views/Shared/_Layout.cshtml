@@ -90,7 +90,16 @@
                         {
                             <ul class="nav nav-tabs" role="tablist" style="margin-left: 43px;">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@user.UserName <img src="@user.ImageUrl" id="Image" /></a>
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@user.UserName  
+                                        @if(user.ImageUrl == null)
+                                        {
+                                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTnB8SJzsxM_KKbFNf-er2X-WiEdHMHXuz6w&usqp=CAU" id="Image">
+                                        }
+                                        else
+                                        {
+                                            <img src="@user.ImageUrl" id="Image" />
+                                        }
+                                        </a>
                                     <div class="dropdown-menu" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 44px, 0px);" data-popper-placement="bottom-start">
                                         <a class="nav-link text-black fw-bold" asp-area="" asp-controller="User" asp-action="LogOut"> Log Out <img src="~/Iconos/salida (1).png" style="width: 30px; height: 30px; margin-left: 7px;" /></a>
                                     </div>

@@ -12,7 +12,6 @@ namespace NetBanking.Core.Application.Interfaces.Services
         public Task<ViewModel> GetByIdAsync(string Id);
         public Task<SaveViewModel> GetByIdSaveViewModelAsync(string Id);
         public Task UpdateAsync(SaveViewModel vm, string Id);
-
         public Task Delete(string Id);
         Task<List<ViewModel>> FindAllAsync(Expression<Func<Entity, bool>> filter);
         //public Task Delete(int Id);
