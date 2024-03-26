@@ -80,7 +80,7 @@ namespace WebApp.Controllers
         {
             var user = await _userService.GetByIdAsync(userId);
             user.InitialAmount = monto;
-            await _savingAccountService.AddAsync(user);
+            await _savingAccountService.SaveUserWIthAccount(user);
             return RedirectToRoute(new { controller = "ProductAdd", action = "Index" });
         }
 
