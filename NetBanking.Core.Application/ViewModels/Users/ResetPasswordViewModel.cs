@@ -18,7 +18,7 @@ namespace NetBanking.Core.Application.ViewModels.Users
         [Required(ErrorMessage = "You should entar a password")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
-        public string Token { get; set; }
+        public string? Token { get; set; }
         public bool HasError { get; set; }
         public string? Error { get; set; }
     }

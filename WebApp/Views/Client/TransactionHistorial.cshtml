@@ -1,25 +1,39 @@
 ﻿@using NetBanking.Core.Application.ViewModels.Transaction;
 @model List<TransactionViewModel>;
-<h1>Historial</h1>
-<table class="table">
-    <thead>
-        <td>Fecha</td>
-        <td>Cuenta emisora</td>
-        <td>Cuenta receptora</td>
-        <td>Tipo de transaccion</td>
-        <td>Monto</td>
-    </thead>
-    <tbody>
-@foreach(var item in Model)
-    {
-        <tr>
-            <td>@item.CreatedDate</td>
-            <td>@item.EmissorProductId</td>
-            <td>@item.ReceiverProductId</td>
-            <td>@item.Type.ToString()</td>
-            <td>@item.Cantity</td>
-        </tr>
-    }
-    </tbody>
-    
-</table>
+
+
+
+<head>
+    <link rel="stylesheet" href="~/css/tableadmin.css" />
+</head>
+
+
+<div class="container-fluid" >
+    <div class="col-8 offset-2">
+        <div class="card" >
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <td>Cuenta emisora</td>
+                    <td>Cuenta receptora</td>
+                    <td>Tipo de transaccion</td>
+                    <td>Monto</td>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.CreatedDate</td>
+                                <td>@item.EmissorProductId</td>
+                                <td>@item.ReceiverProductId</td>
+                                <td>@item.Type.ToString()</td>
+                                <td>@item.Cantity</td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
