@@ -99,7 +99,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             await _repository.AddAsync(savingAccount);
         }
 
-        public override async Task<DeleteStatus> Delete(string Id)
+        public async Task<DeleteStatus> Delete(string Id)
         {
             var savingsAccount = await _repository.GeEntityByIDAsync(Id);
             DeleteStatus vm = new();
@@ -114,7 +114,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
                 var user = await _accountService.GetByIdAsync(savingsAccount.UserId);
 
                 var savingsAccountPrincipal = await GetByOwnerIdAsync(user.Id);
-                var savingsAccountVm = savingsAccountPrincipal.Find(x => x.IsMain == true && x.UserId == savingsAccount.Id);
+                var savingsAccountVm = savingsAccountPrincipal.Find(x => x.IsMain == true && x.UserId == user.Id);
 
                 savingsAccountVm.Amount += savingsAccount.Amount;
                 SaveSavingsAccountViewModel savingsAccountRequest = _mapper.Map<SaveSavingsAccountViewModel>(savingsAccountVm);
