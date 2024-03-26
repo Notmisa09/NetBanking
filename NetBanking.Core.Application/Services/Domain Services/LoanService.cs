@@ -44,7 +44,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             return _mapper.Map<List<LoanViewModel>>(list);
         }
 
-        public override async Task<DeleteStatus> Delete(string Id)
+        public async Task<DeleteStatus> Delete(string Id)
         {
             var loan = await _repository.GeEntityByIDAsync(Id);
             DeleteStatus vm = new();

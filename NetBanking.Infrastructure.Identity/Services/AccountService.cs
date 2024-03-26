@@ -171,7 +171,7 @@ namespace NetBanking.Infrastructure.Identity.Services
         }
 
             //EDITUSER
-            public async Task<ServiceResult> UpdateUserAsync(RegisterRequest request)
+        public async Task<ServiceResult> UpdateUserAsync(RegisterRequest request)
         {
             ServiceResult response = new();
             var userget = await _userManager.FindByIdAsync(request.Id);
