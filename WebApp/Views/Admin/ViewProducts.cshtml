@@ -343,7 +343,12 @@
                         return response.json();
                     })
                     .then(data => {
-                        Swal.fire('Prestamo cancelado', '', 'success');
+                        if (data.success) {
+                            // La operación fue exitosa, activa el modal de éxito
+                            Swal.fire('Prestamo cancelado', 'Actualice la pagina', 'success');
+                        } else {
+                            Swal.fire('No se puede eliminar el prestamo', '', 'error');
+                        }
                     })
                     .catch(error => {
                         Swal.fire('Error al eliminar el prestamo', 'El usuario tiene una deuda pendiente', 'error');

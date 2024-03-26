@@ -71,7 +71,7 @@ namespace NetBanking.Infrastructure.Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("Limit")
+                    b.Property<decimal>("Debt")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CreatedById")
@@ -87,7 +87,7 @@ namespace NetBanking.Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("Limit")
+                    b.Property<decimal>("Debt")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ModifiedById")
@@ -110,7 +110,7 @@ namespace NetBanking.Infrastructure.Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("Limit")
+                    b.Property<decimal>("Debt")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CreatedById")
@@ -149,7 +149,7 @@ namespace NetBanking.Infrastructure.Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("Limit")
+                    b.Property<decimal>("Debt")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CreatedById")

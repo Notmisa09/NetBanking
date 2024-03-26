@@ -10,7 +10,7 @@ namespace NetBanking.Core.Application.ViewModels.Loan
         [Required(ErrorMessage = "La cantidad es requerida")]
         public decimal Amount { get; set; }
         [Required(ErrorMessage = "El límite aprobado es requerida")]
-        public decimal Limit { get; set; }
+        public decimal Debt { get; set; }
         public bool HasError { get; set; }
         public string? Error { get; set; }
         public string CreatedById { get; set; }

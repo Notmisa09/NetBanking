@@ -49,7 +49,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             var loan = await _repository.GeEntityByIDAsync(Id);
             DeleteStatus vm = new();
 
-            if (loan.Debt >= 0)
+            if (loan.Amount > 0)
             {
                 vm.Error = $"Este usuario tiene una deuda pendiente de {loan.Debt}.";
                 vm.HasError = true;
