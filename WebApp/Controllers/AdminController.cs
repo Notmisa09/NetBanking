@@ -132,8 +132,17 @@ namespace WebApp.Controllers
         public async Task<IActionResult> DeleteLoan(string Id)
         {
             DeleteStatus p = await _loanService.Delete(Id);
-            StringStorage.Instance.SetStoredString(p.Error);
-            return RedirectToRoute(new { controller = "Admin", action = "ViewProducts" });
+            if (!p.HasError)
+            {
+                StringStorage.Instance.SetStoredString(p.Error);
+                return Json(new { success = true });
+            }
+            if (p.HasError)
+            {
+                StringStorage.Instance.SetStoredString(p.Error);
+                return Json(new { success = false });
+            }
+            return Json(new { success = false });
         }
 
         public async Task<IActionResult> DeleteSavingsAccount(string Id)
