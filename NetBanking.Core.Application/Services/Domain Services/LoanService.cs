@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
+using NetBanking.Core.Application.ViewModels.Delete;
 using NetBanking.Core.Application.ViewModels.Loan;
 using NetBanking.Core.Domain.Entities;
 
@@ -43,19 +44,22 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             return _mapper.Map<List<LoanViewModel>>(list);
         }
 
-        public override async Task<string> Delete(string Id)
+        public override async Task<DeleteStatus> Delete(string Id)
         {
             var loan = await _repository.GeEntityByIDAsync(Id);
+            DeleteStatus vm = new();
 
             if (loan.Debt >= 0)
             {
-                return $"Este usuario tiene una deuda pendiente de {loan.Debt}.";
+                vm.Error = $"Este usuario tiene una deuda pendiente de {loan.Debt}.";
+                vm.HasError = true;
             }
             else
             {
+                vm.Error = "Se ha borrado el prestamo";
                 await _repository.DeleteAsync(loan);
-                return "Se ha borrado el prestamo";
             }
+             return vm;
         }
     }
 }

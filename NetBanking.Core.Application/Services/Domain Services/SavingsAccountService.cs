@@ -5,6 +5,7 @@ using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
 using NetBanking.Core.Application.ViewModels.CreditCard;
+using NetBanking.Core.Application.ViewModels.Delete;
 using NetBanking.Core.Application.ViewModels.SavingsAccount;
 using NetBanking.Core.Application.ViewModels.Users;
 using NetBanking.Core.Domain.Entities;
@@ -55,8 +56,8 @@ namespace NetBanking.Core.Application.Services.Domain_Services
         public async Task SaveUserWIthAccount(SaveUserViewModel vm)
         {
             string productcode = string.Empty;
-            var userinfo = await _accountService.GetByIdAsync(vm.Email);
-            var code = CodeGeneratorHelper.GenerateCode(typeof(CreditCard));
+            var userinfo = await _accountService.GetByIdAsync(vm.Id);
+            var code = CodeGeneratorHelper.GenerateCode(typeof(SavingsAccount));
 
             SavingsAccount savingAccount = new()
             {
@@ -74,7 +75,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
         {
             string productcode = string.Empty;
             var userinfo = await _accountService.GetByEmail(vm.Email);
-            var code = CodeGeneratorHelper.GenerateCode(typeof(CreditCard));
+            var code = CodeGeneratorHelper.GenerateCode(typeof(SavingsAccount));
 
             SavingsAccount savingAccount = new()
             {
@@ -88,13 +89,14 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             await _repository.AddAsync(savingAccount);
         }
 
-        public override async Task<string> Delete(string Id)
+        public override async Task<DeleteStatus> Delete(string Id)
         {
             var savingsAccount = await _repository.GeEntityByIDAsync(Id);
-
+            DeleteStatus vm = new();
             if (savingsAccount.IsMain == true)
             {
-                return "La cuenta principal no puede ser eliminada.";
+                vm.Error = "La cuenta principal no puede ser eliminada.";
+                vm.HasError = true;
             }
 
             else if (savingsAccount.IsMain == false && savingsAccount.Amount >= 0)
@@ -109,12 +111,10 @@ namespace NetBanking.Core.Application.Services.Domain_Services
                 await UpdateAsync(savingsAccountRequest, savingsAccountRequest.Id);
 
                 await _repository.DeleteAsync(savingsAccount);
-
-                return "Se ha borrado la cuenta. Se ha promovido el dinero a la cuenta de ahorro principal.";
+                vm.Error = "Se ha borrado la cuenta. Se ha promovido el dinero a la cuenta de ahorro principal.";
             }
 
-            await _repository.DeleteAsync(savingsAccount);
-            return "Se ha borrado la cuenta";
+            return vm;
         }
     }
 }

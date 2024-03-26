@@ -1,0 +1,17 @@
+﻿.card {
+    position: relative;
+    display: flex;
+    width: 395px;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #23406f;
+    background-clip: border-box;
+    border: 1px solid #23406f;
+    border-radius: 7px;
+}
+
+.light {
+    color: #7d7979;
+    font-size: 11px;
+}

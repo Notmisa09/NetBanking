@@ -61,6 +61,20 @@ namespace NetBanking.Core.Application.Services
             return vm;
         }
 
+
+        public async Task<GetAllProductsByClientViewModel> GetAllProductsByClientAsync(string IdUser)
+        {
+            GetAllProductsByClientViewModel vm = new()
+            {
+                SavingsAccounts = await _savingsAccountService.GetByOwnerIdAsync(IdUser),
+                CreditCards = await _creditCardService.GetByOwnerIdAsync(IdUser),
+                Loans = await _loanService.GetByOwnerIdAsync(IdUser)
+            };
+
+            return vm;
+        }
+
+
         public async Task<List<BeneficiaryViewModel>> GetAllBeneficiariesByClientAsync()
         {
             return await _beneficiaryService.GetByOwnerIdAsync(user.Id);
