@@ -69,7 +69,8 @@ namespace WebApp.Controllers
             {
                 EmissorProductId = loan.Id,
                 ReceiverProductId = mainSavingAccount.Id,
-                Cantity = loan.Amount
+                Cantity = loan.Debt,
+                Type = NetBanking.Core.Domain.Enums.TransactionType.LoanAproval
             };
             await _clientService.RealizeTransaction(transaction);
             return RedirectToRoute(new { controller = "Admin", action = "Index" });

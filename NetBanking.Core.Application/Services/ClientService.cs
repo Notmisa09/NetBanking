@@ -97,7 +97,7 @@ namespace NetBanking.Core.Application.Services
                 {
                     var creditCard = await _creditCardService.GetByIdAsync(emissorProduct.Id);
                     if (svm.Type == TransactionType.CashAdvance)
-                        creditCard.Amount = svm.Cantity + svm.Cantity * (decimal)(6.25 / 100);
+                        creditCard.Amount += svm.Cantity + svm.Cantity * (decimal)(6.25 / 100);
                     else
                         creditCard.Amount += svm.Cantity; //Se le suma a su deuda
 
@@ -116,7 +116,7 @@ namespace NetBanking.Core.Application.Services
                 else if (600 <= Identificator && Identificator <= 999) //Prestamos comienzan con 3 digitos entre 600 y 999
                 {
                     var loan = await _loanService.GetByIdAsync(emissorProduct.Id);
-                    loan.Debt += svm.Cantity;
+                    loan.Amount += svm.Cantity;
                     await _loanService.UpdateAsync(_mapper.Map<SaveLoanViewModel>(loan), loan.Id);
                 }
                 #endregion
@@ -145,12 +145,6 @@ namespace NetBanking.Core.Application.Services
                     creditCard.Amount -= svm.Cantity; //Se le resta a su deuda
                     await _creditCardService.UpdateAsync(_mapper.Map<SaveCreditCardViewModel>(creditCard), creditCard.Id);
 
-                    //Registra la transacción
-                    await _transactionService.AddAsync(svm);
-                    return new TransactionStatusViewModel()
-                    {
-                        HasError = false
-                    };
                 }
 
                 else if (300 <= Identificator && Identificator <= 599) //Cuentas de ahorro comienzan con 3 digitos entre 300 y 599
@@ -159,8 +153,6 @@ namespace NetBanking.Core.Application.Services
                     savingAccount.Amount += svm.Cantity; //Se le suma a su dinero
                     await _savingsAccountService.UpdateAsync(_mapper.Map<SaveSavingsAccountViewModel>(savingAccount), savingAccount.Id);
 
-                    //Registra la transacción
-                    await _transactionService.AddAsync(svm);
                 }
                 else if (600 <= Identificator && Identificator <= 999) //Prestamos comienzan con 3 digitos entre 600 y 999
                 {
@@ -180,9 +172,11 @@ namespace NetBanking.Core.Application.Services
                         };
                         await RealizeTransaction(retorno);
                     }
-                    loan.Debt -= svm.Cantity; //Reduce la deuda
+                    loan.Amount -= svm.Cantity; //Reduce la deuda
                     await _loanService.UpdateAsync(_mapper.Map<SaveLoanViewModel>(loan), loan.Id);
                 }
+                await _transactionService.AddAsync(svm);
+
                 #endregion
 
             }
