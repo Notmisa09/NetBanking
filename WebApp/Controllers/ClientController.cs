@@ -71,7 +71,12 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddBeneficiary(SaveBeneficiaryViewModel svm)
         {
-            if (!ModelState.IsValid && ModelState["BeneficiaryId"] != null)
+            if(await _clientService.ProductExists(svm.BeneficiaryAccountId))
+            {
+                var beneficiary = await _clientService.GetProductByIdAsync(svm.BeneficiaryAccountId);
+                svm.BeneficiaryId = beneficiary.UserId;
+            }
+            if (!ModelState.IsValid)
             {
                 return View(svm);
             }

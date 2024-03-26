@@ -1,9 +1,12 @@
-﻿namespace NetBanking.Core.Application.ViewModels.CreditCard
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace NetBanking.Core.Application.ViewModels.CreditCard
 {
     public class SaveCreditCardViewModel
     {
         public string? Id { get; set; }
         public string UserId { get; set; }
+        [Required(ErrorMessage = "El límite aprobado es requerida")]
         public decimal Limit { get; set; }
         public decimal Debt { get; set; }
         public bool HasError { get; set; }

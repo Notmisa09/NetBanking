@@ -115,16 +115,16 @@
                             {
                                 <td><a asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ViewProducts"><span class=""><span class="badge rounded-pill text-bg-info">Ver Productos</span></span></a></td>
                             }
-                            @if (role == RolesEnum.Admin.ToString())
+                            else
                             {
                                 <td><span class="badge rounded-pill text-bg-danger">Sin Productos</span></td>
                             }
                         }
-                        <td>
-                            <div class="dropdown">
+                    <td>
+                        <div class="dropdown">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                     <img src="~/Iconos/mas.png" style="width: 20px; height: 20px;" />
-                            </button>
+                                </button>
                             <div class="dropdown-menu">
                                 @if (user.IsActive == false)
                                 {

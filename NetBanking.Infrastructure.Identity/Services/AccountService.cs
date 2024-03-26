@@ -218,7 +218,7 @@ namespace NetBanking.Infrastructure.Identity.Services
                 HasError = true,
             };
 
-            var userWithSameUserName = await _userManager.FindByEmailAsync(request.Email);
+            var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
             if (userWithSameUserName != null)
             {
                 response.HasError = true;

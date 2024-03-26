@@ -4,6 +4,7 @@ using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
 using NetBanking.Core.Application.Singelton;
 using NetBanking.Core.Application.ViewModels.CreditCard;
+using NetBanking.Core.Application.ViewModels.Delete;
 using NetBanking.Core.Application.ViewModels.Loan;
 using NetBanking.Core.Application.ViewModels.Users;
 
@@ -98,7 +99,20 @@ namespace WebApp.Controllers
 
         public async Task<IActionResult> ViewProducts(string Id)
         {
+            if (!string.IsNullOrEmpty(StringStorage.Instance.GetStoredString()))
+            {
+                ViewBag.Error = StringStorage.Instance.GetStoredString();
+                StringStorage.Instance.SetStoredString("");
+            }
             return View(await _clientService.GetAllProductsByClientAsync(Id));
+        }
+
+
+        public async Task<IActionResult> deleteCreditCard(string Id)
+        {
+            DeleteStatus p = await _creditCardService.Delete(Id);
+            StringStorage.Instance.SetStoredString(p.Error);
+            return RedirectToRoute(new { controller = "Admin", action = "ViewProducts" });
         }
 
         [HttpPost]
