@@ -34,17 +34,17 @@ namespace NetBanking.Infrastructure.Persistence.Interceptor
                     if (userViewModel == null)
                         entry.Property(a => a.CreatedById).CurrentValue = "Default";
                     else
-                        entry.Property(a => a.CreatedById).CurrentValue = userViewModel.FirstName + userViewModel.LastName;
+                        entry.Property(a => a.CreatedById).CurrentValue = userViewModel.Id;
                 }
                 if (entry.State == EntityState.Modified)
                 {
                     entry.Property(a => a.ModifiedDate).CurrentValue = DateTime.UtcNow;
-                    entry.Property(a => a.ModifiedById).CurrentValue = userViewModel.FirstName + userViewModel.LastName;
+                    entry.Property(a => a.ModifiedById).CurrentValue = userViewModel.Id;
                 }
                 if (entry.State == EntityState.Deleted)
                 {
                     entry.Property(a => a.DeletedDate).CurrentValue = DateTime.UtcNow;
-                    entry.Property(a => a.DeletedById).CurrentValue = userViewModel.FirstName + userViewModel.LastName;
+                    entry.Property(a => a.DeletedById).CurrentValue = userViewModel.Id;
                 }
             }
             return base.SavingChangesAsync(eventData, result, cancellationToken);

@@ -39,15 +39,11 @@ namespace WebApp.Controllers
         }
 
         //CREDITCARDCONFIRM
-        public IActionResult AproveCreditCard(string Id)
-        {
-            TempData["Id"] = Id;
-            return View(new SaveCreditCardViewModel());
-        }
 
         [HttpPost]
         public async Task<IActionResult> SaveCreditCard(SaveCreditCardViewModel vm)
         {
+
             vm.UserId = TempData["Id"].ToString();
             await _creditCardService.AddAsync(vm);
             return RedirectToRoute(new { controller = "Admin", action = "Index" });
