@@ -44,13 +44,13 @@ namespace NetBanking.Core.Application.Services.Domain_Services
         }
 
 
-        public override async Task<DeleteStatus> Delete(string Id)
+        public async Task<DeleteStatus> Delete(string Id)
         {
             var creditCard = await _repository.GeEntityByIDAsync(Id);
             DeleteStatus vm = new();
             if (creditCard.Amount >= 0)
             {
-                vm.Error = $"Este usuario tiene una deuda pendiente de {creditCard.Amount}.";
+                vm.Error = "Este usuario tiene una deuda pendiente";
                 vm.HasError = true;
             }
             else
