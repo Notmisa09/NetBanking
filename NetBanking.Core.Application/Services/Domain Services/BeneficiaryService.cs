@@ -34,7 +34,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
                 candidateId = CodeGeneratorHelper.GenerateCode(typeof(Beneficiary));
             }
             while ((await _repository.FindAllAsync(x => x.Id == candidateId)).Count != 0);
-            vm.Id = candidateId;
+            entity.Id = candidateId;
             entity = await _repository.AddAsync(entity);
 
             SaveBeneficiaryViewModel svm = _mapper.Map<SaveBeneficiaryViewModel>(entity);
