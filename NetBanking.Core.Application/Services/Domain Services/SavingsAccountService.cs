@@ -54,10 +54,15 @@ namespace NetBanking.Core.Application.Services.Domain_Services
         }
 
         public async Task SaveUserWIthAccount(SaveUserViewModel vm)
-        {
-            string productcode = string.Empty;
+        {;
             var userinfo = await _accountService.GetByIdAsync(vm.Id);
-            var code = CodeGeneratorHelper.GenerateCode(typeof(SavingsAccount));
+            
+            string candidateId = "";
+            do
+            {
+                candidateId = CodeGeneratorHelper.GenerateCode(typeof(SavingsAccount));
+            }
+            while ((await _repository.FindAllAsync(x => x.Id == candidateId)).Count != 0);
 
             SavingsAccount savingAccount = new()
             {
@@ -66,16 +71,21 @@ namespace NetBanking.Core.Application.Services.Domain_Services
                 UserId = userinfo.Id,
                 CreatedDate = DateTime.Now,
                 CreatedById = "Default",
-                Id = code
+                Id = candidateId
             };
             await _repository.AddAsync(savingAccount);
         }
 
         public async Task SaveUserWIthMainAccount(SaveUserViewModel vm)
         {
-            string productcode = string.Empty;
             var userinfo = await _accountService.GetByEmail(vm.Email);
-            var code = CodeGeneratorHelper.GenerateCode(typeof(SavingsAccount));
+
+            string candidateId = "";
+            do
+            {
+                candidateId = CodeGeneratorHelper.GenerateCode(typeof(SavingsAccount));
+            }
+            while ((await _repository.FindAllAsync(x => x.Id == candidateId)).Count != 0);
 
             SavingsAccount savingAccount = new()
             {
@@ -84,7 +94,7 @@ namespace NetBanking.Core.Application.Services.Domain_Services
                 UserId = userinfo.Id,
                 CreatedDate = DateTime.Now,
                 CreatedById = "Default",
-                Id = code
+                Id = candidateId,
             };
             await _repository.AddAsync(savingAccount);
         }

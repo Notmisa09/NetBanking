@@ -5,7 +5,7 @@ namespace NetBanking.Core.Application.Helpers
 {
     public static class CodeGeneratorHelper
     {
-        public static string GenerateCode( Type productType)
+        public static string GenerateCode(Type productType)
         {
             var prefix = GeneretePrefix(productType);
             Random rand = new Random();
@@ -23,12 +23,12 @@ namespace NetBanking.Core.Application.Helpers
         public static string GeneretePrefix(Type ProductType)
         {
             Random rand = new Random();
-            if (ProductType is SavingsAccount)
+            if (ProductType == typeof(SavingsAccount))
             {
                 string prefix = rand.Next(100, 300).ToString();
                 return prefix;
             }
-            else if(ProductType is CreditCard)
+            else if (ProductType == typeof(CreditCard))
             {
                 string prefix = rand.Next(300, 600).ToString();
                 return prefix;
