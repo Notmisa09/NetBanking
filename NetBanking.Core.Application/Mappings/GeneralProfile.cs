@@ -77,6 +77,8 @@ namespace NetBanking.Core.Application.Mappings
                 .ReverseMap();
             CreateMap<Beneficiary, SaveBeneficiaryViewModel>()
                 .ReverseMap();
+            CreateMap<SaveBeneficiaryViewModel, BeneficiaryViewModel>()
+                .ReverseMap();
             #endregion
 
             #region Loan

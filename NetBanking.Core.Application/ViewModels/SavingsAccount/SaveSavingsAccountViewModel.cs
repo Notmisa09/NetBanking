@@ -1,9 +1,12 @@
-﻿namespace NetBanking.Core.Application.ViewModels.SavingsAccount
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace NetBanking.Core.Application.ViewModels.SavingsAccount
 {
     public class SaveSavingsAccountViewModel
     {
         public string? Id { get; set; }
         public string UserId { get; set; }
+        [Required(ErrorMessage = "La cantidad es requerida")]
         public decimal Amount { get; set; }
         public bool IsMain { get; set; }
         public bool HasError { get; set; }
