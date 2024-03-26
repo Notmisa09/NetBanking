@@ -148,6 +148,7 @@ namespace NetBanking.Infrastructure.Identity.Services
             response.LastName = user.LastName;
             response.IdCard = user.IdCard;
             response.UserStatus = true;
+            response.ImageUrl = user.ImageURL;
 
             return response;
         }

@@ -16,13 +16,16 @@ namespace WebApp.Controllers
         private readonly ISavingsAccountService _savingAccountService;
         private readonly ICreditCardService _creditCardService;
         private readonly ILoanService _loanService;
+        private readonly IClientService _clientService;
 
         public AdminController( IAdminService adminService,
                                 ILoanService loanService,
                                 IUserService userService,
                                 ISavingsAccountService savingAccountService,
-                                ICreditCardService creditCardService)
+                                ICreditCardService creditCardService,
+                                IClientService clientService)
         {
+            _clientService = clientService;
             _adminService = adminService;
             _userService = userService;
             _creditCardService = creditCardService;
@@ -50,9 +53,11 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveLoan(SaveLoanViewModel vm)
+        public async Task<IActionResult> SaveLoan(string userId, decimal monto)
         {
-            vm.UserId = TempData["Id"].ToString();
+            SaveLoanViewModel vm = new();
+            vm.UserId = userId;
+            vm.Limit = monto;
             await _loanService.AddAsync(vm);
             return RedirectToRoute(new { controller = "Admin", action = "Index" });
         }
@@ -60,20 +65,22 @@ namespace WebApp.Controllers
 
         //CREDITCARD
         [HttpPost]
-        public async Task<IActionResult> SaveCreditCard(SaveCreditCardViewModel vm)
+        public async Task<IActionResult> SaveCreditCard(string userId, decimal monto)
         {
-
-            vm.UserId = TempData["Id"].ToString();
+            SaveCreditCardViewModel vm = new();
+            vm.UserId = userId;
+            vm.Limit = monto;
             await _creditCardService.AddAsync(vm);
             return RedirectToRoute(new { controller = "Admin", action = "Index" });
         }
 
         //ACCOUTNT
         [HttpPost]
-        public async Task<IActionResult> ProductAddSavingAccount(string Id)
+        public async Task<IActionResult> ProductAddSavingAccount(string userId, decimal monto)
         {
-            var user = await _userService.GetByIdAsync(Id);
-            await _savingAccountService.SaveUserWIthAccount(user);
+            var user = await _userService.GetByIdAsync(userId);
+            user.InitialAmount = monto;
+            await _savingAccountService.AddAsync(user);
             return RedirectToRoute(new { controller = "ProductAdd", action = "Index" });
         }
 
@@ -87,6 +94,11 @@ namespace WebApp.Controllers
         public IActionResult Register()
         {
             return View(new SaveUserViewModel());
+        }
+
+        public async Task<IActionResult> ViewProducts(string Id)
+        {
+            return View(await _clientService.GetAllProductsByClientAsync(Id));
         }
 
         [HttpPost]

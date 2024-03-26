@@ -9,6 +9,7 @@ namespace NetBanking.Core.Application.Interfaces.Services
     {
         Task<List<BeneficiaryViewModel>> GetAllBeneficiariesByClientAsync();
         Task<GetAllProductsByClientViewModel> GetAllProductsByClientAsync();
+        Task<GetAllProductsByClientViewModel> GetAllProductsByClientAsync(string IdUser);
         Task<BaseProduct> GetProductByIdAsync(string Id);
         Task<TransactionStatusViewModel> RealizeTransaction(SaveTransactionViewModel svm);
         Task<bool> ProductExists(string Id);

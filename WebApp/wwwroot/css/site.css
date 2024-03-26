@@ -89,3 +89,9 @@ body {
     .menu-hover-lines .active a::after {
         width: 100%;
     }
+
+#Image {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}

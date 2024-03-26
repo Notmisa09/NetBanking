@@ -9,6 +9,12 @@
     bool editMode = Model != null && Model.IdCard != null;
 }
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
 <div class="container-fluid">
 
     <div class="row">
@@ -19,24 +25,20 @@
                 </div>
                 <div class="card-body">
                     <div class="">
-                            @if (Model.HasError)
-                            {
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <p>@Model.Error</p>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                            }
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                        @if (Model.HasError)
+                        {
+                            <script>
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: ' @Model.Error',
+                                    showConfirmButton: true,
+                                    timer: 5000
+                                });
+                            </script>
+                        }
                             <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action=@(editMode ? "Edit":"Register")>
-
-                                <div class="mb-3">
-                                    <input asp-for="Id" class="form-control" type="hidden" />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label asp-for="formFile" class="form-label">Upload a profile picture (optional): </label>
-                                    <input asp-for="formFile" class="form-control" />
-                                    <span asp-validation-for="formFile" class="text-danger"></span>
-                                </div>
 
                                 <div class="mb-3">
                                     <input asp-for="ImageURL" class="form-control" type="hidden" />
@@ -61,7 +63,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label asp-for="IdCard" class="form-label">IdCard:</label>
+                                    <label asp-for="IdCard" class="form-label">Cedula:</label>
                                     <input asp-for="IdCard" class="form-control" />
                                     <span asp-validation-for="IdCard" class="text-danger"></span>
                                 </div>
@@ -76,6 +78,16 @@
                                     <label asp-for="PhoneNumber" class="form-label">Telefono: </label>
                                     <input asp-for="PhoneNumber" class="form-control" />
                                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <input asp-for="Id" class="form-control" type="hidden" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="formFile" class="form-label">Upload a profile picture (optional): </label>
+                                    <input asp-for="formFile" class="form-control" />
+                                    <span asp-validation-for="formFile" class="text-danger"></span>
                                 </div>
 
                                 @if (editMode == false)
@@ -128,6 +140,8 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {

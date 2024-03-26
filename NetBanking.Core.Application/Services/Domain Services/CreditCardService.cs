@@ -4,6 +4,7 @@ using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Repositories;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
 using NetBanking.Core.Application.ViewModels.CreditCard;
+using NetBanking.Core.Application.ViewModels.Delete;
 using NetBanking.Core.Application.ViewModels.Users;
 using NetBanking.Core.Domain.Entities;
 
@@ -43,19 +44,21 @@ namespace NetBanking.Core.Application.Services.Domain_Services
         }
 
 
-        public override async Task<string> Delete(string Id)
+        public override async Task<DeleteStatus> Delete(string Id)
         {
             var creditCard = await _repository.GeEntityByIDAsync(Id);
-
+            DeleteStatus vm = new();
             if (creditCard.Amount >= 0)
             {
-                return $"Este usuario tiene una deuda pendiente de {creditCard.Amount}.";
+                vm.Error = $"Este usuario tiene una deuda pendiente de {creditCard.Amount}.";
+                vm.HasError = true;
             }
             else
             {
+                vm.Error = "Se ha borrado la tarjeta de credito";
                 await _repository.DeleteAsync(creditCard);
-                return "Se ha borrado la tarjeta de credito";
             }
+            return vm;
         }
     }
 }

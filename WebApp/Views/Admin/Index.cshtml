@@ -67,6 +67,7 @@
                     <th>Users</th>
                     <th>Status</th>
                     <th>Email</th>
+                    <th>Productos</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -108,6 +109,17 @@
                             <td><span class="badge bg-label-danger me-1">Inactive</span></td>
                         }
                         <td><span class="">@user.Email</span></td>
+                        @foreach (var role in @user.Roles)
+                        {
+                            @if (role == RolesEnum.Client.ToString())
+                            {
+                                <td><a asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ViewProducts"><span class=""><span class="badge rounded-pill text-bg-info">Ver Productos</span></span></a></td>
+                            }
+                            @if (role == RolesEnum.Admin.ToString())
+                            {
+                                <td><span class="badge rounded-pill text-bg-danger">Sin Productos</span></td>
+                            }
+                        }
                         <td>
                             <div class="dropdown">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -197,7 +209,81 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire(`You selected: ${result.value.producto} Amount: ${result.value.monto}`);
+                    if (result.value.producto === "Loan") {
+                        // Si la opción seleccionada es "Credit Card", enviar los datos al controlador
+                        var userId = $("#userIdInput").val();
+                        var monto = result.value.monto;
+                        $.ajax({
+                            url: '/Admin/SaveLoan',
+                            type: 'POST',
+                            data: { userId: userId, monto: monto },
+                            success: function (response) {
+                                Swal.fire({
+                                    position: "top-end",
+                                    icon: "success",
+                                    title: "Se le asignado un prestamo al usuario",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                Swal.fire('Error al guardar la tarjeta de crédito');
+                            }
+                        });
+                    }
+                    if (result.value.producto === "CreditCard") {
+                        // Si la opción seleccionada es "Credit Card", enviar los datos al controlador
+                        var userId = $("#userIdInput").val();
+                        var monto = result.value.monto;
+                        $.ajax({
+                            url: '/Admin/SaveCreditCard',
+                            type: 'POST',
+                            data: { userId: userId, monto: monto },
+                            success: function (response) {
+                                Swal.fire({
+                                    position: "top-end",
+                                    icon: "success",
+                                    title: "Se ha creado una tarjeta de credito",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                Swal.fire('Error al guardar la tarjeta de crédito');
+                            }
+                        });
+                    }
+                    if (result.value.producto === "SavingsAccount") {
+                        // Si la opción seleccionada es "Credit Card", enviar los datos al controlador
+                        var userId = $("#userIdInput").val();
+                        var monto = result.value.monto;
+                        $.ajax({
+                            url: '/Admin/ProductAddSavingAccount',
+                            type: 'POST',
+                            data: { userId: userId, monto: monto },
+                            success: function (response) {
+                                Swal.fire({
+                                    position: "top-end",
+                                    icon: "success",
+                                    title: "Se ha creado la Cuenta de Ahorro",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                Swal.fire({
+                                    position: "top-end",
+                                    icon: "success",
+                                    title: "Se ha creado la Cuenta de Ahorro",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        Swal.fire(`You selected: ${result.value.producto} Amount: ${result.value.monto}`);
+                    }
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     console.log('Modal cerrado por el usuario');
                 }
