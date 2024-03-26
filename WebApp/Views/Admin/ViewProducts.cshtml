@@ -7,19 +7,199 @@
 <link rel="stylesheet" href="~/css/creditcard.css" />
 
 
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<div class="d-flex justify-content-center container text-white mt-5">
-    <div class="card p-2 px-3 py-3">
-        <div class="d-flex justify-content-between align-items-center"><img src="https://i.imgur.com/8ANWXql.png" width="20" height="20"><img src="https://i.imgur.com/SsTSozr.png" width="40"></div>
-        <div class="mt-3"><span class="mr-3">****</span><span class="mr-3">****</span><span class="mr-3">****</span><span class="mr-2">5513</span></div>
-        <div class="d-flex justify-content-between card-details mt-3 mb-3">
-            <div class="d-flex flex-column"><span class="light">Card Holder</span><span>Sam Dingo</span></div>
-            <div class="d-flex flex-row">
-                <div class="d-flex flex-column mr-3"><span class="light">Expired</span><span>12/24</span></div>
-                <div class="d-flex flex-column"><span class="light">CVV</span><span>857</span></div>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+
+@if (Model.SavingsAccounts.Count != 0)
+{
+
+    <h1 class="mb-4 text-center text-light"> Cuenta de Ahorro <img src="~/Iconos/ahorros (1).png" style="width: 70px; height: 70px; margin-left: 7px;" /></h1>
+    <div class="container mt-5" style="margin-top: 10px;">
+        <div class="row justify-content-center">
+            @foreach (var item in Model.SavingsAccounts)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <img src="https://i.imgur.com/8ANWXql.png" width="20" height="20">
+                                <img src="https://i.imgur.com/SsTSozr.png" width="40">
+                            </div>
+                            <div class="mt-3">
+                                <span class="mr-3">@item.Id</span>
+                            </div>
+                            <div class="d-flex justify-content-between card-details mt-3 mb-3">
+                                <div class="d-flex flex-column">
+                                    <span class="light">Savings Account</span>
+                                    <span>Cliente</span>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <span class="light">Monto</span>
+                                    <span>$ @item.Amount</span>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <a asp-route-Id="@item.Id" asp-controller="Admin" asp-action="ViewProducts"><span class=""><span class="badge rounded-pill text-bg-warning">Editar</span></span></a>
+                                <a asp-route-Id="@item.Id" asp-controller="Admin" asp-action="ViewProducts"><span class=""><span class="badge rounded-pill text-bg-danger">Eliminar</span></span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@if (Model.Loans.Count != 0)
+{
+    <h1 class="mb-4 text-center text-light" style="margin-top: 50px;"> Prestamo <img src="~/Iconos/banco.png" style="width: 70px; height: 70px; margin-left: 7px;" /></h1>
+    <div class="container mt-5" style="margin-top: 10px;">
+        <div class="row justify-content-center">
+            @foreach (var item in Model.Loans)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <img src="https://i.imgur.com/8ANWXql.png" width="20" height="20">
+                                <img src="https://i.imgur.com/SsTSozr.png" width="40">
+                            </div>
+                            <div class="mt-3">
+                                <span class="mr-3">@item.Id</span>
+                            </div>
+                            <div class="d-flex justify-content-between card-details mt-3 mb-3">
+                                <div class="d-flex flex-column">
+                                    <span class="light">Credit Card</span>
+                                    <span>Cliente</span>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <span class="light">Monto</span>
+                                    <span>$ @item.Amount</span>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <a asp-route-Id="@item.Id" asp-controller="Admin" asp-action="ViewProducts"><span class=""><span class="badge rounded-pill text-bg-danger">Eliminar</span></span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+@if (Model.CreditCards.Count != 0)
+{
+    <h1 class="mb-4 text-center text-light" style="margin-top: 50px;"> Tarjeta de credito <img src="~/Iconos/tarjeta-de-credito.png" style="width: 70px; height: 70px; margin-left: 7px;" /></h1>
+    <div class="container mt-5" style="margin-top: 10px;">
+        <div class="row justify-content-center">
+            @foreach (var item in Model.CreditCards)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card custom-card">
+                        <!-- Añade una clase personalizada al card -->
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <img src="https://i.imgur.com/8ANWXql.png" width="20" height="20">
+                                <img src="https://i.imgur.com/SsTSozr.png" width="40">
+                            </div>
+                            <div class="mt-3">
+                                <span class="mr-3">@item.Id</span>
+                            </div>
+                            <div class="d-flex justify-content-between card-details mt-3 mb-3">
+                                <div class="d-flex flex-column">
+                                    <span class="light">Credit Card</span>
+                                    <span>Cliente</span>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <span class="light">Monto</span>
+                                    <span>$ @item.Amount</span>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <button class="badge rounded-pill text-bg-danger eliminarLink" data-route-id="@item.Id">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+}
+
+
+@if (Model.CreditCards.Count == 0 && Model.SavingsAccounts.Count == 0 && Model.Loans.Count == 0)
+{
+    <div class="d-flex justify-content-center container text-white mt-5">
+        <div class="card p-2 px-3 py-3">
+            <div class="d-flex justify-content-between align-items-center"><img src="https://i.imgur.com/8ANWXql.png" width="20" height="20"><img src="https://i.imgur.com/SsTSozr.png" width="40"></div>
+            <div class="mt-3"><span class="mr-3">1234 </span><span class="mr-3"> **** </span><span class="mr-3"> **** </span><span class="mr-2"> 0000 </span></div>
+            <div class="d-flex justify-content-between card-details mt-3 mb-3">
+                <div class="d-flex flex-column"><span class="light">Card Holder</span><span>Nobody</span></div>
+                <div class="d-flex flex-row">
+                    <div class="d-flex flex-column mr-3"><span class="light">Expired</span><span>00/00</span></div>
+                    <div class="d-flex flex-column"><span class="light">CVV</span><span>000</span></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
 
 
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    // Selecciona todos los enlaces con la clase .eliminarLink
+    document.querySelectorAll('.eliminarLink').forEach(function (link) {
+        // Agrega un evento de clic a cada enlace
+        link.addEventListener('click', async function (event) {
+            event.preventDefault(); // Evita que el enlace se siga a su destino original
+
+            // Obtén el ID de la cuenta del atributo data-route-id del botón
+            var accountId = link.getAttribute('data-route-id');
+
+            // Abre el modal aquí
+            const { value: id, isConfirmed } = await Swal.fire({
+                input: "text",
+                inputValue: accountId, // Asigna el valor del input con el ID de la cuenta
+                inputLabel: "¿Seguro que desea cancelar la tarjeta de credito?",
+                inputPlaceholder: "Enter the account number",
+                showCancelButton: true, // Muestra el botón de cancelar
+                confirmButtonText: 'Aceptar', // Texto del botón de aceptar
+                cancelButtonText: 'Cancelar' // Texto del botón de cancelar
+            });
+
+            if (isConfirmed) {
+                // Realiza la solicitud AJAX al servidor para eliminar la tarjeta de crédito
+                fetch(`/Admin/deleteCreditCard/${id}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        // Procesa la respuesta si es exitosa
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Muestra un mensaje de éxito o maneja la respuesta según necesites
+                        Swal.fire('Tarjeta de crédito cancelada', '', 'success');
+                    })
+                    .catch(error => {
+                        // Muestra un mensaje de error o maneja el error según necesites
+                        Swal.fire('Error al cancelar la tarjeta de crédito', error.message, 'error');
+                    });
+            } else {
+                Swal.fire('Cancelado', '', 'info'); // Se canceló la operación
+            }
+        });
+    });
+
+</script>

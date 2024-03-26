@@ -5,13 +5,18 @@
     flex-direction: column;
     min-width: 0;
     word-wrap: break-word;
-    background-color: #23406f;
+    background-color: #00709e;
     background-clip: border-box;
     border: 1px solid #23406f;
     border-radius: 7px;
 }
 
 .light {
-    color: #7d7979;
+    color: #393d42;
     font-size: 11px;
 }
+
+.custom-card {
+    background-color: #00709e; /* o el color que desees */
+}
+

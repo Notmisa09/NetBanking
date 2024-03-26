@@ -4,6 +4,7 @@ using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
 using NetBanking.Core.Application.Singelton;
 using NetBanking.Core.Application.ViewModels.CreditCard;
+using NetBanking.Core.Application.ViewModels.Delete;
 using NetBanking.Core.Application.ViewModels.Loan;
 using NetBanking.Core.Application.ViewModels.Users;
 
@@ -80,7 +81,7 @@ namespace WebApp.Controllers
         {
             var user = await _userService.GetByIdAsync(userId);
             user.InitialAmount = monto;
-            await _savingAccountService.AddAsync(user);
+            await _savingAccountService.SaveUserWIthAccount(user);
             return RedirectToRoute(new { controller = "ProductAdd", action = "Index" });
         }
 
@@ -99,6 +100,13 @@ namespace WebApp.Controllers
         public async Task<IActionResult> ViewProducts(string Id)
         {
             return View(await _clientService.GetAllProductsByClientAsync(Id));
+        }
+
+
+        public async Task<IActionResult> deleteCreditCard(string Id)
+        {
+            await _creditCardService.Delete(Id);
+            return RedirectToRoute(new { controller = "Admin", action = "ViewProducts" });
         }
 
         [HttpPost]
