@@ -7,6 +7,7 @@ using NetBanking.Core.Application.ViewModels.CreditCard;
 using NetBanking.Core.Application.ViewModels.Delete;
 using NetBanking.Core.Application.ViewModels.Loan;
 using NetBanking.Core.Application.ViewModels.SavingsAccount;
+using NetBanking.Core.Application.ViewModels.Transaction;
 using NetBanking.Core.Application.ViewModels.Users;
 
 namespace WebApp.Controllers
@@ -59,8 +60,18 @@ namespace WebApp.Controllers
         {
             SaveLoanViewModel vm = new();
             vm.UserId = userId;
-            vm.Limit = monto;
-            await _loanService.AddAsync(vm);
+            vm.Debt = monto;
+            var loan = await _loanService.AddAsync(vm);
+            var userSavingAccount = await _savingAccountService.GetByOwnerIdAsync(userId);
+            var mainSavingAccount = userSavingAccount.Find(x => x.IsMain == true);
+
+            SaveTransactionViewModel transaction = new()
+            {
+                EmissorProductId = loan.Id,
+                ReceiverProductId = mainSavingAccount.Id,
+                Cantity = loan.Amount
+            };
+            await _clientService.RealizeTransaction(transaction);
             return RedirectToRoute(new { controller = "Admin", action = "Index" });
         }
 
