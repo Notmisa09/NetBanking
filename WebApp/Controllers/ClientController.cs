@@ -87,14 +87,14 @@ namespace WebApp.Controllers
             }
             else
             {
-                return View("Beneficiaries");
+                return RedirectToAction("Beneficiaries");
             }
         }
 
         public async Task<IActionResult> DeleteBeneficiary(string Id)
         {
             await _clientService.DeleteBeneficiary(Id);
-            return View("Beneficiaries");
+            return RedirectToAction("Beneficiaries");
         }
 
         public async Task<IActionResult> InitializeTransaction(string TypeOfTransaction)
@@ -170,20 +170,6 @@ namespace WebApp.Controllers
             var resultC = await _clientService.RealizeTransaction(vm);
             return RedirectToAction("Home");
         }
-
-        //DELETE BENEFICIARY
-        public async Task<IActionResult> RemoveBeneficiary(string Id)
-        {
-            return View(await _beneficiaryService.GetByIdAsync(Id));
-        }
-
-        //[HttpPost]
-        //public async Task<IActionResult> RemoveeBeneficiaryTrue(string Id)
-        //{
-        //    await _beneficiaryService.(vm);
-        //    return RedirectToRoute(new { controller = "Client", action = "Index" });
-        //}
-
 
     }
 }

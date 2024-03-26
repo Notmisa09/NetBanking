@@ -23,12 +23,12 @@ namespace NetBanking.Core.Application.Helpers
         public static string GeneretePrefix(Type ProductType)
         {
             Random rand = new Random();
-            if (ProductType == typeof(SavingsAccount))
+            if (ProductType == typeof(CreditCard))
             {
                 string prefix = rand.Next(100, 300).ToString();
                 return prefix;
             }
-            else if (ProductType == typeof(CreditCard))
+            else if (ProductType == typeof(SavingsAccount))
             {
                 string prefix = rand.Next(300, 600).ToString();
                 return prefix;

@@ -1,39 +1,69 @@
 ﻿@using NetBanking.Core.Application.ViewModels.Beneficiary;
 @model List<BeneficiaryViewModel>;
 
+
+<head>
+    <link rel="stylesheet" href="~/css/tableadmin.css" />
+    <script src="https://kit.fontawesome.com/7302c44b99.js" crossorigin="anonymous"></script>
+</head>
+
 <a class="btn btn-primary" asp-action="AddBeneficiary">Add Beneficiary</a>
-@if (Model != null | Model.Count > 0)
+@if (Model.Any())
 {
-    <table class="table">
-        <thead>
-        <td>
-            Beneficiario
-        </td>
-        <td>
-            Cuenta
-        </td>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @item.BeneficiaryUser.FirstName @item.BeneficiaryUser.LastName
-                    </td>
-                    <td>
-                        @item.BeneficiaryAccountId
-                    </td>
-                    <td>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="container-fluid">
+        <div class="col-4 offset-4">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <td>
+                            Beneficiario
+                        </td>
+                        <td>
+                            Cuenta
+                        </td>
+                        <td>
+                            Actions
+                        </td>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.BeneficiaryUser.FirstName @item.BeneficiaryUser.LastName
+                                    </td>
+                                    <td>
+                                        @item.BeneficiaryAccountId
+                                    </td>
+                                    <td>
+                                        <a asp-route-id="@item.Id" asp-action="DeleteBeneficiary" class="btn btn-danger"><i class="fa-solid fa-user-minus"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 else
 {
-    <h1>
-        No hay Beneficiarios Registrados
-    </h1>
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+        <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+        </symbol>
+    </svg>
+    <div class="col-4 offset-4">
+        <div class="alert alert-warning d-flex align-items-center height:20px" role="alert">
+            <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill" /></svg>
+            <div>
+                There arent any beneficiaries yet you wish to create one?
+            </div>
+            <div>
+            </div>
+        </div>
+    </div>
 }
 
