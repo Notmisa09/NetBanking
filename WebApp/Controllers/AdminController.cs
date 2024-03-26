@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NetBanking.Core.Application.Dtos.Error;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Interfaces.Services.Domain_Services;
@@ -12,6 +13,7 @@ using NetBanking.Core.Application.ViewModels.Users;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IAdminService _adminService;
@@ -55,6 +57,29 @@ namespace WebApp.Controllers
             return View(new SaveLoanViewModel());
         }
 
+        //RESET PASSWORD
+        public IActionResult ResetPassword(string Token)
+        {
+            return View("ResetPasswordForUser", new ResetPasswordViewModel { Token = Token });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("ResetPasswordForUser", vm);
+            }
+            ServiceResult response = await _userService.ResetPasswordAsync(vm);
+            if (response.HasError)
+            {
+                vm.Error = response.Error;
+                vm.HasError = response.HasError;
+                return View("ResetPasswordForUser", vm);
+            }
+            return RedirectToRoute(new { controller = "User", action = "Index" });
+        }
+
         [HttpPost]
         public async Task<IActionResult> SaveLoan(string userId, decimal monto)
         {
@@ -88,6 +113,7 @@ namespace WebApp.Controllers
             return RedirectToRoute(new { controller = "Admin", action = "Index" });
         }
 
+
         //ACCOUTNT
         [HttpPost]
         public async Task<IActionResult> ProductAddSavingAccount(string userId, decimal monto)
@@ -109,6 +135,26 @@ namespace WebApp.Controllers
         {
             return View(new SaveUserViewModel());
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Register(SaveUserViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+            var origin = Request.Headers["origin"];
+            ServiceResult response = await _userService.RegisterAsync(vm, origin, vm.Role);
+            if (!response.HasError)
+            {
+                vm.Error = response.Error;
+                vm.HasError = response.HasError;
+                return View(vm);
+            }
+            return RedirectToAction("Index");
+        }
+
 
         public async Task<IActionResult> ViewProducts(string Id)
         {
@@ -167,21 +213,6 @@ namespace WebApp.Controllers
             vm.Amount += amount;
             await _savingAccountService.UpdateAsync(vm, vm.Id);
             return Json(new { success = true });
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> Register(SaveUserViewModel vm)
-        {
-            var origin = Request.Headers["origin"];
-            ServiceResult response = await _userService.RegisterAsync(vm, origin, vm.Role);
-            if (!response.HasError)
-            {
-                vm.Error = response.Error;
-                vm.HasError = response.HasError;
-                return View(vm);
-            }
-            return RedirectToAction("Index");
         }
 
         //LOGOUT

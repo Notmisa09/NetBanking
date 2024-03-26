@@ -38,101 +38,98 @@
                                 });
                             </script>
                         }
-                            <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action=@(editMode ? "Edit":"Register")>
+                        <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action=@(editMode ? "Edit":"Register")>
 
+                            <div class="mb-3">
+                                <input asp-for="ImageURL" class="form-control" type="hidden" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="FirstName" class="form-label">Nombre: </label>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="LastName" class="form-label">Apellido: </label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="UserName" class="form-label">Nombre de usuario: </label>
+                                <input asp-for="UserName" class="form-control" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="IdCard" class="form-label">Cedula:</label>
+                                <input asp-for="IdCard" class="form-control" />
+                                <span asp-validation-for="IdCard" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Email" class="form-label">Correo: </label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="PhoneNumber" class="form-label">Telefono: </label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <input asp-for="Id" class="form-control" type="hidden" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="formFile" class="form-label">Upload a profile picture (optional): </label>
+                                <input asp-for="formFile" class="form-control" />
+                                <span asp-validation-for="formFile" class="text-danger"></span>
+                            </div>
+
+                            @if (editMode == false)
+                            {
                                 <div class="mb-3">
-                                    <input asp-for="ImageURL" class="form-control" type="hidden" />
+                                    <label asp-for="Role" class="form-label">Choose the user role</label>
+                                    <select asp-for="Role" class="form-select" id="userRoleSelect">
+                                        <option value="#">Choose an option</option>
+                                        <option value="@RolesEnum.Client.ToString()">Client</option>
+                                        <option value="@RolesEnum.Admin.ToString()">Admin</option>
+                                    </select>
+                                </div>
+                            }
+
+                            @if (editMode == true)
+                            {
+                                    <a asp-controller="Admin" asp-action="ResetPassword" 
+                                    class="btn btn-info float-end">Edit your password here</a>
+                            }
+                            else
+                            {
+                                <div id="initialAmountDiv" class="mb-3" style="display: none;">
+                                    <label asp-for="InitialAmount" class="form-label">Initial Amount</label>
+                                    <input asp-for="InitialAmount" class="form-control" />
                                 </div>
 
                                 <div class="mb-3">
-                                    <label asp-for="FirstName" class="form-label">Nombre: </label>
-                                    <input asp-for="FirstName" class="form-control" />
-                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                    <label asp-for="Password" class="form-label">Contraseña: </label>
+                                    <input asp-for="Password" type="password" class="form-control" requited />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label asp-for="LastName" class="form-label">Apellido: </label>
-                                    <input asp-for="LastName" class="form-control" />
-                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                    <label asp-for="ConfirmPassword" class="form-label">Confirmar contraseña: </label>
+                                    <input asp-for="ConfirmPassword" class="form-control" required />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                 </div>
+                            }
 
-                                <div class="mb-3">
-                                    <label asp-for="UserName" class="form-label">Nombre de usuario: </label>
-                                    <input asp-for="UserName" class="form-control" />
-                                    <span asp-validation-for="UserName" class="text-danger"></span>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label asp-for="IdCard" class="form-label">Cedula:</label>
-                                    <input asp-for="IdCard" class="form-control" />
-                                    <span asp-validation-for="IdCard" class="text-danger"></span>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label asp-for="Email" class="form-label">Correo: </label>
-                                    <input asp-for="Email" class="form-control" />
-                                    <span asp-validation-for="Email" class="text-danger"></span>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label asp-for="PhoneNumber" class="form-label">Telefono: </label>
-                                    <input asp-for="PhoneNumber" class="form-control" />
-                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                                </div>
-
-                                <div class="mb-3">
-                                    <input asp-for="Id" class="form-control" type="hidden" />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label asp-for="formFile" class="form-label">Upload a profile picture (optional): </label>
-                                    <input asp-for="formFile" class="form-control" />
-                                    <span asp-validation-for="formFile" class="text-danger"></span>
-                                </div>
-
-                                @if (editMode == false)
-                                {
-                                    <div class="mb-3">
-                                        <label asp-for="Role" class="form-label">Choose the user role</label>
-                                        <select asp-for="Role" class="form-select" id="userRoleSelect">
-                                            <option value="#">Choose an option</option>
-                                            <option value="@RolesEnum.Client.ToString()">Client</option>
-                                            <option value="@RolesEnum.Admin.ToString()">Admin</option>
-                                        </select>
-                                    </div>
-                                }
-
-                                @if (editMode == true)
-                                {
-                                    <div class="mb-3">
-                                        <label asp-for="Password" class="form-label">Contraseña: </label>
-                                        <input asp-for="Password" type="password" placeholder="Type in here only if you are willing to change your password" class="form-control" />
-                                        <span asp-validation-for="Password" class="text-danger"></span>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div id="initialAmountDiv" class="mb-3" style="display: none;">
-                                        <label asp-for="InitialAmount" class="form-label">Initial Amount</label>
-                                        <input asp-for="InitialAmount" class="form-control" />
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label asp-for="Password" class="form-label">Contraseña: </label>
-                                        <input asp-for="Password" type="password" class="form-control" />
-                                        <span asp-validation-for="Password" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label asp-for="ConfirmPassword" class="form-label">Confirmar contraseña: </label>
-                                        <input asp-for="ConfirmPassword" class="form-control" />
-                                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                                    </div>
-                                }
-
-                                <button type="submit" class="btn btn-primary">Guardar</button>
-                                <a asp-controller="Admin" asp-action="Index" class="btn btn-warning">Volver atrás</a>
-                            </form>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <a asp-controller="Admin" asp-action="Index" class="btn btn-warning">Volver atrás</a>
+                        </form>
                     </div>
                 </div>
             </div>

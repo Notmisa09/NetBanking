@@ -6,7 +6,7 @@ namespace NetBanking.Core.Application.ViewModels.Users
     public class SaveUserViewModel
     {
         public bool? IsActive {  get; set; }
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         [Required(ErrorMessage = "Please enter a IdCard for your user")]
         public  string IdCard { get; set; }
@@ -28,14 +28,12 @@ namespace NetBanking.Core.Application.ViewModels.Users
         [DataType(DataType.Text)]
         public string UserName { get; set; }
 
-        [Required(ErrorMessage = "Please type in a password")]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).+$"
         , ErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Compare(nameof(Password), ErrorMessage = "Passwords does not match")]
-        [Required(ErrorMessage = "You should type in a password")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
 

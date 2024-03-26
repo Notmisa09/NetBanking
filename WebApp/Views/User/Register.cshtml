@@ -83,13 +83,13 @@
 
                         <div class="mb-3">
                             <label asp-for="Password" class="form-label text-dark">Contraseña: </label>
-                            <input asp-for="Password" class="form-control" style="background-color: white; color: black;" />
+                            <input asp-for="Password" required class="form-control" style="background-color: white; color: black;" />
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
                             <label asp-for="ConfirmPassword" class="form-label text-dark">Confirmar contraseña: </label>
-                            <input asp-for="ConfirmPassword" class="form-control" style="background-color: white; color: black;" />
+                            <input asp-for="ConfirmPassword" required class="form-control" style="background-color: white; color: black;" />
                             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                         </div>
 

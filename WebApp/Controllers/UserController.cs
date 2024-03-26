@@ -89,6 +89,10 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(SaveUserViewModel vm)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
             var origin = Request.Headers["origin"];
             ServiceResult response = await _userService.RegisterAsync(vm, origin, RolesEnum.Client.ToString());
             if (!response.HasError)

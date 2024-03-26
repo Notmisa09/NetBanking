@@ -11,9 +11,11 @@ using NetBanking.Core.Domain.Enums;
 using NetBanking.Core.Application.ViewModels.Transaction;
 using NetBanking.Core.Application.ViewModels.Beneficiary;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "Client")]
     public class ClientController : Controller
     {
         private readonly IClientService _clientService;
