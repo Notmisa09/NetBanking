@@ -1,8 +1,14 @@
 ﻿@using NetBanking.Core.Application.ViewModels.Beneficiary;
 @model List<BeneficiaryViewModel>;
 
+
+<head>
+    <link rel="stylesheet" href="~/css/tableadmin.css" />
+    <script src="https://kit.fontawesome.com/7302c44b99.js" crossorigin="anonymous"></script>
+</head>
+
 <a class="btn btn-primary" asp-action="AddBeneficiary">Add Beneficiary</a>
-@if (Model != null | Model.Count > 0)
+@if (Model.Any())
 {
     <div class="container-fluid">
         <div class="col-4 offset-4">
@@ -16,6 +22,9 @@
                         <td>
                             Cuenta
                         </td>
+                        <td>
+                            Actions
+                        </td>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
@@ -28,6 +37,7 @@
                                         @item.BeneficiaryAccountId
                                     </td>
                                     <td>
+                                        <a asp-route-id="@item.Id" asp-action="DeleteBeneficiary" class="btn btn-danger"><i class="fa-solid fa-user-minus"></i></a>
                                     </td>
                                 </tr>
                             }

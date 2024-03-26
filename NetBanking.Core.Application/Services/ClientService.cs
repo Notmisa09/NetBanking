@@ -100,7 +100,7 @@ namespace NetBanking.Core.Application.Services
                         creditCard.Amount = svm.Cantity + svm.Cantity * (decimal)(6.25 / 100);
                     else
                         creditCard.Amount += svm.Cantity; //Se le suma a su deuda
-                    
+
 
                     await _creditCardService.UpdateAsync(_mapper.Map<SaveCreditCardViewModel>(creditCard), creditCard.Id);
 
@@ -250,7 +250,7 @@ namespace NetBanking.Core.Application.Services
                     }
                 }
 
-                if(100 <= receiverIdentificator && receiverIdentificator <= 299 && svm.Type != TransactionType.CreditCardPay)
+                if (100 <= receiverIdentificator && receiverIdentificator <= 299 && svm.Type != TransactionType.CreditCardPay)
                 {
                     return new TransactionStatusViewModel()
                     {
@@ -268,7 +268,7 @@ namespace NetBanking.Core.Application.Services
                     Error = "Transferencia inválida."
                 };
             }
-            if(svm.Type == TransactionType.ExpressPay && emissorProduct.UserId == receiverProduct.UserId)
+            if (svm.Type == TransactionType.ExpressPay && emissorProduct.UserId == receiverProduct.UserId)
             {
                 return new TransactionStatusViewModel()
                 {
@@ -300,7 +300,7 @@ namespace NetBanking.Core.Application.Services
         public async Task<BaseProduct> GetProductByIdAsync(string Id)
         {
             BaseProduct product = new BaseProduct();
-            if(Id != null)
+            if (Id != null)
             {
                 if (Id.Length > 3)
                 {
@@ -363,9 +363,9 @@ namespace NetBanking.Core.Application.Services
 
         public async Task<SaveBeneficiaryViewModel> AddBeneficiary(SaveBeneficiaryViewModel svm)
         {
-            if(svm.BeneficiaryAccountId != null)
+            if (svm.BeneficiaryAccountId != null)
             {
-                if(svm.BeneficiaryAccountId.Length >= 9)
+                if (svm.BeneficiaryAccountId.Length >= 9)
                 {
                     int Identificator = Convert.ToInt32(svm.BeneficiaryAccountId.Substring(0, 3));
 
@@ -410,14 +410,10 @@ namespace NetBanking.Core.Application.Services
 
         public async Task DeleteBeneficiary(string Id)
         {
-            if (await ProductExists(Id))
+            var beneficiary = await _beneficiaryService.GetByIdAsync(Id);
+            if (beneficiary != null)
             {
-                var list = await _beneficiaryService.FindAllAsync(x => x.UserId == user.Id && x.BeneficiaryAccountId == Id);
-                var beneficiary = list.First();
-                if (beneficiary != null)
-                {
-                    await _beneficiaryService.Delete(beneficiary.Id);
-                }
+                await _beneficiaryService.Delete(beneficiary.Id);
             }
         }
 
@@ -426,8 +422,8 @@ namespace NetBanking.Core.Application.Services
             var list = await _transactionService.GetAllAsync();
             var MyProducts = await GetAllProductsByClientAsync();
 
-            var filteredTransactions = list.Where(t => 
-                    MyProducts.SavingsAccounts.Any(p => p.Id == t.ReceiverProductId || p.Id == t.EmissorProductId) || 
+            var filteredTransactions = list.Where(t =>
+                    MyProducts.SavingsAccounts.Any(p => p.Id == t.ReceiverProductId || p.Id == t.EmissorProductId) ||
                     MyProducts.CreditCards.Any(p => p.Id == t.ReceiverProductId || p.Id == t.EmissorProductId) ||
                     MyProducts.Loans.Any(p => p.Id == t.ReceiverProductId || p.Id == t.EmissorProductId)).ToList();
             return filteredTransactions;

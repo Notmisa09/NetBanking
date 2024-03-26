@@ -41,7 +41,6 @@ namespace NetBanking.Core.Application.Services.Domain_Services
             return svm;
         }
 
-
         public async Task<List<BeneficiaryViewModel>> GetByOwnerIdAsync(string Id)
         {
             var list = await _repository.FindAllAsync(x => x.UserId == Id);
