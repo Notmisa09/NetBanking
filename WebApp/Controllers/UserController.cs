@@ -8,32 +8,40 @@ using NetBanking.Core.Application.Singelton;
 using NetBanking.Core.Application.ViewModels.Users;
 using WebApp.Middlewares;
 
-
 namespace WebApp.Controllers
 {
     public class UserController : Controller
     {
+        private readonly AuthenticationResponse _userViewModel;
         private readonly IUserService _userService;
         private readonly ValidateUserSession _validatesesion;
         private readonly AuthenticationResponse user;
         private readonly IHttpContextAccessor _contextaccessor;
 
-        public UserController(IUserService userService,
-             ValidateUserSession validatesesion,
-             IHttpContextAccessor contextaccessor)
+        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
-            _contextaccessor = contextaccessor;
-            _validatesesion = validatesesion;
+            _userViewModel = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
             _userService = userService;
             user = _contextaccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
         }
 
-        public IActionResult AccessDenied()
+
+        public IActionResult AccessDeniedAdmin()
         {
             return View();
         }
 
+        public IActionResult AccessDenied()
+        {
+            if (_userViewModel.Roles.Contains(RolesEnum.Admin.ToString()))
+            {
+                return View("AccessDeniedAdmin");
+            }
+            return View();
+        }
+
         //INDEX
+        [ServiceFilter(typeof(LoginAuthorize))]
         public IActionResult Index()
         {
             if (_validatesesion.HasUser())
@@ -57,6 +65,7 @@ namespace WebApp.Controllers
             return View(new LoginViewModel());
         }
 
+        [ServiceFilter(typeof(LoginAuthorize))]
         [HttpPost]
         public async Task<IActionResult> Index(LoginViewModel vm)
         {

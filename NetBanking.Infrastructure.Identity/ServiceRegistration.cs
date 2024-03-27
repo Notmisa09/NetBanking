@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetBanking.Core.Application.Dtos.Account;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Infrastructure.Identity.Entities;
 using NetBanking.Infrastructure.Identity.Services;
 using NetBanking.Infrastructure.Persistence.Contexts;
+using NetBanking.Core.Application.Helpers;
 
 namespace NetBanking.Infrastructure.Identity
 {
