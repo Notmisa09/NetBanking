@@ -17,7 +17,7 @@ namespace WebApp.Middlewares
             if (_validateUserSession.HasUser())
             {
                 var controller = (UserController)context.Controller;
-                context.Result = controller.RedirectToAction("Index", "home");
+                context.Result = controller.RedirectToAction("index", "user");
             }
             else
             {
