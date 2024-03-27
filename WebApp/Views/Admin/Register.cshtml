@@ -115,15 +115,16 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label asp-for="Password" class="form-label">Contraseña: </label>
-                                    <input asp-for="Password" type="password" class="form-control" requited />
+                                    <label asp-for="Password" class="form-label">Contraseña</label>
+                                    <input asp-for="Password" placeholder="Password" class="form-control" />
                                     <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label asp-for="ConfirmPassword" class="form-label">Confirmar contraseña: </label>
-                                    <input asp-for="ConfirmPassword" class="form-control" required />
+                                    <label asp-for="ConfirmPassword" class="form-label">Confirmar Contraseña</label>
+                                    <input asp-for="ConfirmPassword" placeholder="Confirm Password" class="form-control" />
                                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
                                 </div>
                             }
 
