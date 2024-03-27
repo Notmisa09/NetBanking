@@ -20,7 +20,10 @@ namespace WebApp.Middlewares
             {
                 return false;
             }
-            return true;
+            else
+            {
+                return true;
+            }
         }
     }
 }

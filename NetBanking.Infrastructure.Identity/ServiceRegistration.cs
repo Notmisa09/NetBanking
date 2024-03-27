@@ -36,9 +36,10 @@ namespace NetBanking.Infrastructure.Identity
 
             service.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = "/Users/Login";
+                options.LoginPath = "/User";
                 options.AccessDeniedPath = "/User/AccessDenied";
             });
+
             service.AddAuthentication();
 
             #endregion
