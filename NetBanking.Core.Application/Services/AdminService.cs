@@ -40,9 +40,15 @@ namespace NetBanking.Core.Application.Services
 
         public async Task<List<UserViewModel>> GetAllAsync()
         {
-            var user = await _accountService.GetAllUsers();
-            user.Where(x => x.Id != _userViewModel.Id).ToList();
+            var allUsers = await _accountService.GetAllUsers();
+
+            var currentUserEmail = _userViewModel.Email;
+            var filteredUsers = allUsers.Where(x => x.Email != currentUserEmail).ToList();
+
+            var user = filteredUsers;
+
             var userlist = _mapper.Map<List<UserViewModel>>(user);
+
             return userlist;
         }
 
@@ -57,7 +63,7 @@ namespace NetBanking.Core.Application.Services
                 var user = await _accountService.GetByIdAsync(Id);
                 if (user != null)
                 {
-                    if(user.IsActive == true)
+                    if (user.IsActive == true)
                     {
                         user.IsActive = false;
                     }
@@ -102,15 +108,5 @@ namespace NetBanking.Core.Application.Services
 
             return vmDashBoard;
         }
-
-        //public async Task<SaveUserViewModel> GetByIdWithAmountAsync(string UserId)
-        //{
-        //    var user = await _accountService.GetByIdAsync(UserId);
-        //    //var savingsAccount = await _savingsAccountService.GetByOwnerIdAsync(user.Id);
-        //    //var savingsAccountVm = savingsAccount.Find(x => x.IsMain == true && x.UserId == UserId);
-        //    SaveUserViewModel vm = _mapper.Map<SaveUserViewModel>(user);
-        //    vm.InitialAmount = 0;
-        //    return vm;
-        //}
     }
 }
