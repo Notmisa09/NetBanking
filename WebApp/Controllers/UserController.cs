@@ -19,6 +19,11 @@ namespace WebApp.Controllers
             _userService = userService;
         }
 
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
         //INDEX
         public IActionResult Index()
         {

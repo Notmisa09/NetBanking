@@ -31,11 +31,11 @@ namespace NetBanking.Core.Application.ViewModels.Users
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).+$"
         , ErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character")]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         [Compare(nameof(Password), ErrorMessage = "Passwords does not match")]
         [DataType(DataType.Password)]
-        public string ConfirmPassword { get; set; }
+        public string? ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Please type in an email address")]
         [DataType(DataType.EmailAddress)]

@@ -15,7 +15,6 @@ builder.Services.AddSession();
 builder.Services.AddTransient<ValidateUserSession, ValidateUserSession>();
 builder.Services.AddScoped<LoginAuthorize>();
 
-
 builder.Services.ApplicationLayerRegistration(builder.Configuration);
 builder.Services.IdentityLayerRegistration(builder.Configuration);
 builder.Services.PersistenceLayerRegistration(builder.Configuration);

@@ -29,15 +29,18 @@ namespace NetBanking.Infrastructure.Identity
             #endregion
 
             #region Services
+            
+            
             service.AddIdentity<AppUser, IdentityRole>()
               .AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 
-            service.AddAuthentication();
             service.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Users/Login";
-                options.AccessDeniedPath = "/Home/AccessDenied";
+                options.AccessDeniedPath = "/User/AccessDenied";
             });
+            service.AddAuthentication();
+            
             #endregion
 
             service.AddTransient<IAccountService, AccountService>();

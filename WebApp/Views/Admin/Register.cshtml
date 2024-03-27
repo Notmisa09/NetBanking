@@ -25,7 +25,6 @@
                 </div>
                 <div class="card-body">
                     <div class="">
-                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                         @if (Model.HasError)
                         {
                             <script>
@@ -104,8 +103,15 @@
 
                             @if (editMode == true)
                             {
-                                    <a asp-controller="Admin" asp-action="ResetPassword" 
-                                    class="btn btn-info float-end">Edit your password here</a>
+                                <div class="mb-3">
+                                    <label asp-for="Password" class="form-label">Contraseña: </label>
+                                    <input asp-for="Password" type="password" class="form-control" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="ConfirmPassword" class="form-label">Confirmar contraseña: </label>
+                                    <input asp-for="ConfirmPassword" class="form-control"/>
+                                </div>
                             }
                             else
                             {

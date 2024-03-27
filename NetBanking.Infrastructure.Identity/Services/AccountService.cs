@@ -182,7 +182,6 @@ namespace NetBanking.Infrastructure.Identity.Services
                 userget.FirstName = request.FirstName;
                 userget.LastName = request.LastName;
                 userget.Email = request.Email;
-                userget.IsActive = request.IsActive;
                 userget.IdCard = request.IdCard;
                 userget.ImageURL = request.ImageURL;
             }
@@ -197,7 +196,7 @@ namespace NetBanking.Infrastructure.Identity.Services
             }
             else
             {
-                userget.ImageURL = UploadImage.UploadFile(request.formFile, request.Id, "User", false, request.ImageURL);
+                userget.ImageURL = UploadImage.UploadFile(request.formFile, request.Id, "User", false, userget.ImageURL);
             }
             var result = await _userManager.UpdateAsync(userget);
             if (!result.Succeeded)
@@ -321,6 +320,7 @@ namespace NetBanking.Infrastructure.Identity.Services
             return response;
 
         }
+
 
         //RESETPASSWORD
         public async Task<ServiceResult> ResetPasswordAsync(ResetPasswordRequest request)
