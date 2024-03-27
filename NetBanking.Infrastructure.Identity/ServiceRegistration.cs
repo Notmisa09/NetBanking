@@ -29,8 +29,8 @@ namespace NetBanking.Infrastructure.Identity
             #endregion
 
             #region Services
-            
-            
+
+
             service.AddIdentity<AppUser, IdentityRole>()
               .AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 
@@ -40,7 +40,7 @@ namespace NetBanking.Infrastructure.Identity
                 options.AccessDeniedPath = "/User/AccessDenied";
             });
             service.AddAuthentication();
-            
+
             #endregion
 
             service.AddTransient<IAccountService, AccountService>();
