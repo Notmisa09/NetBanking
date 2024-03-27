@@ -95,6 +95,13 @@ namespace NetBanking.Core.Application.Services
 
             vmDashBoard.AllTransaction = transactions.Count();
             vmDashBoard.AllPaymentsNumber = transactions.GroupBy(x => x.Type).Count();
+
+
+            var today = DateTime.Today;
+            var totalPaymentsToday = transactions.Where(x => x.CreatedDate.Date == today).Count();
+            vmDashBoard.AllPaymentsToday = totalPaymentsToday;
+
+
             vmDashBoard.AllPayments = transactions.GroupBy(x => x.Cantity).Sum(group => group.Count());
             vmDashBoard.ActiveClients = user.Where(x => x.Roles.Contains("Client") && x.IsActive == true).Count();
             vmDashBoard.InactiveClients = user.Where(x => x.Roles.Contains("Client") && x.IsActive == false).Count();

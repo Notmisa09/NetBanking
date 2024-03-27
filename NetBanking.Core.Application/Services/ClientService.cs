@@ -88,7 +88,7 @@ namespace NetBanking.Core.Application.Services
             if (emissorProduct.Id != null && receiverProduct.Id != null)
             {
 
-                #region Determina a donde enviar la actualización del emissorProduct
+                #region Determina a donde enviar la actualizacion del emissorProduct
 
                 int Identificator = Convert.ToInt32(svm.EmissorProductId.Substring(0, 3));
 
@@ -122,7 +122,7 @@ namespace NetBanking.Core.Application.Services
                 #endregion
 
 
-                #region Determina a donde enviar la actualización del receiverProduct
+                #region Determina a donde enviar la actualizacion del receiverProduct
 
                 Identificator = Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3));
 
@@ -205,12 +205,12 @@ namespace NetBanking.Core.Application.Services
                 return new TransactionStatusViewModel()
                 {
                     HasError = true,
-                    Error = "Monto inválido."
+                    Error = "Monto invalido."
                 };
             }
             else if (emissorProduct.Id != null && receiverProduct.Id != null)
             {
-                #region Posibles errores al realizar transacción
+                #region Posibles errores al realizar transaccion
 
                 int emissorIdentificator = Convert.ToInt32(svm.EmissorProductId.Substring(0, 3));
                 int receiverIdentificator = Convert.ToInt32(svm.ReceiverProductId.Substring(0, 3));
@@ -225,7 +225,7 @@ namespace NetBanking.Core.Application.Services
                         return new TransactionStatusViewModel()
                         {
                             HasError = true,
-                            Error = "Usted está sobregirando la tarjeta."
+                            Error = "Usted esta sobregirando la tarjeta."
                         };
                     }
                 }
@@ -249,7 +249,7 @@ namespace NetBanking.Core.Application.Services
                     return new TransactionStatusViewModel()
                     {
                         HasError = true,
-                        Error = "A las tarjetas de crédito no se les deposita dinero"
+                        Error = "A las tarjetas de credito no se les deposita dinero"
                     };
                 }
                 #endregion
@@ -259,7 +259,7 @@ namespace NetBanking.Core.Application.Services
                 return new TransactionStatusViewModel()
                 {
                     HasError = true,
-                    Error = "Transferencia inválida."
+                    Error = "Transferencia invalida."
                 };
             }
             if (svm.Type == TransactionType.ExpressPay && emissorProduct.UserId == receiverProduct.UserId)
@@ -267,7 +267,7 @@ namespace NetBanking.Core.Application.Services
                 return new TransactionStatusViewModel()
                 {
                     HasError = true,
-                    Error = "Transferencia inválida."
+                    Error = "Transferencia invalida."
                 };
             }
             return new TransactionStatusViewModel()
@@ -366,7 +366,7 @@ namespace NetBanking.Core.Application.Services
                     if (!(300 <= Identificator && Identificator <= 599)) //Si no es una cuenta de ahorro
                     {
                         svm.HasError = true;
-                        svm.Error = "Producto inválido.";
+                        svm.Error = "Producto invalido.";
                     }
                     else if (await ProductExists(svm.BeneficiaryAccountId))
                     {
@@ -374,7 +374,7 @@ namespace NetBanking.Core.Application.Services
                         if (existence.Count > 0)
                         {
                             svm.HasError = true;
-                            svm.Error = "Este beneficiario ya está registrado.";
+                            svm.Error = "Este beneficiario ya esta registrado.";
                         }
                         else
                         {
