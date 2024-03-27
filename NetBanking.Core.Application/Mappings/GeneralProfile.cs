@@ -85,7 +85,6 @@ namespace NetBanking.Core.Application.Mappings
             CreateMap<Loan, LoanViewModel>()
                .ReverseMap();
             CreateMap<Loan, SaveLoanViewModel>()
-               .ForMember(l => l.Debt , src => src.MapFrom(x => x.Amount))
                .ReverseMap();
             CreateMap<SaveLoanViewModel, LoanViewModel>()
                 .ReverseMap();

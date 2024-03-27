@@ -8,6 +8,7 @@
         BeneficiaryPay,
         CashAdvance,
         BetweenAccountsTransaction,
-        Leftover
+        Leftover,
+        LoanAproval
     }
 }
