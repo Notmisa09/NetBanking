@@ -6,6 +6,7 @@ using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Singelton;
 using NetBanking.Core.Application.ViewModels.Users;
+using WebApp.Middlewares;
 
 
 namespace WebApp.Controllers
@@ -13,10 +14,18 @@ namespace WebApp.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly ValidateUserSession _validatesesion;
+        private readonly AuthenticationResponse user;
+        private readonly IHttpContextAccessor _contextaccessor;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService,
+             ValidateUserSession validatesesion,
+             IHttpContextAccessor contextaccessor)
         {
+            _contextaccessor = contextaccessor;
+            _validatesesion = validatesesion;
             _userService = userService;
+            user = _contextaccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
         }
 
         public IActionResult AccessDenied()
@@ -27,6 +36,17 @@ namespace WebApp.Controllers
         //INDEX
         public IActionResult Index()
         {
+            if (_validatesesion.HasUser())
+            {
+                if (user.Roles.Contains(RolesEnum.Admin.ToString()))
+                {
+                    return RedirectToRoute(new { controller = "Admin", action = "DashBoard" });
+                }
+                else if(user.Roles.Contains(RolesEnum.Client.ToString()))
+                {
+                    return RedirectToRoute(new { controller = "Client", action = "Home" });
+                }
+            }
             if (string.IsNullOrEmpty(TempData["Success"]?.ToString()))
             {
                 LoginViewModel vm = new();

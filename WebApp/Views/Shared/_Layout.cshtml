@@ -36,12 +36,11 @@
                     <ul class="menu menu-hover-lines navbar-nav flex-grow-1">
                         @if (user == null)
                         {
-                            @if(){
-                                
+
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Login</a>
                                 </li>
-                            }
+
                         }
                         else if (user.Roles.Contains(RolesEnum.Admin.ToString()))
                         {
