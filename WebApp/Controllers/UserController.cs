@@ -12,15 +12,27 @@ namespace WebApp.Controllers
 {
     public class UserController : Controller
     {
+        private readonly AuthenticationResponse _userViewModel;
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
+            _userViewModel = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
             _userService = userService;
+        }
+
+
+        public IActionResult AccessDeniedAdmin()
+        {
+            return View();
         }
 
         public IActionResult AccessDenied()
         {
+            if (_userViewModel.Roles.Contains(RolesEnum.Admin.ToString()))
+            {
+                return View("AccessDeniedAdmin");
+            }
             return View();
         }
 
