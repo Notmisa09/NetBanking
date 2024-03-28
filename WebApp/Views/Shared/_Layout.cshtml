@@ -27,7 +27,17 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand text-black" asp-area="" asp-controller="Admin" asp-action="DashBoard"><img src="~/Iconos/ahorrar-dinero.png" style="width: 30px; height: 30px;" /> <strong> Goldman</strong> Sachs</a>
+                @if (user != null)
+                {
+                    if (user.Roles.Contains(RolesEnum.Admin.ToString()))
+                    {    
+                        <a class="navbar-brand text-black" asp-area="" asp-controller="Admin" asp-action="DashBoard"><img src="~/Iconos/ahorrar-dinero.png" style="width: 30px; height: 30px;" /> <strong> Goldman</strong> Sachs</a>
+                    }
+                    else
+                    {
+                        <a class="navbar-brand text-black" asp-area="" asp-controller="Client" asp-action="Home"><img src="~/Iconos/ahorrar-dinero.png" style="width: 30px; height: 30px;" /> <strong> Goldman</strong> Sachs</a>
+                    }
+                }
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -36,9 +46,7 @@
                     <ul class="menu menu-hover-lines navbar-nav flex-grow-1">
                         @if (user == null)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Login</a>
-                            </li>
+                            <a class="navbar-brand text-black" asp-area=""><strong> Goldman</strong> Sachs <img src="~/Iconos/ahorrar-dinero.png" style="width: 30px; height: 30px; margin-left: 7px;" /></a>
                         }
                         else if (user.Roles.Contains(RolesEnum.Admin.ToString()))
                         {
