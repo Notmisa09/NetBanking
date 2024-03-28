@@ -6,7 +6,7 @@ using NetBanking.Core.Application.Helpers;
 using NetBanking.Core.Application.Interfaces.Services;
 using NetBanking.Core.Application.Singelton;
 using NetBanking.Core.Application.ViewModels.Users;
-
+using WebApp.Middlewares;
 
 namespace WebApp.Controllers
 {
@@ -37,6 +37,7 @@ namespace WebApp.Controllers
         }
 
         //INDEX
+        [ServiceFilter(typeof(LoginAuthorize))]
         public IActionResult Index()
         {
             if (string.IsNullOrEmpty(TempData["Success"]?.ToString()))
@@ -49,6 +50,7 @@ namespace WebApp.Controllers
             return View(new LoginViewModel());
         }
 
+        [ServiceFilter(typeof(LoginAuthorize))]
         [HttpPost]
         public async Task<IActionResult> Index(LoginViewModel vm)
         {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
+using NetBanking.Core.Application.Dtos.Account;
 using WebApp.Controllers;
-
+using NetBanking.Core.Application.Helpers;
 namespace WebApp.Middlewares
 {
     public class LoginAuthorize : IAsyncActionFilter
@@ -17,7 +18,7 @@ namespace WebApp.Middlewares
             if (_validateUserSession.HasUser())
             {
                 var controller = (UserController)context.Controller;
-                context.Result = controller.RedirectToAction("index", "user");
+                context.Result = controller.RedirectToAction("index", "home");
             }
             else
             {
