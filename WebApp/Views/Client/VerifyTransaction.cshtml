@@ -1,6 +1,25 @@
-﻿<h1>Confirm Transaction</h1>
-<h4>Are you sure you wanna make this transaction to: @ViewBag.Name</h4>
-<form asp-action="ExecuteTransaction" method="get">
-    <button type="submit">Confirmar</button>
-    <a class="btn btn-primary" asp-action="Home">Cancelar</a>
-</form>
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card" style="background-color: white;">
+                <div class="card-header bg-info text-light text-center">
+                    <h4>Confirmar transacción</h4>
+                </div>
+                <div class="card-body">
+                    <h4>¿Estás seguro de que quieres hacer esta transacción a: @ViewBag.Name</h4>
+                    <form asp-action="ExecuteTransaction" method="get">
+                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                        <a href="@Url.Action("Home", "ControllerName")" class="btn btn-warning">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card-header.bg-info {
+        background: -webkit-linear-gradient(45deg, #012169 0%, #00709e 60%, #00c1d5 100%);
+        background: linear-gradient(45deg, #012169 0%, #00709e 60%, #00c1d5 100%);
+    }
+</style>
